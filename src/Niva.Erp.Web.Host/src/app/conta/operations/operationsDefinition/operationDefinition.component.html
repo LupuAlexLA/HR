@@ -1,0 +1,213 @@
+﻿<div [@routerTransition]>
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12" *ngIf="operation !== undefined">
+                    <h3 *ngIf="operation.id == 0">
+                        {{ "Adauga sablon nota contabila" | localize }}
+                    </h3>
+                    <h3 *ngIf="operation.id != 0">
+                        {{ "Modifica sablon nota contabila" | localize }}
+                    </h3>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="content px-2">
+        <div class="container-fluid">
+            <div class="body">
+                <form id="operation" name="operation" #operationForm="ngForm" *ngIf="operation !== undefined">
+                    <div class="row">
+                        
+
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <label for="documentTypeId"
+                                       class="col-form-label">
+                                    Nume Sablon
+                                </label>
+                                <div class="input-group">
+                                    <input id="nume"
+                                           name="nume"
+                                           type="text"
+                                           [(ngModel)]="operation.name"
+                                           class="form-control"
+                                           required />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label for="documentTypeId"
+                                       class="col-form-label">
+                                    Tip document
+                                </label>
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <i class="fas fa-check-circle"
+                                           aria-hidden="true"
+                                           *ngIf="!documentTypeId.invalid"></i>
+                                        <i class="fas fa-exclamation-circle"
+                                           aria-hidden="true"
+                                           *ngIf="documentTypeId.invalid"></i>
+                                    </span>
+                                    <select id="documentTypeId"
+                                            name="documentTypeId"
+                                            [(ngModel)]="operation.documentTypeId"
+                                            #documentTypeId="ngModel"
+                                            class="form-control">
+                                        <option *ngFor="let item of documentTypeList.getDocumentType"
+                                                [ngValue]="item.id">
+                                            {{ item.name }}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-2">
+                            <div class="form-group">
+                                <label for="currencyId"
+                                       class="col-form-label">
+                                    Moneda
+                                </label>
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <i class="fas fa-check-circle"
+                                           aria-hidden="true"
+                                           *ngIf="!currencyId.invalid"></i>
+                                        <i class="fas fa-exclamation-circle"
+                                           aria-hidden="true"
+                                           *ngIf="currencyId.invalid"></i>
+                                    </span>
+                                    <select class="form-control"
+                                            name="currencyId"
+                                            [(ngModel)]="operation.currencyId"
+                                            #currencyId="ngModel"
+                                            (ngModelChange)="changeCurrency()">
+                                        <option *ngFor="let value of currency" [ngValue]="value.id">{{value.name}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <h4 class="panel-title col-xs-6">
+                                    Detalii nota
+                                </h4>
+                            </div>
+                        </div>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col" class="col-md-4">Debit</th>
+                                    <th scope="col" class="col-md-4">Credit</th>
+                                    <th scope="col">Explicatii</th>
+                                    <th>
+                                        
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody *ngFor="let detail of operation.operationDetails; let i = index">
+                                <tr>
+                                    <td>
+                                        <mat-form-field style="width: 80%;">
+                                            <input type="text" matInput id="debitId_{{i}}"
+                                                   name="debitId_{{i}}"
+                                                   [(ngModel)]="operation.operationDetails[i].debitId"
+                                                   (input)="getAccountListComputingDebit($event, i)"
+                                                   required [matAutocomplete]="auto">
+                                            <mat-autocomplete #auto="matAutocomplete" [displayWith]="getDebitName.bind(this)">
+                                                <mat-select *ngFor="let item of accountsDb">
+                                                    <mat-option (click)="selectedInputDb(item.name, item.id, i)" [ngValue]="item.id">
+                                                        {{ item.name }}
+                                                    </mat-option>
+                                                </mat-select>
+                                            </mat-autocomplete>
+                                        </mat-form-field>
+                                        <button class="btn btn-info ml-1" 
+                                                title="Vizualizeaza sold" 
+                                                (click)="showDbSold(operation.operationDetails[i].debitId)"><i class="fas fa-comment-dollar"></i></button>
+                                    </td>
+                                    <td>
+                                        <mat-form-field style="width: 80%;">
+                                            <input type="text" matInput id="creditId_{{i}}"
+                                                   name="creditId_{{i}}"
+                                                   [(ngModel)]="operation.operationDetails[i].creditId"
+                                                   (input)="getAccountListComputingCredit($event, i)"
+                                                   required [matAutocomplete]="autoCr">
+                                            <mat-autocomplete #autoCr="matAutocomplete" [displayWith]="getCreditName.bind(this)">
+                                                <mat-select *ngFor="let item of accountsCr">
+                                                    <mat-option (click)="selectedInputCr(item.name, item.id, i)" [ngValue]="item.id">
+                                                        {{ item.name }}
+                                                    </mat-option>
+                                                </mat-select>
+                                            </mat-autocomplete>
+                                        </mat-form-field>
+                                        <button class="btn btn-info ml-1" title="Vizualizeaza sold" (click)="showDbSold(operation.operationDetails[i].creditId)" ><i class="fas fa-comment-dollar"></i></button>
+                                    </td>
+                                    
+                                    <td>
+                                        <input id="details_{{i}}"
+                                               name="details_{{i}}"
+                                               type="text"
+                                               [(ngModel)]="operation.operationDetails[i].observations"
+                                               class="form-control"
+                                               required />
+                                    </td>
+                                    <td>
+                                        <button (click)="deleteOperationDetail(i)"
+                                                class="btn btn-danger"
+                                                title="Sterge">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-5">
+                            <button (click)="back()"
+                                    class="btn btn-info"
+                                    title="Inapoi">
+                                <i class="fas fa-arrow-left"></i>
+                            </button>
+                        </div>
+                        <div class="col-lg-3 col-lg-offset-4">
+                            <button (click)="addOperationDetail()"
+                                    class="btn btn-info">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                        </div>
+                        <div class="col-lg-4">
+                            <div style="float: right;">
+                                <!--<span class="input-group-addon">
+                                    <i class="fas fa-check-circle"
+                                       aria-hidden="true"
+                                       *ngIf="!operationForm.form.invalid"></i>
+                                    <i class="fas fa-exclamation-circle"
+                                       aria-hidden="true"
+                                       *ngIf="operationForm.form.invalid"></i>
+                                </span>-->
+                                <button (click)="saveOperation()"
+                                        [disabled]="operationForm.form.invalid"
+                                        type="submit"
+                                        class="btn btn-info "
+                                        title="Save">
+                                    <i class="fas fa-save"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+</div>

@@ -1,0 +1,73 @@
+﻿<div [@routerTransition]>
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row">
+                <h3>
+                    <a class="btn btn-info" [routerLink]="['/app/buget/venituri/bugetVenitList']" title="Inapoi"><i class="fas fa-arrow-left"></i></a>
+                    Detalii venituri / incasari
+                    <a class="btn btn-info ml-3" [routerLink]="['/app/buget/venituri/bugetReinvest']" [queryParams]="{ formularBVCId: formularBVCId }" title="Sume reinvestite">Sume reinvestite</a>
+                    <a class="btn btn-info ml-3" [routerLink]="['/app/buget/venituri/bugetAplica']" [queryParams]="{ formularBVCId: formularBVCId }" title="Aplica Buget">Aplica sumele in buget</a>
+                </h3>
+            </div>
+        </div>
+    </section>
+    <section class="content px-2">
+        <div class="container-fluid">
+            <div class="body">
+                <div class="panel-heading" style="position:relative">
+                    <div class="row mt-3">
+                        <h4 class="panel-title col-xs-6 ">
+                            Detalii - <span> {{ getCountVenituriDetails() }} </span>
+                        </h4>
+                        <h4 class="panel-title col-xs-6 align-self-end mx-4">
+                            <button (click)="selectAll()" class="btn btn-info mx-4" >SelecteazaTot</button>
+                            <button (click)="selectNone()" class="btn btn-info mx-4" >DeselecteazaTot</button>
+                            <button (click)="save()" class="btn btn-info mx-4" title="Salveaza"><i class="fas fa-save"></i></button>
+                        </h4>
+                    </div>
+                </div>
+                <div class="row">
+                    <table class="table table-responsive">
+                        <thead>
+                            <tr>
+                                <th>Selectat</th>
+                                <th>#</th>
+                                <th> Plasament</th>
+                                <th>Data start</th>
+                                <th>Data maturitate / Data incasarii</th>
+                                <th>Tip venit</th>
+                                <th>Tip plasament</th>
+                                <th>Tip activitate</th>
+                                <th>% dobanda</th>
+                                <th>Valoare plasament</th>
+                                <th>Moneda</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of bugetVenituriList;let i = index">
+                                <td>
+                                    <input id="selectat_{{i}}" name="selectat_{{i}}" type="checkbox" [(ngModel)]="item.selectat" #selectat="ngModel"/>
+                                </td>
+                                <td>{{ i + 1 }}</td>
+                                <td>{{ item.idPlasament }}</td>
+                                <td>{{ item.startDate| date:'dd/MM/yyyy' }}</td>
+                                <td>{{ item.maturityDate| date:'dd/MM/yyyy' }}</td>
+                                <td>{{ item.venitTypeStr }}</td>
+                                <td>{{ item.tipPlasamentStr }}</td>
+                                <td>{{ item.activityType }}</td>
+                                <td class="text-right">{{ item.procentDobanda | number:'1.2' }}</td>
+                                <td class="text-right">{{ item.valoarePlasament | number:'1.2' }}</td>
+                                <td>{{ item.currency }}</td>
+                                <td>
+                                    <button class="btn btn-info" title="Detalii Venituri (BVC)" (click)="showBVCDetailsDialog(item.id)">Venituri (BVC)</button>
+                                    <button class="btn btn-info ml-3" title="Detalii Incasari (CashFlow)" (click)="showCFDetailsDialog(item.id)">Incasari (CashFlow)</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

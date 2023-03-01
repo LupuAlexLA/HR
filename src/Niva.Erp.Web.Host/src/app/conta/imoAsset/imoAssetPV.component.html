@@ -1,0 +1,145 @@
+﻿<div [@routerTransition]>
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <h3>Intrari mijloace fixe</h3>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="content px-2">
+        <div class="container-fluid">
+            <div class="body">
+                <div class="panel-heading" style="position: relative;">
+                    <div class="row">
+                        <h4 class="panel-title col-xs-6">
+                            Mijloace fixe - <span>{{ getImoAssetListCount() }}</span> &nbsp;
+                            <a [routerLink]="['/app/conta/imoAsset/imoAssetPVAdd']" *ngIf="isGranted('Conta.MF.Intrari.Modificare')" class="btn btn-info"><i class="fas fa-plus"></i></a>
+                        </h4>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-2">
+                            <label for="dataStart" class="col-form-label">Data Start</label>
+                            <mat-form-field style="width: 100%">
+                                <input matInput [matDatepicker]="dataStartPicker" id="dataStart"
+                                       name="dataStart" [(ngModel)]="dataStart" />
+                                <mat-datepicker-toggle matSuffix [for]="dataStartPicker"></mat-datepicker-toggle>
+                                <mat-datepicker #dataStartPicker></mat-datepicker>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-lg-2">
+                            <label for="dataEnd" class="col-form-label">Data Sfarsit</label>
+                            <mat-form-field style="width: 100%">
+                                <input matInput [matDatepicker]="dataEndPicker" id="dataEnd"
+                                       name="dataEnd" [(ngModel)]="dataEnd" />
+                                <mat-datepicker-toggle matSuffix [for]="dataEndPicker"></mat-datepicker-toggle>
+                                <mat-datepicker #dataEndPicker></mat-datepicker>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-lg-1">
+                            <button (click)="imoAssetListFnc()" *ngIf="isGranted('Conta.MF.Intrari.Acces')" class="btn btn-info" title="Cauta"><i class="fas fa-search"></i></button>
+                            <a href="{{appBaseUrl}}/assets/pdf/Conta - Mijloace fixe - Manual utilizare.pdf" title="Manual de utilizare" class="btn btn-info ml-2" target="_blank"><i class="fas fa-question"></i></a>
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <dx-data-grid id="gridContainerImoAssetPV" [dataSource]="imoAssetList?.getImoAssets" [showBorders]="true" (onCellPrepared)="onCellPrepared($event)">
+                        <dxo-group-panel [visible]="true"></dxo-group-panel>
+                        <dxo-grouping [autoExpandAll]="true"></dxo-grouping>
+                        <dxo-selection mode="multiple"></dxo-selection>
+
+                        <dxi-column dataField="inventoryNr" caption="Nr Inventar" dataType="number"></dxi-column>
+                        <dxi-column dataField="name" caption="Denumire activ"></dxi-column>
+                        <dxi-column dataField="thirdParty" caption="Furnizor"></dxi-column>
+                        <dxi-column dataField="invoice" caption="Factura"></dxi-column>
+                        <dxi-column dataField="classCode" caption="Cod Clasificare"></dxi-column>
+                        <dxi-column dataField="inventoryValue" caption="Valoare Inventar" dataType="number" format="fixedPoint"></dxi-column>
+                        <dxi-column dataField="operationDate" caption="Data Intrare" dataType="date" [format]="'dd/MM/yyyy'"></dxi-column>
+                        <dxi-column dataField="useStartDate" caption="Data Dare in folosinta" dataType="date" [format]="'dd/MM/yyyy'"></dxi-column>
+                        <dxi-column dataField="depreciationStartDate" caption="Data Calcul amortizare" dataType="date" [format]="'dd/MM/yyyy'"></dxi-column>
+                        <dxi-column dataField="durationInMonths" caption="Durata in luni" dataType="number"></dxi-column>
+                        <dxi-column dataField="processedIn" caption="Procesat intrare"></dxi-column>
+                        <dxi-column dataField="processedInUse" caption="Procesat PunereInFunctiune"></dxi-column>
+
+                        <dxi-column type="buttons">
+                            <dxi-button icon="edit" text="Edit" [onClick]="edit" [visible]="showButtons"></dxi-button>
+                            <dxi-button icon="smalliconslayout" text="Dare in folosinta" [onClick]="dareInFolosinta" [visible]="showButtons"></dxi-button>
+                            <dxi-button icon="trash" text="Delete" [onClick]="deleteAsset" [visible]="showDeleteButton"></dxi-button>
+                        </dxi-column>
+
+                        <dxo-export [enabled]="true" [allowExportSelectedData]="true"></dxo-export>
+                    </dx-data-grid>
+                </div>
+                <!--<table class="table small-font">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Nr Inventar</th>
+                            <th scope="col">Denumire activ</th>
+                            <th scope="col">Furnizor</th>
+                            <th scope="col">Factura</th>
+                            <th scope="col">Cod Clasificare</th>
+                            <th scope="col">Valoare Inventar</th>
+                            <th scope="col">Data intrare</th>
+                            <th scope="col">Data Dare In Folosinta</th>
+                            <th scope="col">Data Calcul Amortizare</th>
+                            <th scope="col">Durata In Luni</th>
+                            <th scope="col">Procesat Intrare</th>
+                            <th scope="col">Procesat PunereInFunctiune</th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let asset of imoAssetList?.getImoAssets; let i = index">
+                            <td scope="row">{{ i + 1 }}</td>
+                            <td>{{asset.inventoryNr}}</td>
+                            <td>{{asset.name}}</td>
+                            <td>{{asset.thirdParty}}</td>
+                            <td>{{asset.invoice}}</td>
+                            <td>{{asset.classCode}}</td>
+                            <td>{{asset.inventoryValue}}</td>
+                            <td>{{asset.operationDate | date: 'dd.MM.yyyy'}}</td>
+                            <td>{{asset.useStartDate}} </td>
+                            <td>{{asset.depreciationStartDate}} </td>
+                            <td>{{asset.durationInMonths}} </td>
+                            <td>
+                                <input id="processedIn_{{i}}" name="processedIn_{{i}}"
+                                       type="checkbox"
+                                       style="position: relative; left: 0px; opacity: 100"
+                                       [(ngModel)]="asset.processedIn" *ngIf="asset.processedIn" [disabled]="true"/>
+                            </td>
+                            <td>
+                                <input id="processedInUse_{{i}}" name="processedInUse_{{i}}"
+                                       type="checkbox"
+                                       style="position: relative; left: 0px; opacity: 100"
+                                       [(ngModel)]="asset.processedInUse" *ngIf="asset.processedInUse" [disabled]="true" />
+                            </td>
+                            <td>
+                                <a [routerLink]="['/app/conta/imoAsset/imoAssetPVAddDirect']"
+                                   [queryParams]="{ assetId: asset.id }"
+                                   class="btn btn-info"
+                                   title="Editare"><i class="fas fa-edit"></i></a>
+                            </td>
+                            <td>
+                                <a [routerLink]="['/app/conta/imoAsset/imoAssetAddInUse']"
+                                   [queryParams]="{ assetId: asset.id }"
+                                   class="btn btn-info"
+                                   title="Dare in folosinta"><i class="far fa-calendar-alt"></i></a>
+                            </td>
+                            <td>
+                                <button (click)="deleteAsset(asset.id)" 
+                                        class="btn btn-danger" 
+                                        *ngIf="!asset.processedIn && !asset.processedInUse"
+                                        title="Stergere"><i class="fas fa-trash">  </i></button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>-->
+            </div>
+        </div>
+    </section>
+</div>

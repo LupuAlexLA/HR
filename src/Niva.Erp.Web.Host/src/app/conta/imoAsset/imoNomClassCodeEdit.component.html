@@ -1,0 +1,139 @@
+﻿<div [@routerTransition]>
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <h3>Mijloace fixe - Adaugare/Modificare coduri de clasificare</h3>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="content px-2">
+        <div class="container-fluid">
+            <div class="body">
+                <form id="classCode" name="classCode" #classCodeForm="ngForm" (ngSubmit)="saveClassCodeFnc()">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <label for="code" class="col-form-label">Cod</label>
+
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <i class="fas fa-check-circle" aria-hidden="true" *ngIf="code.valid"></i>
+                                    <i class="fas fa-exclamation-circle" aria-hidden="true" *ngIf="!code.valid"></i>
+                                </span>
+                                <input id="code" name="code" type="text" [(ngModel)]="classCode.code" #code="ngModel" class="form-control" required />
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6">
+                            <label for="name" class="form-label">Denumire</label>
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <i class="fas fa-check-circle" aria-hidden="true" *ngIf="name.valid"></i>
+                                    <i class="fas fa-exclamation-circle" aria-hidden="true" *ngIf="!name.valid"></i>
+                                </span>
+                                <input id="name" name="name" type="text" [(ngModel)]="classCode.name" #name="ngModel" class="form-control" required />
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <label for="assetAccountId" class="col-form-label">Cont Activ</label>
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <i class="fas fa-check-circle" aria-hidden="true" *ngIf="assetAccountId.valid"></i>
+                                    <i class="fas fa-exclamation-circle" aria-hidden="true" *ngIf="!assetAccountId.valid"></i>
+                                </span>
+                                <select id="assetAccountId" name="assetAccountId" [(ngModel)]="classCode.assetAccountId" #assetAccountId="ngModel" class="form-control" required>
+                                    <option *ngFor="let res of accounts?.getAccounts" [ngValue]="res.id">{{res.name}}</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6">
+                            <label for="depreciationAccountId" class="col-form-label">Cont Amortizare</label>
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <i class="fas fa-check-circle" aria-hidden="true" *ngIf="depreciationAccountId.valid"></i>
+                                    <i class="fas fa-exclamation-circle" aria-hidden="true" *ngIf="!depreciationAccountId.valid"></i>
+                                </span>
+                                <select id="depreciationAccountId" name="depreciationAccountId" #depreciationAccountId="ngModel" [(ngModel)]="classCode.depreciationAccountId" class="form-control">
+                                    <option *ngFor="let res of accounts?.getAccounts" [ngValue]="res.id">{{res.name}}</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <label for="expenseAccountId" class="col-form-label">Cont Cheltuiala</label>
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <i class="fas fa-check-circle" aria-hidden="true" *ngIf="expenseAccountId.valid"></i>
+                                    <i class="fas fa-exclamation-circle" aria-hidden="true" *ngIf="!expenseAccountId.valid"></i>
+                                </span>
+                                <select id="expenseAccountId" name="expenseAccountId" [(ngModel)]="classCode.expenseAccountId" #expenseAccountId="ngModel" class="form-control">
+                                    <option *ngFor="let res of accounts?.getAccounts" [ngValue]="res.id">{{res.name}}</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6">
+                            <label for="classCodeParrentId" class="col-form-label">Categorie</label>
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <i class="fas fa-check-circle" aria-hidden="true" *ngIf="classCodeParrentId.valid"></i>
+                                    <i class="fas fa-exclamation-circle" aria-hidden="true" *ngIf="!classCodeParrentId.valid"></i>
+                                </span>
+                                <select id="classCodeParrentId" name="classCodeParrentId" #classCodeParrentId="ngModel" [(ngModel)]="classCode.classCodeParrentId" class="form-control">
+                                    <option *ngFor="let res of classCodeParrent?.getImoAssetClassCode" [ngValue]="res.id">{{res.name}}</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <label for="durationMin" class="col-form-label">Durata Minima</label>
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <i class="fas fa-check-circle" aria-hidden="true" *ngIf="durationMin.valid"></i>
+                                    <i class="fas fa-exclamation-circle" aria-hidden="true" *ngIf="!durationMin.valid"></i>
+                                </span>
+                                <input id="durationMin" name="durationMin" #durationMin="ngModel" [(ngModel)]="classCode.durationMin" class="form-control" required />
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6">
+                            <label for="durationMax" class="col-form-label">Durata Maxima </label>
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <i class="fas fa-check-circle" aria-hidden="true" *ngIf="durationMax.valid"></i>
+                                    <i class="fas fa-exclamation-circle" aria-hidden="true" *ngIf="!durationMax.valid"></i>
+                                </span>
+                                <input id="durationMax" name="durationMax" #durationMax="ngModel" [(ngModel)]="classCode.durationMax" class="form-control" required />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mt-3">
+                        <div class="col-lg-5 col-lg-offset-3">
+                            <a [routerLink]="['/app/conta/imoAsset/imoNomClassCode']" class="btn btn-info" title="Inapoi"><i class="fas fa-arrow-left"></i></a>
+                        </div>
+                        <div class="col-lg-5 col-lg-offset-4">
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <i class="fas fa-check-circle" aria-hidden="true" *ngIf="classCodeForm.form.valid"></i>
+                                    <i class="fas fa-exclamation-circle" aria-hidden="true" *ngIf="!classCodeForm.form.valid"></i>
+                                </span>
+                                <button [disabled]="!classCodeForm.form.valid" type="submit" class="btn btn-info" title="Salveaza"><i class="fas fa-save"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+</div>

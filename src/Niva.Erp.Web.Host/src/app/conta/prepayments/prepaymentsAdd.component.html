@@ -1,0 +1,27 @@
+﻿<div [@routerTransition]>
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12" *ngIf="prepaymentType == 0">
+                    <h3>Adaugare cheltuiala in avans</h3>
+                </div>
+                <div class="col-12" *ngIf="prepaymentType == 1">
+                    <h3>Adaugare venit in avans</h3>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="content px-2">
+        <div class="container-fluid">
+            <div class="body">
+                <div class="row">
+                    <a [routerLink]="['/app/conta/prepayments/prepaymentsList']" [queryParams]="{prepaymentType: prepaymentType}" class="btn btn-info" title="Inapoi"><i class="fas fa-arrow-left"></i></a>
+                    &nbsp;
+                    <a [routerLink]="['/app/conta/prepayments/prepaymentsAddInvoice']" [queryParams]="{prepaymentType: prepaymentType}" class="btn btn-info" title="Adauga pornind de la factura"><i class="fas fa-plus-square"></i></a>
+                    &nbsp;
+                    <a [routerLink]="['/app/conta/prepayments/prepaymentsAddDirect']" [queryParams]="{prepaymentType: prepaymentType}" class="btn btn-info" title="Adauga fara factura"><i class="fas fa-plus"></i></a>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

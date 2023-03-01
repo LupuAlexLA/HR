@@ -1,0 +1,266 @@
+﻿<div [@routerTransition]>
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <h3>Formular retragere/depunere numerar - casierie</h3>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="content px-2">
+        <div class="container-fluid">
+            <div class="body">
+                <form #dispositionForm="ngForm" (ngSubmit)="saveDisposition()" [busy]="isLoading">
+                    <div class="row">
+                        <div class="col-lg-2">
+                            <label for="dispNumber" class="col-form-label">Nr. operatiune</label>
+                        </div>
+                        <div class="col-lg-2">
+                            <input id="dispNumber" name="dispNumber" class="form-control" [(ngModel)]="disposition.dispositionNumber" #dispositionNumber="ngModel" disabled />
+
+                        </div>
+                        <div class="col-lg-2">
+                            <label for="dispositionDate" class="col-form-label">Data Operatiune</label>
+                        </div>
+                        <div class="col-lg-2">
+                            <mat-form-field style="width: 100%;">
+                                <input matInput
+                                       id="dispositionDate"
+                                       name="dispositionDate"
+                                       [matDatepicker]="dispositionDatePicker"
+                                       [(ngModel)]="disposition.dispositionDate"
+                                       (dateChange)="checkDispNumber($event)">
+                                <mat-datepicker-toggle matSuffix [for]="dispositionDatePicker"></mat-datepicker-toggle>
+                                <mat-datepicker #dispositionDatePicker></mat-datepicker>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-lg-2">
+                            <label for="currency" class="col-form-label">Moneda</label>
+                        </div>
+                        <div class="col-lg-2">
+                            <select id="currency" name="currency" [(ngModel)]="disposition.currencyId" #currencyId="ngModel" class="form-control" (change)="getInvoicesByCurrencyId(disposition.currencyId)">
+                                <option [ngValue]="null">Selecteaza</option>
+                                <option *ngFor="let currency of currencies" [ngValue]="currency.id">{{currency.name}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-2">
+                            <label for="dispositionType" class="col-form-label"> Tip operatiune</label>
+                        </div>
+                        <div class="col-lg-2">
+                            <select id="dispositionType" name="dispositionType" [(ngModel)]="disposition.operationType" #operationType="ngModel" class="form-control" (ngModelChange)="checkNrChitanta()">
+                                <option value="0">Plata</option>
+                                <option value="1">Incasare</option>
+
+                            </select>
+                        </div>
+                        <div class="col-lg-2">
+                            <label for="element" class="col-form-label"> Operatiune</label>
+                        </div>
+                        <div class="col-lg-2">
+                            <select id="element" name="element" class="form-control" [(ngModel)]="disposition.elementId" #elementId="ngModel">
+                                <option [ngValue]="null">Selecteaza</option>
+                                <option *ngFor="let element of elementsDetails" [ngValue]="element.id">{{element.description}}</option>
+                            </select>
+                        </div>
+                        <div class="col-lg-2" *ngIf="disposition.operationType == 1">
+                            <label for="nrChitanta" class="col-form-label"> Nr chitanta</label>
+                        </div>
+                        <div class="col-lg-2" *ngIf="disposition.operationType == 1">
+                            <input id="nrChitanta" name="nrChitanta" class="form-control" [(ngModel)]="disposition.nrChitanta" #nrChitanta="ngModel" disabled />
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-lg-2">
+                            <label for="thirdParty" class="col-form-label">Tert</label>
+                        </div>
+                        <div class="col-lg-3">
+                            <mat-form-field style="width: 120%">
+                                <input type="text" matInput id="thirdParty"
+                                       name="thirdParty"
+                                       [(ngModel)]="disposition.thirdPartyId"
+                                       (input)="searchThirdPartyByInput($event)"
+                                       required
+                                       [matAutocomplete]="auto"
+                                       #thirdParty="ngModel" />
+                                <mat-autocomplete #auto="matAutocomplete" [displayWith]="getThirdPartyName.bind(this)">
+                                    <mat-select *ngFor="let thirdParty of thirdParties?.getThirdParty">
+                                        <mat-option (click)="selectedThirdParty(thirdParty.personId, thirdParty.fullName)" [ngValue]="thirdParty.personId">
+                                            {{ thirdParty.fullName }}
+                                            <small>CompanyId: </small><small>{{ thirdParty.personId }}</small>
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-autocomplete>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-lg-1" *ngIf="isGranted('General.Persoane.Modificare')">
+                            <button class="btn btn-primary" title="Adauga tert" style="float: right" (click)="addThirdPartyNewTab()" type="button"><i class="fas fa-plus"></i></button>
+                        </div>
+                        <!--<div class="col-lg-2">
+            <label for="invoices" class="col-form-label">Lista facturi/bonuri</label>
+        </div>
+        <div class="col-lg-3">
+            <select id="invoices" name="invoices" [(ngModel)]="disposition.invoiceId" invoiceId="ngModel" class="form-control" (ngModelChange)="selectedInvoice(disposition.invoiceId)">
+                <option value="null">Selecteaza</option>
+                <option *ngFor="let invoice of invoices" [ngValue]="invoice.id">{{ invoice.details }}</option>
+            </select>
+
+        </div>
+        <div class="col-lg-1">
+            <button class="btn btn-info" title="Reseteaza lista" (click)="resetList()" type="button"><i class="fas fa-sync-alt"></i></button>
+
+            <button class="btn btn-primary" title="Adauga factura" style="margin-left: 5px" (click)="openNewTab()" type="button"><i class="fas fa-plus"></i></button>
+        </div>-->
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-2">
+                            <label for="documentNumber" class="col-form-label">Nr document</label>
+                        </div>
+                        <div class="col-lg-2">
+                            <input id="documentNumber" name="documentNumber" [(ngModel)]="disposition.documentNumber" #documentNumber="ngModel" class="form-control"  />
+                        </div>
+                        <div class="col-lg-2">
+                            <label for="documentDate" class="col-form-label"> Data document</label>
+                        </div>
+                        <div class="col-lg-2">
+                            <mat-form-field style="width: 100%;">
+                                <input matInput
+                                       id="documentDate"
+                                       name="documentDate"
+                                       [matDatepicker]="documentDatePicker"
+                                       [(ngModel)]="disposition.documentDate"
+                                       >
+                                <mat-datepicker-toggle matSuffix [for]="documentDatePicker"></mat-datepicker-toggle>
+                                <mat-datepicker #documentDatePicker></mat-datepicker>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-lg-2">
+                            <label for="documentType" class="col-form-label"> Tip document</label>
+                        </div>
+                        <div class="col-lg-2">
+                            <select id="documentType" name="documentType" [(ngModel)]="disposition.documentTypeId" #documentTypeId="ngModel" class="form-control"  (ngModelChange)="checkAutoNumberForDoc(disposition.documentTypeId)">
+                                <option [ngValue]="null">Selecteaza</option>
+                                <option *ngFor="let document of documentTypeList.getDocumentType" [ngValue]="document.id" >{{document.typeName}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <!--<div class="row">
+        <div class="col-lg-2">
+            <label for="categoryElement" class="col-form-label"> Categorie element</label>
+        </div>
+        <div class="col-lg-4">
+            <select id="categoryElement" name="categoryElement" [(ngModel)]="disposition.categoryElementId" #categoryElementId="ngModel" class="form-control" (ngModelChange)="getInvoiceElementDetailsByCategoryId(disposition.categoryElementId)">
+                <option *ngFor="let category of categoryElements" [ngValue]="category.id">{{ category.categoryElementDetName }}</option>
+            </select>
+        </div>
+        <div class="col-lg-2">
+            <label for="element" class="col-form-label"> Element</label>
+        </div>
+        <div class="col-lg-4">
+            <select id="element" name="element" class="form-control" [(ngModel)]="disposition.elementId" #elementId="ngModel">
+                <option value="0">Selecteaza</option>
+                <option *ngFor="let element of elementsDetails" [ngValue]="element.id">{{element.description}}</option>
+            </select>
+        </div>
+    </div>-->
+                    <div class="row mt-3">
+                        <div class="col-lg-2">
+                            <label for="value" class="col-form-label">Suma</label>
+                        </div>
+                        <div class="col-lg-2">
+                            <input id="value" name="value" [(ngModel)]="disposition.value" #value="ngModel" class="form-control" />
+                        </div>
+                        <div class="col-lg-2">
+                            <label for="description" class="col-form-label"> Motiv</label>
+                        </div>
+                        <div class="col-lg-6">
+                            <input id="description" name="description" class="form-control" [(ngModel)]="disposition.description" #description="ngModel" />
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="row">
+                        <div class=" col-12">
+                            <h4>
+                                Facturi / Bonuri - {{getInvoicesCount()}}
+                                <button class="btn btn-info mr-2 ml-2" title="Reseteaza lista" (click)="resetList()" type="button"><i class="fas fa-sync-alt"></i></button>
+                                <button class="btn btn-primary" title="Adauga factura" (click)="openNewTab()" type="button"><i class="fas fa-plus"></i></button>
+                            </h4>
+                        </div>
+                        <div>
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col"></th>
+                                        <th scope="col">Descriere</th>
+                                        <th scope="col">Total de plata</th>
+                                        <th scope="col">Rest de plata</th>
+                                        <th scope="col">Rest</th>
+                                        <th scope="col">Platit</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody *ngFor="let invoice of disposition.invoiceList; let i = index;">
+                                    <tr>
+                                        <td>
+                                            <input id="selectedInvoice_{{i}}" name="selectedInvoice_{{i}}" type="checkbox" [(ngModel)]="invoice.selected" #invoice.selected="ngModel" (change)="calculateInvoiceTotal(i)" [disabled]="disposition.value === 0" />
+                                        </td>
+                                        <td>{{ invoice.details }}</td>
+                                        <td class="alignSum">{{ invoice.totalValue | number: '1.2' }}</td>
+                                        <td class="alignSum">{{ invoice.remainingValue | number: '1.2' }}</td>
+                                        <td class="alignSum">{{ invoice.rest | number: '1.2' }}</td>
+                                        <td>
+                                            <input id="payedValue_{{i}}" name="payedValue_{{i}}" [(ngModel)]="invoice.payedValue" #payedValue="ngModel"  class="form-control" />
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="row mt-3">
+                        <div class="col-lg-12">
+                            <label class="col-form-label"> Date privind beneficiar/platitor</label>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-lg-2">
+                            <label for="numePrenume" class="col-form-label"> Nume si prenume</label>
+                        </div>
+                        <div class="col-lg-4">
+                            <input id="numePrenume" name="numePrenume" class="form-control" [(ngModel)]="disposition.numePrenume" #description="ngModel" />
+                        </div>
+                        <div class="col-lg-1">
+                            <label for="tipDoc" class="col-form-label">CI</label>
+                        </div>
+                        <div class="col-lg-1">
+                            <input id="tipDoc" name="tipDoc" class="form-control" [(ngModel)]="disposition.tipDoc" #description="ngModel" />
+                        </div>
+                        <div class="col-lg-2">
+                            <label for="actIdentitate" class="col-form-label"> Serie / nr</label>
+                        </div>
+                        <div class="col-lg-2">
+                            <input id="actIdentitate" name="actIdentitate" class="form-control" [(ngModel)]="disposition.actIdentitate" #description="ngModel" />
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="row mt-3">
+                        <div class="col-lg-6">
+                            <button (click)="backToList()" class="btn btn-info"><i class="fas fa-arrow-left"></i></button>
+                        </div>
+                        <div class="col-lg-2" style="display: flex; justify-content: flex-end">
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <span class="fas fa-check-circle" *ngIf="dispositionForm.form.valid"></span>
+                                    <span class="fas fa-exclamation-circle" *ngIf="!dispositionForm.form.valid"></span>
+                                </span>
+                                <button [disabled]="!dispositionForm.form.valid" type="submit" class="btn btn-info" title="Save"><i class="fas fa-save"></i> </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+</div>

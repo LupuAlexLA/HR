@@ -1,0 +1,53 @@
+﻿<div [@routerTransition]>
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row">
+                <h3>
+                <a title="Inapoi" class="btn btn-info" [routerLink]="['/app/buget/realizat/bugetRealizatList']"><i class="fas fa-arrow-left"></i></a>
+                Randuri buget realizat</h3>
+            </div>
+        </div>
+    </section>
+    <section class="content px-2">
+        <div class="container-fluid">
+            <div class="body">
+                <div class="panel-heading" style="position:relative">
+                    <div class="row mt-3">
+                        <h4 class="panel-title col-xs-6 ">
+                            Randuri - <span> {{ getCountRealizatRanduri() }} </span>
+                            &nbsp;
+                        </h4>
+                    </div>
+                </div>
+                <div class="row">
+                    <table class="table table-responsive">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Denumire rand</th>
+                                <th>Valoare fara referat</th>
+                                <th>Valoare cu referat </th>
+                                <th>Bold</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of bugetRealizatRandList;let i = index">
+                                <td>{{ i + 1 }}</td>
+                                <td>{{ item.denumireRand }}</td>
+                                <td class="alignSum">{{ item.valoareFaraReferat | number: '1.2' }}</td>
+                                <td class="alignSum">{{ item.valoareCuReferat | number: '1.2' }}</td>
+                                <td>
+                                    <input id="bold_{{i}}" name="bold_{{i}}" type="checkbox" [(ngModel)]="item.bold" #bold="ngModel" readonly disabled />
+                                </td>
+                                <td>
+                                    <button class="btn btn-info" title="Detalii rand" (click)="showRowDetailDialog(item.id)"><i class="fas fa-list"></i></button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

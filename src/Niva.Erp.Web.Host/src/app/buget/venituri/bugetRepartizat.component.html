@@ -1,0 +1,176 @@
+﻿<div [@routerTransition]>
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row">
+                <h3>Repartizare Cheltuieli</h3>
+            </div>
+        </div>
+    </section>
+    <section class="content px-2">
+        <div class="container-fluid">
+            <div class="body">
+                <form id="bugetPrelimList" *ngIf="showFormPrelimList">
+                    <div class="row mt-3">
+                        <div class="col-lg-3">
+                            <button class="btn btn-info" (click)="addNewPreliminat()"><i class="fas fa-plus"></i></button>
+                        </div>
+                    </div>
+                    <div class="row mt-5">
+                        <div class="col-lg-5">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">An</th>
+                                        <th scope="col">Data balantei</th>
+                                        <th scope="col">Buget preliminat</th>
+                                        <th scope="col">Mod calcul</th>
+                                        <th scope="col"></th>
+
+                                    </tr>
+                                </thead>
+                                <tbody *ngFor="let buget of bugetPreliminatList; let i = index">
+                                    <tr>
+                                        <td scope="row">{{ i + 1 }}</td>
+                                        <td>{{ buget.anBVC }}</td>
+                                        <td>{{ buget.dataUltBalanta | date: 'dd/MM/yyyy'}}</td>
+                                        <td>{{ buget.bvC_BugetPrevStr }}</td>
+                                        <td>{{ buget.preliminatCalculTypeStr }}</td>
+                                        <td>
+                                            <button (click)="preliminatDetails(buget.preliminatCalculType, buget.id, buget.formularId)" class="btn btn-info"><i class="fas fa-edit"></i></button>
+                                            &nbsp;
+                                            <button (click)="bugetRepartizatDelete(buget.id)" class="btn btn-danger"><i class="fas fa-trash"></i></button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </form>
+
+                <form id="bugetPrelimStartAdd" *ngIf="showFormStartAdd">
+                    <div class="row">
+                        <div class="col-lg-1">
+                            <label class="col-form-label" id="anBuget">An</label>
+                        </div>
+                        <div class="col-lg-2">
+                            <select id="anBuget" name="anBuget" class="form-control" [(ngModel)]="formularBVCId">
+                                <option [ngValue]="null">Selecteaza</option>
+                                <option *ngFor="let an of bugetPreliminatNewList" [ngValue]="an.id">{{an.anBVC}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-1">
+                            <label class="col-form-label" id="tipCalcul">Tip Calcul</label>
+                        </div>
+                        <div class="col-lg-2">
+                            <select id="tipCalcul" name="tipCalcul" class="form-control" [(ngModel)]="preliminatCalculTypeId">
+                                <option *ngFor="let item of preliminatCalculTypeList" [ngValue]="item.id">{{item.name}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-1">
+                            <button class="btn btn-info" (click)="addNewPreliminatBack()"><i class="fas fa-arrow-left"></i></button>
+                        </div>
+                        <div class="col-lg-2 text-right">
+                            <button class="btn btn-info" (click)="addNewPreliminatOption()"><i class="fas fa-arrow-right"></i></button>
+                        </div>
+                    </div>
+                </form>
+
+                <form id="bugetPrelimAddManual" *ngIf="showFormAddManual">
+                    <div class="col-lg-3">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Tip Fond</th>
+                                    <th scope="col">Procent Repartizat</th>
+
+                                </tr>
+                            </thead>
+                            <tbody *ngFor="let buget of bugetAddManualList; let i = index">
+                                <tr>
+                                    <td scope="row">{{ i + 1 }}</td>
+                                    <td>{{ buget.activityName }}</td>
+                                    <td><input id="procRepartiz{{i}}" name="procRepartiz{{i}}" type="text" [(ngModel)]="buget.procRepartiz" #procRepartiz="ngModel" class="form-control"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-1">
+                            <button class="btn btn-info" (click)="addNewPreliminatManualBack()"><i class="fas fa-arrow-left"></i></button>
+                        </div>
+                        <div class="col-lg-2 text-right">
+                            <button class="btn btn-info" (click)="bugetRepartizatAddManualSave()"><i class="fas fa-save"></i></button>
+                        </div>
+                    </div>
+                </form>
+
+                <form id="bugetPrelimAddBalanta" *ngIf="showFormAddBalanta">
+                    <div class="col-lg-3">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Tip Fond</th>
+                                    <th scope="col">Venituri balanta</th>
+                                    <th scope="col">Venituri buget preliminat</th>
+                                    <th scope="col">Procent Repartizat</th>
+
+                                </tr>
+                            </thead>
+                            <tbody *ngFor="let buget of bugetAddBalantaList; let i = index">
+                                <tr>
+                                    <td scope="row">{{ i + 1 }}</td>
+                                    <td>{{ buget.activityName }}</td>
+                                    <td>{{ buget.venitRepartiz | number:'1.2' }}</td>
+                                    <td>{{ buget.venitRepartizBVC | number:'1.2' }}</td>
+                                    <td><input id="procRepartiz{{i}}" name="procRepartiz{{i}}" type="text" [(ngModel)]="buget.procRepartiz" #procRepartiz="ngModel" class="form-control"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-1">
+                            <button class="btn btn-info" (click)="addNewPreliminatBalantaBack()"><i class="fas fa-arrow-left"></i></button>
+                        </div>
+                        <div class="col-lg-2 text-right">
+                            <button class="btn btn-info" (click)="bugetRepartizatAddBalantaSave()"><i class="fas fa-save"></i></button>
+                        </div>
+                    </div>
+                </form>
+
+                <form id="bugetPrelimVenitStart" *ngIf="showFormPrelimVenitStart">
+                    <div class="row">
+                        <div class="col-lg-2">
+                            <label class="col-form-label" id="anBuget">Selecteaza bugetul preliminat din anul anterior</label>
+                        </div>
+                        <div class="col-lg-2">
+                            <select id="bugetPreliminat" name="bugetPreliminat" class="form-control" [(ngModel)]="preliminatBugetPrelimId">
+                                <!--<option [ngValue]="null">Selecteaza</option>-->
+                                <option *ngFor="let an of bugetPrelimList" [ngValue]="an.id">{{an.descriere}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        &nbsp;
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-1">
+                            <button class="btn btn-info" (click)="bugetRepartizatPrelimVenitBack()"><i class="fas fa-arrow-left"></i></button>
+                        </div>
+                        <div class="col-lg-3 text-right">
+                            <button class="btn btn-info" (click)="bugetRepartizatAddPrelimVenit()"><i class="fas fa-save"></i></button>
+                        </div>
+                    </div>
+                </form>
+
+
+            </div>
+        </div>
+    </section>
+</div>

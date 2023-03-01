@@ -1,0 +1,175 @@
+﻿<div [@routerTransition]>
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <h3>Adaugare / Modificare Cont</h3>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="content px-2">
+        <div class="container-fluid">
+            <div class="body">
+                <form id="account" name="account" (ngSubmit)="saveAccountConfig()" #accountForm="ngForm">
+                    <div class="row">
+                        <div class="col-lg-2">
+                            <label for="serie" class="col-form-label"> Simbol</label>
+                        </div>
+                        <div class="col-lg-2">
+                            <div class="input-group">
+                                <input id="serie" name="serie" type="text" [(ngModel)]="account.symbol" #serie="ngModel" class="form-control"/>
+                            </div>
+                        </div>
+                        <div class="col-lg-2">
+                            <label for="accountRad" class="col-form-label">Radacina Cont</label>
+                        </div>
+                        <div class="col-lg-2">
+                            <div class="input-group">
+                                <input id="accountRad" name="accountRad" type="text" [(ngModel)]="account.accountRad" #accountRad="ngModel" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="col-lg-2">
+                            <label for="sufix" class="col-form-label">Sufix</label>
+                        </div>
+                        <div class="col-lg-2">
+                            <input id="sufix" name="sufix" type="text" [(ngModel)]="account.sufix" #sufix="ngModel" class="form-control" />
+                        </div>
+                    </div>
+
+                    <div class="row mt-3">
+                        <div class="col-lg-2">
+                            <label for="thirdPartyAccount" class="col-form-label"> Cont tert</label>
+                        </div>
+                        <div class="col-lg-2">
+                            <div class="input-group">
+                                <input id="thirdPartyAccount" name="thirdPartyAccount" type="checkbox" style="position: relative; left:0px; opacity:100" [(ngModel)]="account.thirdPartyAccount" #thirdPartyAccount="ngModel" />
+                            </div>
+                        </div>
+                        <div class="col-lg-2">
+                            <label for="includId1" class="col-form-label"> Includ CIF</label>
+                        </div>
+                        <div class="col-lg-2">
+                            <div class="input-group">
+                                <input id="includId1" name="includId1" type="checkbox" style="position: relative; left:0px; opacity:100" [(ngModel)]="account.includId1" #includId1="ngModel"  />
+                            </div>
+                        </div>
+                        <div class="col-lg-2">
+                            <label for="exactAccount" class="col-form-label"> Cont Fix</label>
+                        </div>
+                        <div class="col-lg-2">
+                            <div class="input-group">
+                                <input id="exactAccount" name="exactAccount" type="checkbox" style="position: relative; left:0px; opacity:100" [(ngModel)]="account.exactAccount" #exactAccount="ngModel" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mt-3">
+                        <div class="col-lg-2">
+                            <label for="includMoneda" class="col-form-label"> Includ moneda</label>
+                        </div>
+                        <div class="col-lg-2">
+                            <div class="input-group">
+                                <input id="includMoneda" name="includMoneda" type="checkbox" style="position: relative; left:0px; opacity:100" [(ngModel)]="account.includMoneda" #includMoneda="ngModel" />
+                            </div>
+                        </div>
+                        <div class="col-lg-2">
+                            <label for="nrCaractere" class="col-form-label">Nr caractere secventa</label>
+                        </div>
+                        <div class="col-lg-2">
+                            <input id="nrCaractere" name="nrCaractere" type="text" [(ngModel)]="account.nrCaractere" #nrCaractere="ngModel" class="form-control" />
+                        </div>
+                        <div class="col-lg-2">
+                            <label for="imoAssetStorageId" class="col-form-label"> Gestiune mijloace fixe</label>
+                        </div>
+                        <div class="col-lg-2">
+                            <div class="input-group">
+                                <select id="imoAssetStorageId" name="imoAssetStorageId" [(ngModel)]="account.imoAssetStorageId" class="form-control">
+                                    <option [ngValue]="null">Selecteaza</option>
+                                    <option *ngFor="let res of storageList?.getImoAssetStorage" [ngValue]="res.id">{{res.storageName}}</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mt-3">
+                        <div class="col-lg-2">
+                            <label for="description" class="col-form-label"> Descriere</label>
+                        </div>
+                        <div class="col-lg-10">
+                            <div class="input-group">
+                                <input id="description" name="description" type="text" [(ngModel)]="account.description" #description="ngModel" class="form-control"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-lg-2">
+                            <label for="activityTypeId" class="col-form-label"> Tip activitate</label>
+                        </div>
+                        <div class="col-lg-2">
+                            <select id="activityTypeId" name="activityTypeId" [(ngModel)]="account.activityTypeId" #activityTypeId="ngModel" class="form-control">
+                                <option [ngValue]="null">Selecteaza</option>
+                                <option *ngFor="let item of activityTypes" [ngValue]="item.id">{{ item.name }}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-lg-2">
+                            <label for="valabilityDate" class="col-form-label"> Data Valabilitate</label>
+                        </div>
+                        <div class="col-lg-2">
+                            <div class="input-group">
+                                <mat-form-field style="width: 100%">
+                                    <input matInput [matDatepicker]="valabilityDatePicker" id="valabilityDate"
+                                           name="valabilityDate" [(ngModel)]="account.valabilityDate" #valabilityDate="ngModel" />
+                                    <mat-datepicker-toggle matSuffix [for]="valabilityDatePicker"></mat-datepicker-toggle>
+                                    <mat-datepicker #valabilityDatePicker></mat-datepicker>
+                                </mat-form-field>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-2">
+                            <label for="scopDeplasareType" class="col-form-label"> Scop delegatie</label>
+                        </div>
+                        <div class="col-lg-2">
+                            <div class="input-group">
+                                <select id="scopDeplasareType" name="scopDeplasareType" [(ngModel)]="account.scopDeplasareType" #scopDeplasareType="ngModel" class="form-control">
+                                    <option [ngValue]="null">Selecteaza</option>
+                                    <option *ngFor="let res of scopDeplasareList" [ngValue]="res.id">{{res.name}}</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="col-lg-2">
+                            <label for="diurnaType" class="col-form-label"> Tip deplasare</label>
+                        </div>
+                        <div class="col-lg-2">
+                            <div class="input-group">
+                                <select id="diurnaType" name="diurnaType" [(ngModel)]="account.diurnaType" #diurnaType="ngModel" class="form-control">
+                                    <option [ngValue]="null">Selecteaza</option>
+                                    <option *ngFor="let res of diurnaTypeList" [ngValue]="res.id">{{res.name}}</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-1">
+                            <a [routerLink]="['/app/conta/nomenclatoare/accounts/accountConfig']"
+                               class="btn btn-info" title="Inapoi"><i class="fas fa-arrow-left"></i></a>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="input-group"  style = "display: flex; justify-content: flex-end">
+                                <span class="input-group-addon">
+                                    <i class="fas fa-check-circle" aria-hidden="true" *ngIf="accountForm.form.valid"></i>
+                                    <i class="fas fa-exclamation-circle" aria-hidden="true" *ngIf="!accountForm.form.valid"></i>
+                                </span>
+                                <button [disabled]="!accountForm.form.valid" class="btn btn-info" title="Salveaza"><i class="fas fa-save"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+</div>

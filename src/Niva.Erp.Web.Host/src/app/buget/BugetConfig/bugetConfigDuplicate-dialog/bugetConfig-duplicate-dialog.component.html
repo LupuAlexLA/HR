@@ -1,0 +1,21 @@
+﻿<form class="form-horizontal"
+      autocomplete="off"
+      #duplicateBugetPrevForm="ngForm"
+      (ngSubmit)="save()">
+    <abp-modal-header [title]="'Duplicare buget configurat'"
+                      (onCloseClick)="bsModalRef.hide()"></abp-modal-header>
+    <div class="modal-body">
+        
+        <div class="form-group row required">
+            <label class="col-md-3 col-form-label" for="descriere">
+                An
+            </label>
+            <div class="col-md-9">
+                <input id="an" name="an" [(ngModel)]="an" class="form-control" />
+            </div>
+        </div>
+    </div>
+    <abp-modal-footer [saveDisabled]="!duplicateBugetPrevForm.form.valid"
+                      (onCancelClick)="bsModalRef.hide()"></abp-modal-footer>
+</form>
+

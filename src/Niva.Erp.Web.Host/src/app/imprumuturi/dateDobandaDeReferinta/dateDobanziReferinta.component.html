@@ -1,0 +1,96 @@
+﻿<div [@routerTransition]>
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <h2></h2>
+                </div>
+                <div class="col-lg-5">
+                    <a [routerLink]="['/app/imprumuturi/dobandaDeReferinta']"
+                       class="btn btn-info"
+                       title="Inapoi">
+                        <i class="fas fa-arrow-left"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="content px-3">
+        <div class="container-fluid">
+            <div class="body">
+               
+
+                <div class="row">
+                    <div class="col-lg-9 col-lg-offset-3">
+                        <h2>
+                            Date Dobanda De Referinta <span>({{ getDobanziReferintaCount() }})</span>&nbsp;
+                            <a [routerLink]="['/app/imprumuturi/dateDobandaDeReferintaEdit']" [queryParams]="{ dobanziReferintaId: dobanziReferintaId }" class="btn btn-info" title="Adauga"><i class="fas fa-plus">  </i></a>
+                            &nbsp;
+
+                        </h2>
+                        <h3>
+
+                            Actualizare Imprumuturi
+
+                            <button (click)="updateRoborImprumuturi()"
+                                    class="btn btn-info"
+                                    title="Update">
+                                <i class="fas fa-sync"></i>
+                            </button>
+                        </h3>
+                    </div>
+                </div>
+
+                <div class="row mt-3">
+                    <div class="col-lg-6">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <td scope="col"><b>#</b></td>
+                                    <td scope="col"><b>Data</b></td>
+                                    <td scope="col"><b>Dobanda</b></td>
+                                    <td scope="col"><b>Valoare</b></td>
+                                    
+
+
+                                    <td><b>Editare</b></td>
+                                    <td><b>Delete</b></td>
+
+                                </tr>
+                            </thead>
+                            <tbody *ngFor="let element of dobanziReferinta; let i = index">
+                                <tr>
+                                    <td scope="row">{{ i + 1 }}</td>
+                                    <td>{{ element.data | date: 'dd/MM/yyyy' }}</td>
+                                    <td>{{ element.dobanziReferinta }}</td>
+                                    <td>{{ element.valoare}}</td>
+                                    
+
+                                    <td>
+                                        <button [routerLink]="['/app/imprumuturi/dateDobandaDeReferintaEdit']"
+                                                [queryParams]="{ dateDobanziReferintaId: element.id }"
+                                                class="btn btn-info"
+                                                title="Modifica">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                    </td>
+                                    <td>
+                                        <button (click)="delete(element.id)"
+                                                class="btn btn-danger"
+                                                title="Sterge">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+    </section>
+</div>

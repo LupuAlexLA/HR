@@ -1,0 +1,77 @@
+﻿<div [@routerTransition]>
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <h3>Dictionar</h3>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="content px-2">
+        <div class="container-fluid">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-lg-1">
+                        <button (click)="backToList()"
+                                class="btn btn-info">
+                            <i class="fas fa-arrow-left"></i>
+                        </button>
+                    </div>
+                    <div class="col-lg-2">
+                        <label for="searchAccount" class="form-label"> Cauta</label>
+                        <input id="searchAccount"
+                               name="searchAccount"
+                               type="text"
+                               [(ngModel)]="dictionaryList.searchAccount"
+                               class="form-control" />
+                    </div>
+                    <div class="col-lg-2">
+                        <button (click)="search()"
+                                class="btn btn-info">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <h4 class="panel-title col-xs-6">
+                        Lista expresii - <span>{{ dictionaryListCount() }}</span> &nbsp;
+                        <a 
+                                [routerLink]="['/app/conta/operations/dictionaryEdit']"
+                                class="btn btn-info ">
+                            <i class="fas fa-plus"></i>
+                        </a>
+                    </h4>
+                </div>
+            </div>
+            <table class="table mt-3 small-font table-responsive">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Cont</th>
+                        <th scope="col">Expresie</th>
+                        <th scope="col">Tip</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody *ngFor="let item of dictionaryList.fOdictionaryList; let i = index">
+                    <tr>
+                        <td scope="row">{{ i + 1 }}</td>
+                        <td>{{item.accountName }}</td>
+                        <td>{{ item.expression }}</td>
+                        <td>{{ item.dictionaryType }}</td>
+                        <td>
+                            <button class="btn btn-info" title="Editeaza" 
+                                    [routerLink]="['/app/conta/operations/dictionaryEdit']"
+                                    [queryParams]="{ foDictionaryId: item.id }"><i class="fas fa-edit"></i></button>
+                        </td>
+                        <td>
+                            <button id="deleteButton" class="btn btn-danger" title="Sterge" (click)="delete(item.id)"><i class="fas fa-trash"></i></button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+</section>
+</div>

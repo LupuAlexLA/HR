@@ -1,0 +1,41 @@
+﻿
+    <abp-modal-header [title]="'Alege/Editeaza Sablon'"
+                      (onCloseClick)="bsModalRef.hide()"></abp-modal-header>
+    <div class="modal-body">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col" class="col-md-4">Nume</th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody *ngFor="let element of operationDefinitionList; let i = index">
+                <tr>
+                    <td>
+                        {{element.name}}
+                    </td>
+                    <td>
+                        <button (click)="pick(element)" type="button" class="btn btn-info">Alege</button>
+                    </td>
+                    <td>
+                        <button (click)="edit(element)" type="button" title="Modifica"
+                                class="btn btn-info">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                    </td>
+                    <td>
+                        
+                        <button (click)="delete(element)" type="button" 
+                                class="btn btn-danger"
+                                title="Sterge">
+                        <i class="fas fa-trash"></i></button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+
+

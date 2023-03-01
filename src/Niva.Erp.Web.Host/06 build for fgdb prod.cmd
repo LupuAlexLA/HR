@@ -1,0 +1,1 @@
+ng build --configuration="fgdb_prod" --base-href /fgdb_conta/

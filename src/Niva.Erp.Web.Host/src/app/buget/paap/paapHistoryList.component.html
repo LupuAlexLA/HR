@@ -1,0 +1,54 @@
+﻿<div [@routerTransition]>
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <h3>
+                        <a [routerLink]="['/app/buget/paap/paapList']"
+                           class="btn btn-info"
+                           title="Inapoi">
+                            <i class="fas fa-arrow-left"></i>
+                        </a>
+                        Istoric PAAP
+                    </h3>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="content px-1">
+        <div class="container-fluid">
+            <div class="body">
+                <div class="row mt-6">
+                    <table class="table table-responsive">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Stare</th>
+                                <th scope="col">Moneda</th>
+                                <th scope="col">Valoare Totala Valuta</th>
+                                <th scope="col">Valoare Totala (lei)</th>
+                                <th scope="col">Valoare Estimata Fara Tva (lei)</th>
+                                <th scope="col">Tva (%)</th>
+                                <th scope="col">Data sfarsit</th>
+                                <th scope="col">Comentarii</th>
+                            </tr>
+                        </thead>
+                        <tbody *ngFor="let element of paapStateList; let i = index">
+                            <tr>
+                                <td scope="row">{{ i+1 }}</td>
+                                <td>{{ element.paap_State }}</td>
+                                <td>{{ element.currencyName}}</td>
+                                <td class="alignSum">{{ element.valoareTotalaValuta | number: '1.2'  }}</td>
+                                <td class="alignSum">{{ element.valoareTotalaLei | number: '1.2' }}</td>
+                                <td class="alignSum">{{ element.valoareEstimataFaraTvaLei | number: '1.2' }}</td>
+                                <td class="alignSum">{{ element.tva }}</td>
+                                <td class="alignDateInTable">{{ element.dataEnd | date: 'dd/MM/yyyy' }}</td>
+                                <td>{{ element.comentarii }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

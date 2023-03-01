@@ -1,0 +1,121 @@
+﻿<div [@routerTransition]>
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <h3>Intrari obiecte de inventar</h3>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="content px-2">
+        <div class="container-fluid">
+            <div class="body">
+                <div class="panel-heading" style="position: relative;">
+                    <div class="row">
+                        <h4 class="panel-title col-xs-6">
+                            Obiecte de inventar - <span>{{ getInvObjectListCount() }}</span> &nbsp;
+                            <a [routerLink]="['/app/conta/invObjects/invObjectAdd']" class="btn btn-info" *ngIf="isGranted('Conta.ObInventar.Intrari.Modificare')"><i class="fas fa-plus"></i></a>
+                            <a href="{{appBaseUrl}}/assets/pdf/Conta - Obiecte de inventar - Manual utilizare.pdf" title="Manual de utilizare" class="btn btn-info ml-2" target="_blank"><i class="fas fa-question"></i></a>
+                        </h4>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-2">
+                            <label for="dataStart" class="col-form-label">Data Start</label>
+                            <mat-form-field style="width: 100%">
+                                <input matInput [matDatepicker]="dataStartPicker" id="dataStart"
+                                       name="dataStart" [(ngModel)]="dataStart" />
+                                <mat-datepicker-toggle matSuffix [for]="dataStartPicker"></mat-datepicker-toggle>
+                                <mat-datepicker #dataStartPicker></mat-datepicker>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-lg-2">
+                            <label for="dataEnd" class="col-form-label">Data Sfarsit</label>
+                            <mat-form-field style="width: 100%">
+                                <input matInput [matDatepicker]="dataEndPicker" id="dataEnd"
+                                       name="dataEnd" [(ngModel)]="dataEnd" />
+                                <mat-datepicker-toggle matSuffix [for]="dataEndPicker"></mat-datepicker-toggle>
+                                <mat-datepicker #dataEndPicker></mat-datepicker>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-lg-1">
+                            <button (click)="getInvObjectList()" class="btn btn-info" title="Cauta"><i class="fas fa-search"></i></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <dx-data-grid id="gridContainerInvObject" [dataSource]="invObjectList?.getInvObjects" [showBorders]="true" (onCellPrepared)="onCellPrepared($event)">
+                        <dxo-group-panel [visible]="true"></dxo-group-panel>
+                        <dxo-grouping [autoExpandAll]="true"></dxo-grouping>
+                        <dxo-selection mode="multiple"></dxo-selection>
+
+                        <dxi-column dataField="inventoryNr" caption="Nr inventar" dataType="number"></dxi-column>
+                        <dxi-column dataField="name" caption="Denumire activ"></dxi-column>
+                        <dxi-column dataField="thirdParty" caption="Furnizor"></dxi-column>
+                        <dxi-column dataField="invoice" caption="Factura"></dxi-column>
+                        <dxi-column dataField="categoryName" caption="Categorie"></dxi-column>
+                        <dxi-column dataField="inventoryValue" caption="Valoare inventar" dataType="number" format="fixedPoint"></dxi-column>
+                        <dxi-column dataField="operationDate" caption="Data operatiei" dataType="date" [format]="'dd/MM/yyyy'"></dxi-column>
+                        <dxi-column dataField="processed" caption="Procesat" dataType="boolean"></dxi-column>
+
+                        <dxi-column type="buttons">
+                            <dxi-button icon="edit" text="Edit" [onClick]="edit"></dxi-button>
+                            <dxi-button icon="trash" text="Delete" [onClick]="deleteInvObject" [visible]="showDeleteButton" *ngIf="isGranted('Conta.ObInventar.Intrari.Modificare')"></dxi-button>
+                        </dxi-column>
+
+                        <dxo-export [enabled]="true" [allowExportSelectedData]="true"></dxo-export>
+                    </dx-data-grid>
+                </div>
+                <!--<table class="table small-font">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Nr Inventar</th>
+                            <th scope="col">Denumire activ</th>
+                            <th scope="col">Furnizor</th>
+                            <th scope="col">Factura</th>
+                            <th scope="col">Categorie</th>
+                            <th scope="col">Valoare Inventar</th>
+                            <th scope="col">Data operatiei</th>
+                            <th scope="col">Procesat</th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let invObject of invObjectList?.getInvObjects; let i = index">
+                            <td scope="row">{{ i + 1 }}</td>
+                            <td>{{invObject.inventoryNr}}</td>
+                            <td>{{invObject.name}}</td>
+                            <td>{{invObject.thirdParty}}</td>
+                            <td>{{invObject.invoice}}</td>
+                            <td>{{invObject.categoryName}}</td>
+                            <td class="alignSum">{{invObject.inventoryValue | number: '1.2'}}</td>
+                            <td>{{invObject.operationDate | date: 'dd.MM.yyyy'}}</td>
+                            <td>
+                                <input id="processed{{i}}" name="processed_{{i}}"
+                                       type="checkbox"
+                                       style="position: relative; left: 0px; opacity: 100"
+                                       [(ngModel)]="invObject.processed" *ngIf="invObject.processed" [disabled]="true" />
+                            </td>
+                            <td>
+                                <a [routerLink]="['/app/conta/invObjects/invObjectAddDirect']"
+                                   [queryParams]="{ invObjectId: invObject.id }"
+                                   class="btn btn-info"
+                                   title="Editare"><i class="fas fa-edit"></i></a>
+                            </td>
+                            <td>
+                                <button (click)="deleteInvObject(invObject.id)"
+                                        class="btn btn-danger"
+                                        *ngIf="!invObject.processed"
+                                        title="Stergere">
+                                    <i class="fas fa-trash">  </i>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>-->
+            </div>
+        </div>
+    </section>
+</div>

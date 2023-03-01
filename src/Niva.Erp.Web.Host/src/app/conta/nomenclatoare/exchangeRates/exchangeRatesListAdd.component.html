@@ -1,0 +1,84 @@
+﻿<div [@routerTransition]>
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <h3>Adaugare / Modificare Curs Valutar</h3>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="content px-2">
+        <div class="container-fluid">
+            <div class="body">
+                <form #exchangeRatesListForm="ngForm" (ngSubmit)="saveExchangeRate()">
+                    <div class="row">
+                        <div class="col-lg-2 alignContent">
+                            <label for="currencyId" class="col-form-label"> Valuta </label>
+                        </div>
+                        <div class="col-lg-3 alignContent">
+
+                            <select id="currencyId"
+                                    name="currencyId"
+                                    [(ngModel)]="exchangeRate.currencyId"
+                                    #currencyId="ngModel"
+                                    class="form-control"
+                                    required>
+                                <option [ngValue]="null">Selecteaza</option>
+                                <option *ngFor="let item of currencyList" [ngValue]="item.id">
+                                    {{item.currencyName}}
+                                </option>
+                            </select>
+
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-2">
+                            <label for="valoareEstimata" class="col-form-label"> Valoarea </label>
+                        </div>
+                        <div class="col-lg-3 alignContent">
+                            <input id="valoareEstimata" name="valoareEstimata" class="form-control" [(ngModel)]="exchangeRate.value" #valoareEstimata="ngModel" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-2">
+                            <label for="year" class="col-form-label"> Data </label>
+                        </div>
+                        <div class="col-lg-3 alignContent">
+                            <mat-form-field style="width: 100%;">
+                                <input matInput
+                                       id="exchangeDate"
+                                       name="exchangeDate"
+                                       [matDatepicker]="exchangeDatePicker"
+                                       [(ngModel)]="exchangeRate.exchangeDate"
+                                       #dataDocument="ngModel"
+                                       required />
+                                <mat-datepicker-toggle matSuffix [for]="exchangeDatePicker"></mat-datepicker-toggle>
+                                <mat-datepicker #exchangeDatePicker></mat-datepicker>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <a [routerLink]="['/app/conta/nomenclatoare/exchangeRates/exchangeRatesList']"                          
+                               class="btn btn-info"
+                               title="Inapoi">
+                                <i class="fas fa-arrow-left"></i>
+                            </a>
+                        </div>
+                        <div class="col-lg-2" style = "display: flex; justify-content: flex-end">
+                            <div class="form-group">
+                                <button
+                                        class="btn btn-info"
+                                        title="Save"
+                                        [disabled]="exchangeRatesListForm.form.invalid">
+                                    <i class="fas fa-save"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+</div>

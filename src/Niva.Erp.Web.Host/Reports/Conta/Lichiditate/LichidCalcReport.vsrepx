@@ -1,0 +1,134 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<XtraReportsLayoutSerializer SerializerVersion="20.2.5.0" Ref="1" ControlType="DevExpress.XtraReports.UI.XtraReport, DevExpress.XtraReports.v20.2, Version=20.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" Name="LichidCalcReport" Landscape="true" Margins="100, 100, 137, 100" PaperKind="A4" PageWidth="1169" PageHeight="827" Version="20.2" EventsInfo="|LichidCalcReport,BeforePrint,LichidCalcReport_BeforePrint" DataSource="#Ref-0" Font="Arial, 9.75pt">
+  <Extensions>
+    <Item1 Ref="2" Key="VSReportExtInfo" Value=".vsrepx" />
+  </Extensions>
+  <Parameters>
+    <Item1 Ref="4" ValueInfo="0" Name="savedBalanceId" Type="#Ref-3" />
+    <Item2 Ref="5" ValueInfo="0" Name="lichidType" Type="#Ref-3" />
+  </Parameters>
+  <Bands>
+    <Item1 Ref="6" ControlType="TopMarginBand" Name="TopMargin" HeightF="136.666672">
+      <Controls>
+        <Item1 Ref="7" ControlType="XRLabel" Name="label3" Multiline="true" Text="[Description]" TextAlignment="MiddleCenter" SizeF="969.000061,23" LocationFloat="0,103.666672" Font="Georgia, 10.2pt, style=Bold, charSet=0" Padding="2,2,0,0,100">
+          <StylePriority Ref="8" UseFont="false" UseTextAlignment="false" />
+        </Item1>
+        <Item2 Ref="9" ControlType="XRLabel" Name="label2" Multiline="true" Text="Calcul lichiditate pe benzi" TextAlignment="MiddleCenter" SizeF="969.000061,23" LocationFloat="0,80.66667" Font="Georgia, 10.2pt, style=Bold, charSet=0" Padding="2,2,0,0,100">
+          <StylePriority Ref="10" UseFont="false" UseTextAlignment="false" />
+        </Item2>
+        <Item3 Ref="11" ControlType="XRLabel" Name="xrLabel3" Multiline="true" Text="CIF: [AppClientId1] , Reg. com.: [AppClientId2]" SizeF="969.000061,23.0000114" LocationFloat="0,33" Font="Georgia, 9pt, charSet=0" Padding="2,2,0,0,100">
+          <StylePriority Ref="12" UseFont="false" />
+        </Item3>
+        <Item4 Ref="13" ControlType="XRLabel" Name="label1" Multiline="true" Text="label1" SizeF="969.000061,23" LocationFloat="0,10" Font="Georgia, 9pt, style=Bold, charSet=0" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="14" EventName="BeforePrint" PropertyName="Text" Expression="[AppClientName]" />
+          </ExpressionBindings>
+          <StylePriority Ref="15" UseFont="false" />
+        </Item4>
+      </Controls>
+    </Item1>
+    <Item2 Ref="16" ControlType="BottomMarginBand" Name="BottomMargin">
+      <Controls>
+        <Item1 Ref="17" ControlType="XRPageInfo" Name="pageInfo2" TextFormatString="{0}/{1}" TextAlignment="TopRight" SizeF="415.285767,23" LocationFloat="553.7143,0" Font="Georgia, 8pt, style=Bold">
+          <StylePriority Ref="18" UseFont="false" />
+        </Item1>
+        <Item2 Ref="19" ControlType="XRPageInfo" Name="pageInfo1" PageInfo="DateTime" TextFormatString="{0:d.MM.yyyy H:mm}" SizeF="553.7143,23" LocationFloat="0,0" Font="Georgia, 8pt, style=Bold">
+          <StylePriority Ref="20" UseFont="false" />
+        </Item2>
+      </Controls>
+    </Item2>
+    <Item3 Ref="21" ControlType="DetailBand" Name="Detail" HeightF="0" />
+    <Item4 Ref="22" ControlType="ReportHeaderBand" Name="ReportHeader" HeightF="25">
+      <Controls>
+        <Item1 Ref="23" ControlType="XRTable" Name="table1" TextAlignment="MiddleCenter" SizeF="969.000061,25" LocationFloat="0,0" Font="Georgia, 7.8pt, style=Bold, charSet=0" BackColor="255,215,228,242" Padding="2,2,0,0,96" Borders="All">
+          <Rows>
+            <Item1 Ref="24" ControlType="XRTableRow" Name="tableRow1" Weight="1">
+              <Cells>
+                <Item1 Ref="25" ControlType="XRTableCell" Name="tableCell1" Weight="1.2112500762939455" TextFormatString="{0:dd/MM/yyyy}" Multiline="true">
+                  <ExpressionBindings>
+                    <Item1 Ref="26" EventName="BeforePrint" PropertyName="Text" Expression="[CalcDate]" />
+                  </ExpressionBindings>
+                </Item1>
+                <Item2 Ref="27" ControlType="XRTableCell" Name="tableCell2" Weight="1.2112500762939455" Multiline="true" Text="Pana la 3 luni" />
+                <Item3 Ref="28" ControlType="XRTableCell" Name="tableCell3" Weight="1.2112500762939455" Multiline="true" Text="Intre 3 luni si un an" />
+                <Item4 Ref="29" ControlType="XRTableCell" Name="tableCell4" Weight="1.2112500762939455" Multiline="true" Text="Peste 1 an si pana la 5 ani" />
+                <Item5 Ref="30" ControlType="XRTableCell" Name="tableCell6" Weight="1.2112500762939455" Multiline="true" Text="Peste 5 ani" />
+                <Item6 Ref="31" ControlType="XRTableCell" Name="tableCell7" Weight="1.2112500762939455" Multiline="true" Text="Durata nedeterminata" />
+                <Item7 Ref="32" ControlType="XRTableCell" Name="tableCell8" Weight="1.2112500762939455" Multiline="true" Text="Total" />
+              </Cells>
+            </Item1>
+          </Rows>
+          <StylePriority Ref="33" UseFont="false" UseBackColor="false" UseBorders="false" UseTextAlignment="false" />
+        </Item1>
+      </Controls>
+    </Item4>
+    <Item5 Ref="34" ControlType="DetailReportBand" Name="DetailReport" Level="0" DataMember="LichidCalcList" DataSource="#Ref-0">
+      <Bands>
+        <Item1 Ref="35" ControlType="DetailBand" Name="Detail1" HeightF="25">
+          <Controls>
+            <Item1 Ref="36" ControlType="XRTable" Name="table2" SizeF="969.000061,25" LocationFloat="0,0" Font="Arial Narrow, 7.8pt, charSet=0" Padding="2,2,0,0,96" Borders="All">
+              <Rows>
+                <Item1 Ref="37" ControlType="XRTableRow" Name="tableRow2" Weight="1">
+                  <Cells>
+                    <Item1 Ref="38" ControlType="XRTableCell" Name="tableCell9" Weight="0.375" Multiline="true" SnapLineMargin="0,5,0,0,100" TextAlignment="MiddleLeft">
+                      <ExpressionBindings>
+                        <Item1 Ref="39" EventName="BeforePrint" PropertyName="Text" Expression="[Descriere]" />
+                      </ExpressionBindings>
+                      <StylePriority Ref="40" UseTextAlignment="false" />
+                    </Item1>
+                    <Item2 Ref="41" ControlType="XRTableCell" Name="tableCell10" Weight="0.375" TextFormatString="{0:N2}" Multiline="true" SnapLineMargin="5,0,0,0,100" TextAlignment="MiddleRight">
+                      <ExpressionBindings>
+                        <Item1 Ref="42" EventName="BeforePrint" PropertyName="Text" Expression="[ValoareBanda1]" />
+                      </ExpressionBindings>
+                      <StylePriority Ref="43" UseTextAlignment="false" />
+                    </Item2>
+                    <Item3 Ref="44" ControlType="XRTableCell" Name="tableCell11" Weight="0.375" TextFormatString="{0:N2}" Multiline="true" SnapLineMargin="5,0,0,0,100" TextAlignment="MiddleRight">
+                      <ExpressionBindings>
+                        <Item1 Ref="45" EventName="BeforePrint" PropertyName="Text" Expression="[ValoareBanda2]" />
+                      </ExpressionBindings>
+                      <StylePriority Ref="46" UseTextAlignment="false" />
+                    </Item3>
+                    <Item4 Ref="47" ControlType="XRTableCell" Name="tableCell12" Weight="0.375" TextFormatString="{0:N2}" Multiline="true" SnapLineMargin="5,0,0,0,100" TextAlignment="MiddleRight">
+                      <ExpressionBindings>
+                        <Item1 Ref="48" EventName="BeforePrint" PropertyName="Text" Expression="[ValoareBanda3]" />
+                      </ExpressionBindings>
+                      <StylePriority Ref="49" UseTextAlignment="false" />
+                    </Item4>
+                    <Item5 Ref="50" ControlType="XRTableCell" Name="tableCell13" Weight="0.375" TextFormatString="{0:N2}" Multiline="true" SnapLineMargin="5,0,0,0,100" TextAlignment="MiddleRight">
+                      <ExpressionBindings>
+                        <Item1 Ref="51" EventName="BeforePrint" PropertyName="Text" Expression="[ValoareBanda4]" />
+                      </ExpressionBindings>
+                      <StylePriority Ref="52" UseTextAlignment="false" />
+                    </Item5>
+                    <Item6 Ref="53" ControlType="XRTableCell" Name="tableCell15" Weight="0.375" TextFormatString="{0:N2}" Multiline="true" SnapLineMargin="5,0,0,0,100" TextAlignment="MiddleRight">
+                      <ExpressionBindings>
+                        <Item1 Ref="54" EventName="BeforePrint" PropertyName="Text" Expression="[ValoareBanda5]" />
+                      </ExpressionBindings>
+                      <StylePriority Ref="55" UseTextAlignment="false" />
+                    </Item6>
+                    <Item7 Ref="56" ControlType="XRTableCell" Name="tableCell16" Weight="0.375" TextFormatString="{0:N2}" Multiline="true" Text="tableCell16" SnapLineMargin="5,0,0,0,100" TextAlignment="MiddleRight">
+                      <ExpressionBindings>
+                        <Item1 Ref="57" EventName="BeforePrint" PropertyName="Text" Expression="[TotalInit]" />
+                      </ExpressionBindings>
+                      <StylePriority Ref="58" UseTextAlignment="false" />
+                    </Item7>
+                  </Cells>
+                </Item1>
+              </Rows>
+              <ExpressionBindings>
+                <Item1 Ref="59" EventName="BeforePrint" PropertyName="Font.Bold" Expression="Iif([RandTotal],true ,false )" />
+              </ExpressionBindings>
+              <StylePriority Ref="60" UseFont="false" UseBorders="false" />
+            </Item1>
+          </Controls>
+        </Item1>
+      </Bands>
+    </Item5>
+  </Bands>
+  <ComponentStorage>
+    <Item1 Ref="0" ObjectType="DevExpress.DataAccess.ObjectBinding.ObjectDataSource,DevExpress.DataAccess.v20.2" Name="lichidCalcModel" Base64="PE9iamVjdERhdGFTb3VyY2UgTmFtZT0ibGljaGlkQ2FsY01vZGVsIj48RGF0YU1lbWJlcj5HZXRMaWNoaWRDYWxjUmVwb3J0PC9EYXRhTWVtYmVyPjxQYXJhbWV0ZXJzPjxQYXJhbWV0ZXIgTmFtZT0ic2F2ZWRCYWxhbmNlSWQiIFR5cGU9IkRldkV4cHJlc3MuRGF0YUFjY2Vzcy5FeHByZXNzaW9uIj4oU3lzdGVtLkludDMyKSg/c2F2ZWRCYWxhbmNlSWQpPC9QYXJhbWV0ZXI+PFBhcmFtZXRlciBOYW1lPSJsaWNoaWRUeXBlIiBUeXBlPSJEZXZFeHByZXNzLkRhdGFBY2Nlc3MuRXhwcmVzc2lvbiI+KFN5c3RlbS5JbnQzMikoP2xpY2hpZFR5cGUpPC9QYXJhbWV0ZXI+PC9QYXJhbWV0ZXJzPjwvT2JqZWN0RGF0YVNvdXJjZT4=" />
+  </ComponentStorage>
+  <ObjectStorage>
+    <Item1 ObjectType="DevExpress.XtraReports.Serialization.ObjectStorageInfo, DevExpress.XtraReports.v20.2" Ref="3" Content="System.Int32" Type="System.Type" />
+  </ObjectStorage>
+</XtraReportsLayoutSerializer>

@@ -1,0 +1,135 @@
+﻿<div [@routerTransition]>
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <h3>Elemente factura  ({{ getCount() }})</h3>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="content px-2">
+        <div class="container-fluid">
+            <div class="body">
+                <div class="row">
+                    <div class="col-lg-2">
+                        <label for="element" class="form-label"> Element</label>
+                        <input id="element"
+                               name="element"
+                               type="text"
+                               [(ngModel)]="element"
+                               class="form-control" />
+                    </div>
+                    <div class="col-lg-2">
+                        <label for="account" class="form-label"> Cont</label>
+                        <input id="account"
+                               name="account"
+                               type="text"
+                               class="form-control"
+                               [(ngModel)]="account" />
+                    </div>
+                    <div class="col-lg-2">
+                        <label for="invoiceElementsDetailsCategory" class="form-label"> Categorie </label>
+                        <select id="invoiceElementsDetailsCategory" name="invoiceElementsDetailsCategory" [(ngModel)]="invoiceElementsDetailsCategory" class="form-control">
+                            <option value="">Toate</option>
+                            <option *ngFor="let item of invoiceElementsDetailsCategoryList" [ngValue]="item.categoryElementDetName">
+                                {{ item.categoryElementDetName }}
+                            </option>
+                        </select>
+                    </div>
+                        <div class="col-lg-2">
+                            <button (click)="searchInvoiceElementDetails()"
+                                    class="btn btn-info">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="row mt-2">
+                        <button class="btn btn-info"
+                                title="Adaugare"
+                                [routerLink]="['/app/conta/nomenclatoare/categoryElements/detailElementsNew']">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                    </div>
+
+                    <dx-data-grid id="gridContaineDetailElement"
+                                  [dataSource]="detailElementsList"
+                                  [showBorders]="true"
+                                  [allowColumnResizing]="true"
+                                  [wordWrapEnabled]="true"
+                                  [remoteOperations]="false"
+                                  (onCellPrepared)="onCellPrepared($event)">
+                        <dxo-editing model="cell"
+                                     [allowUpdating]="false"
+                                     [allowAdding]="false"
+                                     [allowDeleting]="false">
+                        </dxo-editing>
+                        <dxo-group-panel [visible]="true"></dxo-group-panel>
+                        <dxo-grouping [autoExpandAll]="true"></dxo-grouping>
+                        <dxo-selection mode="multiple"></dxo-selection>
+                        <dxo-scrolling mode="infinite"></dxo-scrolling>
+
+                        <dxi-column dataField="invoiceElementsDetailsCategory" caption="Categorie"></dxi-column>
+                        <dxi-column dataField="description" caption="Element"></dxi-column>
+                        <dxi-column dataField="invoiceElementsTypeStr" caption="Tip element"></dxi-column>
+                        <dxi-column dataField="thirdPartyAccount" caption="Cont tert"></dxi-column>
+                        <dxi-column dataField="correspondentAccount" caption="Cont corespondent"></dxi-column>
+                        <dxi-column dataField="amortizationAccount" caption="Cont amortizaree"></dxi-column>
+                        <dxi-column dataField="expenseAmortizAccount" caption="Cont cheltuiala cu amortizarea / cheltuiala directa"></dxi-column>
+                        <dxi-column type="buttons">
+                            <dxi-button icon="edit" text="Editare" [onClick]="editDetailElement"></dxi-button>
+                            <dxi-button icon="trash" text="Stergere" [onClick]="delete"></dxi-button>
+                        </dxi-column>
+
+                        <dxo-export [enabled]="true" [allowExportSelectedData]="true"></dxo-export>
+
+                    </dx-data-grid>
+
+                    <!--<table class="table table-responsive mt-3">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Categorie</th>
+                <th scope="col">Element</th>
+                <th scope="col">Tip element</th>
+                <th scope="col">Cont tert</th>
+                <th scope="col">Cont corespondent</th>
+                <th scope="col">Cont amortizare</th>
+                <th scope="col">Cont cheltuiala cu amortizarea / cheltuiala directa</th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody *ngFor="let element of detailElementsList; let i = index">
+            <tr>
+                <td scope="row">{{ i + 1}}</td>
+                <td>{{element.invoiceElementsDetailsCategory}}</td>
+                <td>{{element.description}}</td>
+                <td>{{element.invoiceElementsTypeStr}}</td>
+                <td>{{element.thirdPartyAccount}}</td>
+                <td>{{element.correspondentAccount}}</td>
+                <td>{{element.amortizationAccount}}</td>
+                <td>{{element.expenseAmortizAccount}}</td>
+                <td>
+                    <button [routerLink]="['/app/conta/nomenclatoare/categoryElements/detailElementsNew']"
+                            [queryParams]="{id: element.id}"
+                            class="btn btn-info"
+                            title="Modifica">
+                        <i class="fas fa-edit"></i>
+                    </button>
+                </td>
+                <td>
+                    <button class="btn btn-danger"
+                            title="Sterge" (click)="delete(element.id)">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </td>
+            </tr>
+        </tbody>
+    </table>-->
+                    <
+                </div>
+        </div>
+    </section>
+</div>

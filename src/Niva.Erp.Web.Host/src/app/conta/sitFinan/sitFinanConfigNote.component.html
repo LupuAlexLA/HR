@@ -1,0 +1,68 @@
+﻿<div [@routerTransition]>
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <h4>
+                        <a [routerLink]="['/app/conta/sitFinan/sitFinanConfigReport']" 
+                           [queryParams]="{sitFinanId: form.sitFinanId}" class="btn btn-info" title="Inapoi"><i class="fas fa-arrow-left"></i></a>
+                        Configurare note pentru raportul {{ form.reportName }} - simbol {{ form.reportSymbol }}
+                    </h4>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="content px-2">
+        <div class="container-fluid">
+            <div class="body">
+                <form id="configNoteForm" name="configNoteForm">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <label for="beforeNote" class="col-form-label">Configurare nota inainte de tabel</label>
+                            <textarea id="beforeNote" name="beforeNote" [(ngModel)]="form.beforeNote" #beforeNote="ngModel" class="form-control" style="height:300px;"></textarea>
+                        </div>
+                        <div class="col-lg-6">
+                            <label for="afterNote" class="col-form-label">Configurare nota dupa tabel</label>
+                            <textarea id="afterNote" name="afterNote" [(ngModel)]="form.afterNote" #afterNote="ngModel" class="form-control" style="height:300px"> </textarea>
+                        </div>
+                    </div>
+                    <div class="text-center mt-2">
+                        <button (click)="sitFinanNoteSave()" class="btn btn-info" title="Salvare nota raport"><i class="fas fa-save"></i></button>
+                    </div>
+                    <br />
+                    <div style="display: flex;justify-content: center">
+                        <div class="col-lg-6 col-lg-offset-3 table-bordered">
+                            Pentru elemente din balanta :<br />
+                            OSID – sold initial debitor / OSIC – sold initial creditor<br />
+                            ORLD – rulaj lunar debitor / ORLC – rulaj lunar creditor<br />
+                            OSFD – sold final debitor / OSFC – sold final creditor<br />
+                            ORD – rulaj pe an pe debit / ORC – rulaj pe an pe credit<br />
+                            <br />
+                            Ex: rulaj lunar debitor cont 4016: $ORLD#4016$<br />
+                            <br />
+                            Pentru elemente care fac referire la alt raport:<br />
+                            Cod_raport + coloana + # + codul randului<br />
+                            <br />
+                            Ex. Coloana 1 din Bilant, randul 187 :  $A1#187$<br />
+                            <br />
+                            Nu sunt permise folosirea operatiilor matematice de inmultire, impartire si a parantezelor. La definirea notelor sunt permise doar formule simple, fara operatii matematice.<br />
+                            Ex. $ORLD#4011$<br />
+                            <br />
+                            Pentru perioada (ex):<br />
+                            30 iunie 2019 -  $PCF$<br />
+                            01 ianuarie 2019  - $PCI$<br />
+                            <br />
+                            30 iunie 2018 -  $PPF$<br />
+                            01 ianuarie 2018 -  $PPI$<br />
+                            <br />
+                            PP-perioada precedenta<br />
+                            PC-perioada curenta<br />
+                            I-initiala<br />
+                            F-finala<br />
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+</div>

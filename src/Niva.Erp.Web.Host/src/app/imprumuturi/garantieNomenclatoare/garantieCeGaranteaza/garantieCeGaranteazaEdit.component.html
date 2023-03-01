@@ -1,0 +1,50 @@
+﻿<div [@routerTransition]>
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <h2>Adaugare / modificare Ce Garanteaza</h2>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="content px-2">
+        <div class="container-fluid">
+            <div class="body">
+                <form #garantieCeGaranteazaForm="ngForm" (ngSubmit)="saveGarantieCeGaranteaza()">
+                    <div class="row">
+                        <div class="col-lg-2">
+                            <label for="description" class="col-form-label"> Descriere </label>
+                        </div>
+                        <div class="col-lg-3">
+                            <input id="description" name="description" class="form-control" [(ngModel)]="garantieCeGaranteaza.description" #name="ngModel" />
+                        </div>
+                    </div>
+
+
+                    <div class="row">
+                        <div class="col-lg-5">
+                            <a [routerLink]="['/app/imprumuturi/garantieCeGaranteaza']"
+                               class="btn btn-info"
+                               title="Inapoi">
+                                <i class="fas fa-arrow-left"></i>
+                            </a>
+                        </div>
+                        <div class="col-lg-7">
+                            <div class="form-group">
+                                <button type="submit"
+                                        class="btn btn-info"
+                                        title="Save"
+                                        [disabled]="garantieCeGaranteazaForm.form.invalid">
+                                    <i class="fas fa-save"></i>
+                                </button>
+
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+</div>

@@ -1,0 +1,177 @@
+﻿<section>
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row">
+                <h3>Raportare BVC</h3>
+            </div>
+        </div>
+    </section>
+    <section class="content px-2">
+        <div class="container-fluid">
+            <div class="body" [busy]="isLoading">
+                <form [formGroup]="form" (ngSubmit)="showReport()" novalidate>
+                    <div class="row">
+                        <div class="col-lg-2">
+                            <label for="reportName">Tip Raport</label>
+                        </div>
+                        <div class="col-lg-2">
+                            <select [(ngModel)]="selectedReport" [ngModelOptions]="{standalone: true}" class="form-control" (ngModelChange)="changebvcTip()">
+                                <option value="0" selected="selected">BVC prevazut</option>
+                                <option value="1">Cash Flow realizat – cheltuieli</option>
+                                <option value="2">BVC realizat</option>
+                                <option value="3">Cashflow achizitii PAAP</option>
+                                <option value="4">BVC prevazut resurse</option>
+                                <option value="5">Buget Preliminat</option>
+                                <option value="6">Buget Preliminat Detalii</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-lg-2">
+                            <label for="anBuget"> An </label>
+                        </div>
+
+                        <div class="col-lg-2">
+                            <select id="anBuget" name="anBuget" class="form-control" [(ngModel)]="selectedAnBuget" [ngModelOptions]="{standalone: true}" (ngModelChange)="onChangeAnSauTip()">
+                                <option *ngFor="let an of anBugetList" [ngValue]="an.id" [selected]="selectedAnBuget === an.id">{{ an.anBVC }}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row mt-3" *ngIf="selectedReport === '0'">
+                        <div class="col-lg-2">
+                            <label for="tip"> Tip</label>
+                        </div>
+                        <div class="col-lg-2">
+
+                            <select id="tip" name="tip" class="form-control" [(ngModel)]="selectedTip" [ngModelOptions]="{standalone: true}" (ngModelChange)="onChangeAnSauTip()">
+                                <option *ngFor="let type of bvcTypeList" [ngValue]="type.id" [selected]="selectedTip === type.id">{{type.name}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row mt-3" *ngIf="!(selectedReport === '3') ">
+                        <div class="col-lg-2">
+                            <label for="variantaBugetId"> Versiune Buget prevazut</label>
+                        </div>
+                        <div class="col-lg-2">
+                            <select id="variantaBugetId" name="variantaBugetId" class="form-control" [(ngModel)]="selectedVersiuneBuget" [ngModelOptions]="{standalone: true}">
+                                <option *ngFor="let buget of bugetPrevList" [ngValue]="buget.id" [selected]="selectedVersiuneBuget === buget.id">{{ buget.descriere }}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row mt-3" *ngIf="!(selectedReport === '3' || selectedReport === '4' ) ">
+                        <div class="col-lg-2">
+                            <label for="tipRand"> Tip Rand</label>
+                        </div>
+                        <div class="col-lg-21">
+                            <div *ngFor="let rowType of rowTypeList; let i=index">
+                                <label>
+                                    <input id="tipRand_{i}" name="tipRand_{i}" type="checkbox" [value]="rowType.id" (change)="onCheckboxChange($event)" />
+                                    {{rowType.name}}
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-3" *ngIf="!(selectedReport === '3' || selectedReport === '4') ">
+                        <div class="col-lg-2">
+                            <label for="nivelRand"> Nivel Rand</label>
+                        </div>
+                        <div class="col-lg-2">
+                            <input id="nivelRand" name="nivelRand" [(ngModel)]="nivelMax" class="form-control" [ngModelOptions]="{standalone: true}" />
+                        </div>
+                    </div>
+                    <div>
+                        <div class="row mt-3" *ngIf="selectedReport === '0'">
+                            <div class="col-lg-2">
+                                <label for="frecventa"> Frecventa</label>
+                            </div>
+                            <div class="col-lg-2">
+                                <select id="frecventa" name="frecventa" class="form-control" [(ngModel)]="selectedFrecventa" [ngModelOptions]="{standalone: true}">
+                                    <option value="0" selected="selected">Total</option>
+                                    <option value="1">Trimestrial</option>
+                                    <option value="2">Lunar</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row mt-3" *ngIf="selectedReport === '0' || selectedReport === '2' ">
+                            <div class="col-lg-2">
+                                <label for="tipActivitate"> Tip Activitate</label>
+                            </div>
+                            <div class="col-lg-2">
+                                <select id="tipActivitate" name="tipActivitate" class="form-control" [(ngModel)]="selectedTipActivitate" [ngModelOptions]="{standalone: true}">
+                                    <option value="0" selected="selected">Toate</option>
+                                    <option *ngFor="let activity of activityTypeList" [ngValue]="activity.id">{{activity.name}}</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="row mt-3" *ngIf="selectedReport === '1' || selectedReport === '2' || selectedReport === '5' || selectedReport === '6'">
+                            <div class="col-lg-2">
+                                <label id="selectedBugetRealizatTip" for="selectedBugetRealizatTip"> Buget Realizat</label>
+                            </div>
+                            <div class="col-lg-2">
+                                <select id="selectedBugetRealizatTip" name="selectedBugetRealizatTip" class="form-control" [(ngModel)]="selectedBugetRealizatTip" [ngModelOptions]="{standalone: true}">
+                                    <option value="0">Selecteaza</option>
+                                    <option value="1">Realizat in perioada / total prevazut</option>
+                                    <option value="2">Realizat in perioada / prevazut in perioada</option>
+                                    <option value="3">Realizat in luna / prevazut in luna</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row mt-3" *ngIf="selectedReport === '1' || selectedReport === '5' || selectedReport === '6'">
+                            <div class="col-lg-2">
+                                <label for="dataBugetRealizat"> Data Buget realizat</label>
+                            </div>
+                            <div class="col-lg-2">
+                                <select id="dataBugetRealizat" name="bugetRealizatId" class="form-control" [(ngModel)]="reportParams.bugetRealizatId" [ngModelOptions]="{standalone: true}">
+                                    <option *ngFor="let item of bugetRealizatList" [ngValue]="item.id">{{ item.descriere }}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row mt-3" *ngIf="selectedReport === '2'">
+                            <div class="col-lg-2">
+                                <label for="dataBugetRealizat"> Data Buget realizat</label>
+                            </div>
+                            <div class="col-lg-2">
+                                <select id="dataBugetBalRealizat" name="bugetBalRealizatId" class="form-control" [(ngModel)]="reportParams.bugetBalRealizatId" [ngModelOptions]="{standalone: true}">
+                                    <option *ngFor="let item of bugetBalRealizatList" [ngValue]="item.id">{{ item.descriere }}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row mt-3" *ngIf="selectedReport === '5' || selectedReport === '6'">
+                            <div class="col-lg-2">
+                                <label for="bugetPreliminatId" form="bugetPreliminatId">Buget preliminat</label>
+                            </div>
+                            <div class="col-lg-2">
+                                <select id="bugetPreliminatId" name="bugetPreliminatId" class="form-control" [(ngModel)]="selectedVersiuneBugetPreliminat" [ngModelOptions]="{standalone: true}">
+                                    <option *ngFor="let buget of bugetPrevList" [ngValue]="buget.id" [selected]="selectedVersiuneBugetPreliminat === buget.id">{{ buget.descriere }}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row mt-3" *ngIf="selectedReport === '1'">
+                            <div class="col-lg-2">
+                                <label for="includReferat"> Include referate</label>
+                            </div>
+                            <div class="col-lg-2 custom-control custom-checkbox">
+                                <input id="includReferat" name="includReferat" type="checkbox" [(ngModel)]="reportParams.includReferat" [ngModelOptions]="{standalone: true}" />
+                            </div>
+                        </div>
+                        <div class="row mt-3" *ngIf="selectedReport === '2'">
+                            <div class="col-lg-2">
+                                <label for="includPrevazutAnual"> Include prevazut anual</label>
+                            </div>
+                            <div class="col-lg-2 custom-control custom-checkbox">
+                                <input id="includPrevazutAnual" name="includPrevazutAnual" type="checkbox" [(ngModel)]="reportParams.includPrevazutAnual" [ngModelOptions]="{standalone: true}" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-lg-2">
+                            <input type="submit" value="Raport" class="btn btn-info">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+</section>

@@ -1,0 +1,105 @@
+﻿<div [@routerTransition]>
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row">
+                <h3>Adaugare / modificare Cheltuiala</h3>
+            </div>
+        </div>
+    </section>
+    <section class="content px-2">
+        <div class="container-fluid">
+            <div class="body">
+                <form id="#bugetPrevContrib" #bugetPrevContribForm="ngForm">
+                    <div class="row">
+                        <div class="col-lg-2">
+                            <label class="col-form-label" id="dataIncasare">Data cheltuiala/plata</label>
+                        </div>
+                        <div class="col-lg-3">
+                            <mat-form-field style="width: 100%;">
+                                <input matInput
+                                       id="dataIncasare"
+                                       name="dataIncasare"
+                                       [matDatepicker]="dataIncasarePicker"
+                                       [(ngModel)]="bugetCheltuieli.dataIncasare"
+                                       #dataIncasare="ngModel">
+                                <mat-datepicker-toggle matSuffix [for]="dataIncasarePicker"></mat-datepicker-toggle>
+                                <mat-datepicker #dataIncasarePicker></mat-datepicker>
+                            </mat-form-field>
+                        </div>
+                    </div>
+
+                    <div class="row mt-3">
+                        <div class="col-lg-2">
+                            <label class="col-form-label" id="tipCheltuiala">Tip Cheltuiala</label>
+                        </div>
+                        <div class="col-lg-3">
+                            <select id="tipCheltuiala" name="tipCheltuiala" [(ngModel)]="bugetCheltuieli.bvC_FormRandId" #tipCheltuiala="ngModel" class="form-control" (ngModelChange)="onChangeTipCheltuiala()">
+                                <option [ngValue]="null">Selecteaza</option>
+                                <option *ngFor="let item of cheltuieliList" [ngValue]="item.id">{{item.descriere}}</option>
+                            </select>
+                        </div>
+                    </div>
+
+
+                    <div class="row mt-3">
+                        <div class="col-lg-2">
+                            <label class="col-form-label" id="value">Suma</label>
+                        </div>
+                        <div class="col-lg-3">
+                            <input id="value" name="value" [(ngModel)]="bugetCheltuieli.value" #value="ngModel" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-lg-2">
+                            <label class="col-form-label" id="currencyId"> Moneda</label>
+                        </div>
+                        <div class="col-lg-3">
+                            <select id="currencyId" name="currencyId" [(ngModel)]="bugetCheltuieli.currencyId" #currencyId="ngModel" class="form-control">
+                                <option [ngValue]="null">Selecteaza</option>
+                                <option *ngFor="let item of currencyList" [ngValue]="item.id">{{item.currencyName}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-lg-2">
+                            <label class="col-form-label" id="activityTypeId">Tip activitate</label>
+                        </div>
+                        <div class="col-lg-3">
+                            <select id="activityTypeId" name="activityTypeId" #activityTypeId="ngModel" [(ngModel)]="bugetCheltuieli.activityTypeId" class="form-control">
+                                <option [ngValue]="null">Selecteaza</option>
+                                <option *ngFor="let item of activityTypeList" [ngValue]="item.id">{{ item.name }}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-lg-2">
+                            <label class="col-form-label" id="activityTypeId">Departament</label>
+                        </div>
+                        <div class="col-lg-3">
+                            <select id="departamentId" name="departamentId" #departamentId="ngModel" [(ngModel)]="bugetCheltuieli.departamentId" class="form-control">
+                                <option [ngValue]="null">Selecteaza</option>
+                                <option *ngFor="let item of departmentList" [ngValue]="item.id">{{ item.name }}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-lg-2">
+                            <label class="col-form-label" id="descriere">Descriere</label>
+                        </div>
+                        <div class="col-lg-3">
+                            <input id="descriere" name="descriere" [(ngModel)]="bugetCheltuieli.descriere" #descriere="ngModel" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-lg-3">
+                            <button class="btn btn-info" title="Inapoi" [routerLink]="['/app/buget/cheltuieli/bugetCheltuieliList']"><i class="fas fa-arrow-left"></i></button>
+                        </div>
+                        <div class="col-lg-2" style="display: flex; justify-content: flex-end">
+                            <button type="button" class="btn btn-info" (click)="save()"><i class="fas fa-save"></i></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+</div>

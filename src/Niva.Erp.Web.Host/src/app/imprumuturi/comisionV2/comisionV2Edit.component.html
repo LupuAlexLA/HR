@@ -1,0 +1,171 @@
+﻿<div [@routerTransition]>
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <h2>Adaugare / modificare Comision Imprumut</h2>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="content px-2">
+        <div class="container-fluid">
+            <div class="body">
+                <form #imprumuturiComisioaneForm="ngForm" (ngSubmit)="saveComision()" >
+
+
+                    <div class="row">
+                        <div class="col-lg-2 alignContent">
+                            <label for="tipComision" class="col-form-label"> Tip Comision </label>
+                        </div>
+
+                        <div class="col-lg-2 alignContent">
+                            <div class="form-group">
+                                <select id="tipComision" name="tipComision" [(ngModel)]="comision.tipComision" #tipDurataId="ngModel" class="form-control">
+                                    <option value="0"> Cheltuiala Integrala</option>
+                                    <option value="1"> Cheltuiala In Avans</option>
+                                    <option value="2"> Periodic</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+
+                        <div class="col-lg-2 alignContent">
+                            <label for="tipComision" class="col-form-label"> Data Start </label>
+                        </div>
+                        <div class="col-lg-2 alignContent">
+                            <div class="form-group">
+                                <mat-form-field style="width: 150px;">
+                                    <input matInput
+                                           name="ComisionStartDate"
+                                           [matDatepicker]="ComisionStartDatePicker"
+                                           [(ngModel)]="comision.dataStart"
+                                           
+                                           #operationDate="ngModel"
+                                           required />
+                                    <mat-datepicker-toggle matSuffix [for]="ComisionStartDatePicker"></mat-datepicker-toggle>
+                                    <mat-datepicker #ComisionStartDatePicker></mat-datepicker>
+                                </mat-form-field>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-2 alignContent">
+                            <label for="tipComision" class="col-form-label"> Data Final </label>
+                        </div>
+                        <div class="col-lg-2 alignContent">
+                            <div class="form-group">
+                                <mat-form-field style="width: 150px;">
+                                    <input matInput
+                                           name="ComisionEndDate"
+                                           [matDatepicker]="ComisionDateEndPicker"
+                                           [(ngModel)]="comision.dataEnd"
+                                           
+                                           #operationDate="ngModel"
+                                           required />
+                                    <mat-datepicker-toggle matSuffix [for]="ComisionDateEndPicker"></mat-datepicker-toggle>
+                                    <mat-datepicker #ComisionDateEndPicker></mat-datepicker>
+                                </mat-form-field>
+                            </div>
+                        </div>
+
+                    </div>
+
+                            <div class="row">
+                                <div class="col-lg-2 alignContent">
+                                    <label for="description" class="col-form-label"> Descriere </label>
+                                </div>
+                                <div class="col-lg-2 alignContent">
+                                    <input id="description" name="description" class="form-control" [(ngModel)]="comision.descriere" #name="ngModel" />
+                                </div>
+                            </div>
+
+
+
+
+                            <div class="row">
+                                <div class="col-lg-2 alignContent">
+                                    <label for="tipComision" class="col-form-label"> Tip Valoare Comision </label>
+                                </div>
+
+                                <div class="col-lg-2 alignContent">
+                                    <div class="form-group">
+                                        <select id="tipValoareComision" name="tipValoareComision" [(ngModel)]="comision.tipValoareComision" #tipDurataId="ngModel" class="form-control">
+                                            <option value="0"> Procent</option>
+                                            <option value="1"> ValoareFixa</option>
+
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-2 alignContent">
+                                    <label for="valoareComision" class="col-form-label"> Valoare Comision </label>
+                                </div>
+                                <div class="col-lg-2 alignContent">
+                                    <input id="valoareComision" name="valoareComision" class="form-control" [(ngModel)]="comision.valoareComision" #name="ngModel" />
+                                </div>
+                            </div>
+
+
+
+
+                            
+
+                            <div class="row">
+
+                                <div class="col-lg-2 alignContent">
+                                    <label for="tipSumaComision" class="col-form-label"> Tip Suma Comision </label>
+                                </div>
+
+                                <div class="col-lg-2 alignContent">
+                                    <div class="form-group">
+                                        <select id="tipSumaComision" name="tipSumaComision" [(ngModel)]="comision.tipSumaComision" #tipDurataId="ngModel" class="form-control">
+                                            <option value="0"> Valoare Imprumut</option>
+                                            <option value="1"> Suma Neutilizat</option>
+                                            <option value="2"> Suma Trasa</option>
+
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-2 alignContent">
+                                    <label for="bazaDeCalcul" class="col-form-label"> Baza De Calcul </label>
+                                </div>
+                                <div class="col-lg-2 alignContent">
+                                    <input id="bazaDeCalcul" name="bazaDeCalcul" class="form-control" [(ngModel)]="comision.bazaDeCalcul" #name="ngModel" />
+                                </div>
+
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-5">
+                                    <a [routerLink]="['/app/imprumuturi/imprumuturiComisioaneV2List']"
+                                       [queryParams]="{ imprumutId: imprumutId}"
+                                       class="btn btn-info"
+                                       title="Inapoi">
+                                        <i class="fas fa-arrow-left"></i>
+                                    </a>
+                                </div>
+                                <div class="col-lg-7">
+                                    <div class="form-group">
+                                        <button type="submit"
+                                                class="btn btn-info"
+                                                title="Save"
+                                                [disabled]="imprumuturiComisioaneForm.form.invalid">
+                                            <i class="fas fa-save"></i>
+                                        </button>
+
+                                    </div>
+                                </div>
+                            </div>
+</form>
+
+
+
+
+               
+            </div>
+        </div>
+    </section>
+</div>

@@ -1,0 +1,224 @@
+﻿<div [@routerTransition]>
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <h3 *ngIf="prepaymentType == 0">Adauga / Modifica Cheltuieli In Avans</h3>
+                    <h3 *ngIf="prepaymentType == 1">Adauga / Modifica Venituri In Avans</h3>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="content px-2">
+        <div class="container-fluid">
+            <div class="body">
+                <form id="prepaymentAddInvoice" name="prepaymentAddInvoice" (ngSubmit)="showInvoiceDetails()" *ngIf="oper.showForm1">
+                    <div class="row">
+                        <div class="col-lg-1">
+                            <a [routerLink]="['/app/conta/prepayments/prepaymentsList']"
+                               [queryParams]="{prepaymentType: prepaymentType}" class="btn btn-info" title="Inapoi"><i class="fas fa-arrow-left"></i></a>
+                        </div>
+                        <div class="col-lg-11">
+                            <h4>Selecteaza Factura</h4>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <label for="operationDate" class="col-form-label">Data Operatiei</label>
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <i class="fas fa-check-circle" aria-hidden="true" *ngIf="!oper.operationDate.invalid"></i>
+                                    <i class="fas fa-exclamation-circle" aria-hidden="true" *ngIf="oper.operationDate.invalid"></i>
+                                </span>
+                                <mat-form-field style="width: 85%">
+                                    <input matInput [matDatepicker]="operationDatePicker" id="operationDate"
+                                           name="operationDate" [(ngModel)]="oper.operationDate" #operationDate="ngModel" required />
+                                    <mat-datepicker-toggle matSuffix [for]="operationDatePicker"></mat-datepicker-toggle>
+                                    <mat-datepicker #operationDatePicker></mat-datepicker>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <label for="invoiceId" class="col-form-label"> Factura</label>
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <i class="fas fa-check-circle" aria-hidden="true" *ngIf="invoiceId.valid"></i>
+                                    <i class="fas fa-exclamation-circle" aria-hidden="true" *ngIf="!invoiceId.valid"></i>
+                                </span>
+                                <select id="invoiceId" name="invoiceId" class="form-control" [(ngModel)]="oper.invoiceId" #invoiceId="ngModel">
+                                    <option *ngFor="let res of invoiceList?.getInvoices" [ngValue]="res.id">{{res.name}}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-lg-2">
+                            <label for="unreceiveInvoice" class="col-form-label"> Factura nesosita</label>
+
+                            <div class="input-group">
+                                <div class="custom-control custom-checkbox " style="display: block;">
+                                    <input id="unreceiveInvoice" name="unreceiveInvoice" type="checkbox" class="custom-control-input" [(ngModel)]="oper.unreceiveInvoice" #unreceiveInvoice="ngModel" />
+                                    <label for="unreceiveInvoice" class="custom-control-label mt-2"> Factura nesosita</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-2">
+                            <label for="inregVAT" class="col-form-label"> Inregistrare TVA</label>
+                            <div class="input-group">
+                                <div class="custom-control custom-checkbox " style="display: block;">
+                                    <input id="inregVAT" name="inregVAT" type="checkbox" class="custom-control-input" [(ngModel)]="oper.inregVAT" #inregVAT="ngModel" />
+                                    <label for="inregVAT" class="custom-control-label mt-2"> Inregistrare TVA</label>
+                                </div>
+                                </div>
+                            </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-1">
+                            <a [routerLink]="['/app/conta/prepayments/prepaymentsAdd']"
+                               [queryParams]="{prepaymentType: prepaymentType}"
+                               class="btn btn-info"><i class="fas fa-arrow-left"></i></a>
+                        </div>
+                        <div class="col-lg-9">
+                            <div class="input-group" style = "display: flex; justify-content: flex-end">
+                                <span class="input-group-addon">
+                                    <i class="fas fa-check-circle" aria-hidden="true" *ngIf="!oper.invalid"></i>
+                                    <i class="fas fa-exclamation-circle" aria-hidden="true" *ngIf="oper.invalid"></i>
+                                </span>
+                                <button [disabled]="oper.invalid" class="btn btn-info"><i class="fas fa-arrow-right"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <form id="prepaymentAddInvoiceForm1" name="prepaymentAddInvoiceForm1" 
+                      #prepaymentAddInvoiceForm1="ngForm"
+                      (ngSubmit)="savePrepayments()"
+                      *ngIf="oper.showForm2">
+                    <div class="row">
+                        <div class="col-lg-2">
+                            <h4>Detalii Factura</h4>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">Nr Document</th>
+                                        <th scope="col">Data Document</th>
+                                        <th scope="col">Denumire</th>
+                                        <th scope="col">Data start amortizare</th>
+                                        <th scope="col">Data sfarsit calcul amortizare</th>
+                                        <th scope="col">
+                                            <span *ngIf="oper.inregVAT">Valoare / TVA</span>
+                                            <span *ngIf="!oper.inregVAT">Valoare fara TVA / TVA</span>
+                                        </th>
+                                        <th scope="col">
+                                            <span *ngIf="prepaymentType == 0">
+                                                <span *ngIf="!oper.inregVAT">Cont cheltuiala in avans / TVA</span>
+                                                <span *ngIf="oper.inregVAT">Cont cheltuiala in avans</span>
+                                            </span>
+                                            <span *ngIf="prepaymentType == 1">
+                                                <span *ngIf="!oper.inregVAT">Cont venit in avans / TVA</span>
+                                                <span *ngIf="oper.inregVAT">Cont venit in avans</span>
+                                            </span>
+                                        </th>
+                                        <th scope="col">
+                                            <span *ngIf="oper.inregVAT">Cont amortizare</span>
+                                            <span *ngIf="!oper.inregVAT">Cont amortizare valoare / TVA</span>
+                                        </th>
+                                        <th scope="col">Durata (<span *ngIf="modCalcul == 0">luni</span><span *ngIf="modCalcul == 1">zile</span>)</th>
+                                    </tr>
+                                </thead>
+                                <tbody *ngFor="let detail of oper.invoiceDetail; let i = index">
+                                    <tr>
+                                        <td scope="row">{{ i + 1 }}</td>
+                                        <td>{{detail.documentNr}}</td>
+                                        <td>{{detail.documentDate | date: 'dd/MM/yyyy'}}</td>
+                                        <td>
+                                            <input id="prepaymentName_{{i}}" 
+                                                   name="prepaymentName_{{i}}"
+                                                   type="text"
+                                                   [(ngModel)]="detail.prepaymentName" class="form-control" required style="width:200px"/>
+                                        </td>
+                                        <td>
+                                            <mat-form-field>
+                                                <input matInput [matDatepicker]="depreciationStartDatePicker" id="depreciationStartDate_{{i}}"
+                                                       name="depreciationStartDate_{{i}}" [(ngModel)]="detail.depreciationStartDate" #depreciationStartDate="ngModel" required />
+                                                <mat-datepicker-toggle matSuffix [for]="depreciationStartDatePicker"></mat-datepicker-toggle>
+                                                <mat-datepicker #depreciationStartDatePicker></mat-datepicker>
+                                            </mat-form-field>
+                                        </td>
+                                        <td>
+                                            <mat-form-field>
+                                                <input matInput [matDatepicker]="endDateCheltPicker" id="endDateChelt_{{i}}"
+                                                       name="endDateChelt_{{i}}" [(ngModel)]="detail.endDateChelt" #endDateChelt="ngModel" required (ngModelChange)="calcDurata(i)" />
+                                                <mat-datepicker-toggle matSuffix [for]="endDateCheltPicker"></mat-datepicker-toggle>
+                                                <mat-datepicker #endDateCheltPicker></mat-datepicker>
+                                            </mat-form-field>
+                                        </td>
+                                        <td>
+                                            <input id="value" name="value" type="text" [(ngModel)]="detail.value" class="form-control" required />
+                                        </td>
+                                        <td>
+                                            <select id="prepaymentAccountId" name="prepaymentAccountId" class="form-control" [(ngModel)]="detail.prepaymentAccountId">
+                                                <option *ngFor="let res of accounts?.getAccounts" [ngValue]="res.id">{{res.name}}</option>
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <select id="depreciationAccountId" name="depreciationAccountId" class="form-control" [(ngModel)]="detail.depreciationAccountId">
+                                                <option *ngFor="let res of accounts?.getAccounts" [ngValue]="res.id">{{res.name}}</option>
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <input id="durationInMonths" name="durationInMonths" type="text" [(ngModel)]="detail.durationInMonths" class="form-control" required />
+                                        </td>
+                                    </tr>
+                                    <tr *ngIf="oper.inregVAT">
+                                        <td colspan="6"></td>
+                                        <td>
+                                            <input id="value" name="value" type="text" [(ngModel)]="detail.vat" class="form-control" required />
+                                        </td>
+                                        <td>
+                                            <select id="prepaymentAccountVATId" name="prepaymentAccountVATId" [(ngModel)]="detail.prepaymentAccountVATId" class="form-control">
+                                                <option *ngFor="let res of accounts?.getAccounts" [ngValue]="res.id">{{res.name}}</option>
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <select id="depreciationAccountVATId" name="depreciationAccountVATId" [(ngModel)]="detail.depreciationAccountVATId" class="form-control">
+                                                <option *ngFor="let res of accounts?.getAccounts" [ngValue]="res.id">{{res.name}}</option>
+                                            </select>
+                                        </td>
+                                        <td></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-1">
+                            <button [disabled]="oper.invalid" (click)="showForm(1)" class="btn btn-info"><i class="fas fa-arrow-left"></i></button>
+                        </div>
+                        <div class="col-lg-10"  *ngIf="(prepaymentType === 0 ? isGranted('Conta.CheltAvans.Chelt.Modificare') : isGranted('Conta.VenitAvans.Venituri.Modificare'))">
+                            <div class="input-group" style = "display: flex; justify-content: flex-end">
+                                <span class="input-group-addon">
+                                    <i class="fas fa-check-circle" aria-hidden="true" *ngIf="!oper.invalid"></i>
+                                    <i class="fas fa-exclamation-circle" aria-hidden="true" *ngIf="oper.invalid"></i>
+                                </span>
+                                <button *ngIf="!oper.finishAdd"
+                                        [disabled]="oper.invalid"
+                                        class="btn btn-info"
+                                        title="Salveaza"><i class="fas fa-save"></i></button>
+                                <a [routerLink]="['/app/conta/prepayments/prepaymentsList']"
+                                   [queryParams]="{prepaymentType: prepaymentType}"
+                                   class="btn btn-primary"
+                                   *ngIf="oper.finishAdd"
+                                   >Lista operatii</a>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+</div>

@@ -1,0 +1,49 @@
+﻿<div [@routerTransition]>
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <h3>Rapoarte</h3>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="content px-2">
+        <div class="container-fluid">
+            <div class="body">
+                <div class="row">
+                    <div class="col-lg-2">
+                        <label for="selectedReport">Selectati Raport</label>
+                    </div>
+                    <div class="col-lg-4">
+                        <select [(ngModel)]="prepaymentParams.prepaymentType" class="form-control" *ngIf="prepaymentParams.prepaymentType==0">
+                            <option value="0" selected="selected">Cheltuieli inregistrate in avans la data</option>
+                        </select>
+                        <select [(ngModel)]="selectedRaport" class="form-control" *ngIf="prepaymentParams.prepaymentType==1">
+                            <option value="0" selected="selected">Venituri inregistrate in avans la data</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div *ngIf="selectedReport == 0" class="mt-3">
+                    <div class="row">
+                        <div class="col-lg-2">
+                            <label for="dataStart"> Data</label>
+                        </div>
+                        <div class="col-lg-2">
+                            <mat-form-field>
+                                <input matInput [matDatepicker]="dataStartPicker" id="dataStart"
+                                       name="dataStart" [(ngModel)]="repDate" required />
+                                <mat-datepicker-toggle matSuffix [for]="dataStartPicker"></mat-datepicker-toggle>
+                                <mat-datepicker #dataStartPicker></mat-datepicker>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <button (click)="showReport()" class="btn btn-info">Raport</button>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

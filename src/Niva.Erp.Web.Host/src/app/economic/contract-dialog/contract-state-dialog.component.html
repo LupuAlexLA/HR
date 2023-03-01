@@ -1,0 +1,79 @@
+﻿<form class="form-horizontal"
+      autocomplete="off"
+      #changeContractStateForm="ngForm"
+      (ngSubmit)="save()">
+    <abp-modal-header [title]="'Modificare Statut Contract'"
+                      (onCloseClick)="bsModalRef.hide()"></abp-modal-header>
+    <div class="modal-body">
+        <div class="form-group row required">
+            <label class="col-md-3 col-form-label" for="dataEnd">
+                Data amanare
+            </label>
+            <div class="col-md-9">
+                <mat-form-field style="width: 100%;">
+                    <input matInput
+                           id="dataEnd"
+                           name="dataEnd"
+                           [matDatepicker]="dataEndPicker"
+                           [(ngModel)]="changeContract.dataEnd"
+                           #dataEnd="ngModel" />
+                    <mat-datepicker-toggle matSuffix [for]="dataEndPicker"></mat-datepicker-toggle>
+                    <mat-datepicker #dataEndPicker></mat-datepicker>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="form-group row required">
+            <label class="col-md-3 col-form-label" for="comentarii">
+                Comentariu
+            </label>
+            <div class="col-md-9">
+                <input id="comentarii" name="comentarii" [(ngModel)]="changeContract.comentarii" #comentarii="ngModel" class="form-control" />
+            </div>
+
+        </div>
+        <div class="form-group row required">
+            <div class="col-md-3 col-form-label">
+                <label for="creditor" class="col-form-label"> Status Contract</label>
+            </div>
+            <div class="col-md-9">
+                <input id="choice_1"
+                       name="creditor"
+                       type="radio"
+                       [(ngModel)]="changeContract.contract_State"
+                       [value]="0"
+                       [checked]="changeContract.contract_State === 0"
+                       #creditor="ngModel" />
+                <label for="choice_1" class="form-label" style="margin: 0 10px;"> In Vigoare</label>
+
+                <input id="choice_2"
+                       name="creditor"
+                       type="radio"
+                       [(ngModel)]="changeContract.contract_State"
+                       [value]="1"
+                       [checked]="changeContract.contract_State === 1"
+                       #creditor="ngModel" />
+                <label for="choice_2" class="form-label" style="margin: 0 10px;"> Reziliat</label>
+
+                <input id="choice_3"
+                       name="creditor"
+                       type="radio"
+                       [(ngModel)]="changeContract.contract_State"
+                       [value]="2"
+                       [checked]="changeContract.contract_State === 2"
+                       #creditor="ngModel" />
+                <label for="choice_3" class="form-label" style="margin: 0 10px;"> Finalizat</label>
+
+                <!--<input id="choice_4"
+                       name="creditor"
+                       type="radio"
+                       [(ngModel)]="changeContract.contract_State"
+                       [value]="3"
+                       [checked]="changeContract.contract_State === 3"
+                       #creditor="ngModel" />
+                <label for="choice_4" class="form-label" style="margin: 0 10px;"> Preliminat</label>-->
+            </div>
+        </div>
+    </div>
+        <abp-modal-footer [saveDisabled]="!changeContractStateForm.form.valid"
+                          (onCancelClick)="bsModalRef.hide()"></abp-modal-footer>
+</form>

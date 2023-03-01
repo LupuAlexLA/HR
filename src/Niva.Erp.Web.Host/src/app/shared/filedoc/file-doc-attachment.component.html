@@ -1,0 +1,8 @@
+﻿<a style="white-space:nowrap" target="_blank" title="{{regNumber}}" *ngIf="regNumber" href="{{viewUrl}}">{{regNumber}}</a>
+<div *ngFor="let f of attachments">
+    <button class="btn btn-default"
+            (click)="download(f.id)"
+            title="{{f.denumire}}">
+        <i class="fas fa-file-download"></i>
+    </button>
+</div>

@@ -1,0 +1,380 @@
+﻿<div [@routerTransition]>
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <h3>Adaugare / Modificare mijloc fix</h3>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="content px-2">
+        <div class="container-fluid">
+            <div class="body">
+                <form id="asset" name="asset" #assetForm="ngForm" (ngSubmit)="saveAssetDirect()" [busy]="isLoading">
+                    <div class="row">
+                        <div class="col-lg-1">
+                            <a [routerLink]="['/app/conta/imoAsset/imoAssetPVAdd']" class="btn btn-info" title="Inapoi"><i class="fas fa-arrow-left"></i></a>
+                        </div>
+                        <div class="col-lg-11">
+                            <h4>Adauga mijloc fix</h4>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-2">
+                            <label for="assetType" class="col-form-label"> Tip imobilizare</label>
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <i class="fas fa-check-circle" aria-hidden="true" *ngIf="!assetType.invalid"></i>
+                                    <i class="fas fa-exclamation-circle" aria-hidden="true" *ngIf="assetType.invalid"></i>
+                                </span>
+                                <select id="assetType" name="assetType" [(ngModel)]="oper.assetType" #assetType="ngModel" class="form-control" (ngModelChange)="addDirectChangeType()" [disabled]="oper.processedIn">
+                                    <option *ngFor="let res of assetTypeList" [ngValue]="res.id">{{res.name}}</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-2">
+                            <label for="operationDate" class="col-form-label"> Data Operatiei</label>
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <i class="fas fa-check-circle" aria-hidden="true" *ngIf="oper.operationDate"></i>
+                                    <i class="fas fa-exclamation-circle" aria-hidden="true" *ngIf="!oper.operationDate"></i>
+                                </span>
+                                <mat-form-field style="width:90%;">
+                                    <input matInput [matDatepicker]="operationDatePicker" id="operationDate"
+                                           name="operationDate" [(ngModel)]="oper.operationDate" #operationDate="ngModel" (ngModelChange)="addDirectChangeDate()" [disabled]="oper.processedIn" />
+                                    <mat-datepicker-toggle matSuffix [for]="operationDatePicker"></mat-datepicker-toggle>
+                                    <mat-datepicker #operationDatePicker></mat-datepicker>
+                                </mat-form-field>
+
+                            </div>
+                        </div>
+
+                        <div class="col-lg-2">
+                            <label for="documentNr" class="col-form-label">Nr Document</label>
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <i class="fas fa-check-circle" aria-hidden="true" *ngIf="!documentNr.invalid"></i>
+                                    <i class="fas fa-exclamation-circle" aria-hidden="true" *ngIf="documentNr.invalid"></i>
+                                </span>
+                                <input id="documentNr" name="documentNr" type="text" [(ngModel)]="oper.documentNr" #documentNr="ngModel" class="form-control" required />
+                            </div>
+                        </div>
+
+                        <div class="col-lg-2">
+                            <label for="documentDate" class="col-form-label">Data Document</label>
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <i class="fas fa-check-circle" aria-hidden="true" *ngIf="oper.documentDate"></i>
+                                    <i class="fas fa-exclamation-circle" aria-hidden="true" *ngIf="!oper.documentDate"></i>
+                                </span>
+                                <mat-form-field style="width: 90%;">
+                                    <input matInput [matDatepicker]="documentDatePicker" id="documentDate"
+                                           name="documentDate" [(ngModel)]="oper.documentDate" #documentDate="ngModel" [disabled]="oper.processedIn" />
+                                    <mat-datepicker-toggle matSuffix [for]="documentDatePicker"></mat-datepicker-toggle>
+                                    <mat-datepicker #documentDatePicker></mat-datepicker>
+                                </mat-form-field>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-4">
+                            <label for="name" class="col-form-label">Denumire Activ</label>
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <i class="fas fa-check-circle" aria-hidden="true" *ngIf="!name.invalid"></i>
+                                    <i class="fas fa-exclamation-circle" aria-hidden="true" *ngIf="name.invalid"></i>
+                                </span>
+                                <input id="name" name="name" type="text" [(ngModel)]="oper.name" #name="ngModel" class="form-control" required />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-2">
+                            <label for="primDocumentTypeId" class="col-form-label">Tip Doc Primar</label>
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <i class="fas fa-check-circle" aria-hidden="true" *ngIf="!primDocumentTypeId.invalid"></i>
+                                    <i class="fas fa-exclamation-circle" aria-hidden="true" *ngIf="primDocumentTypeId.invalid"></i>
+                                </span>
+                                <select [(ngModel)]="oper.primDocumentTypeId" #primDocumentTypeId="ngModel" id="primDocumentTypeId" name="primDocumentTypeId" class="form-control" [disabled]="oper.processedIn"
+                                        (ngModelChange)="checkAutoNumberForDoc(oper.primDocumentTypeId)">
+                                    <option *ngFor="let res of documentType?.getDocumentType" [ngValue]="res.id">{{ res.name }}</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-2">
+                            <label for="primDocumentNr" class="col-form-label">Nr Doc Primar</label>
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <i class="fas fa-check-circle" aria-hidden="true" *ngIf="!primDocumentNr.invalid"></i>
+                                    <i class="fas fa-exclamation-circle" aria-hidden="true" *ngIf="primDocumentNr.invalid"></i>
+                                </span>
+                                <input id="primDocumentNr" name="primDocumentNr" type="text" [(ngModel)]="oper.primDocumentNr" #primDocumentNr="ngModel" class="form-control" [disabled]="oper.processedIn" required />
+                            </div>
+                        </div>
+
+                        <div class="col-lg-2">
+                            <label for="primDocumentDate" class="col-form-label">Data Doc Prim</label>
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <i class="fas fa-check-circle" aria-hidden="true" *ngIf="oper.primDocumentDate"></i>
+                                    <i class="fas fa-exclamation-circle" aria-hidden="true" *ngIf="!oper.primDocumentDate"></i>
+                                </span>
+                                <mat-form-field style="width: 90%;">
+                                    <input matInput [matDatepicker]="primDocumentDatePicker" id="primDocumentDate"
+                                           name="primDocumentDate" [(ngModel)]="oper.primDocumentDate" #primDocumentDate="ngModel" [disabled]="oper.processedIn" />
+                                    <mat-datepicker-toggle matSuffix [for]="primDocumentDatePicker"></mat-datepicker-toggle>
+                                    <mat-datepicker #primDocumentDatePicker></mat-datepicker>
+                                </mat-form-field>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-2">
+                            <label for="thirdPartyId" class="col-form-label">Furnizor</label>
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <i class="fas fa-check-circle" aria-hidden="true" *ngIf="!thirdPartyId.invalid"></i>
+                                    <i class="fas fa-exclamation-circle" aria-hidden="true" *ngIf="thirdPartyId.invalid"></i>
+                                </span>
+                                <mat-form-field style="width: 85%;">
+                                    <input type="text" matInput id="thirdPartyId"
+                                           name="thirdPartyId"
+                                           [(ngModel)]="oper.thirdPartyId"
+                                           (input)="searchThirdPartyByInput($event)"
+                                           required
+                                           [matAutocomplete]="auto"
+                                           #thirdPartyId="ngModel"
+                                           [disabled]="oper.processedIn" />
+                                    <mat-autocomplete #auto="matAutocomplete" [displayWith]="getThirdPartyName.bind(this)">
+                                        <mat-select *ngFor="let thirdParty of thirdParties?.getThirdParty">
+                                            <mat-option (click)="selectedThirdParty(thirdParty.personId, thirdParty.fullName)" [ngValue]="thirdParty.personId">
+                                                {{ thirdParty.fullName }}
+                                                <small>Furnizor: </small><small>{{ thirdParty.personId }}</small>
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-autocomplete>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr />
+                    <div class="row">
+                        <div class="col-lg-2">
+                            <label for="inventoryValue" class="col-form-label">Valoare inventar</label>
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <i class="fas fa-check-circle" aria-hidden="true" *ngIf="!inventoryValue.invalid"></i>
+                                    <i class="fas fa-exclamation-circle" aria-hidden="true" *ngIf="inventoryValue.invalid"></i>
+                                </span>
+                                <input id="inventoryValue" name="inventoryValue" type="text" [(ngModel)]="oper.inventoryValue" #inventoryValue="ngModel" class="form-control" [disabled]="oper.processedIn" required />
+                            </div>
+                        </div>
+
+                        <div class="col-lg-2">
+                            <label for="storageInId" class="col-form-label">Magazie</label>
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <i class="fas fa-check-circle" aria-hidden="true" *ngIf="!storageInId.invalid"></i>
+                                    <i class="fas fa-exclamation-circle" aria-hidden="true" *ngIf="storageInId.invalid"></i>
+                                </span>
+                                <select id="storageInId" name="storageInId" [(ngModel)]="oper.storageInId" #storageInId="ngModel" class="form-control" [disabled]="oper.processedIn">
+                                    <option *ngFor="let res of storageList?.getImoAssetStorage" [ngValue]="res.id">{{res.storageName}}</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-2">
+                            <label for="useStartDate" class="col-form-label">Data Dare in folosinta</label>
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <i class="fas fa-check-circle" aria-hidden="true" *ngIf="oper.useStartDate"></i>
+                                    <i class="fas fa-exclamation-circle" aria-hidden="true" *ngIf="!oper.useStartDate"></i>
+                                </span>
+                                <mat-form-field style="width: 90%;" >
+                                    <input matInput [matDatepicker]="useStartDatePicker" id="useStartDate"
+                                           name="useStartDate" [(ngModel)]="oper.useStartDate" #useStartDate="ngModel" [disabled]="oper.processedIn && oper.processedInUse" (dateChange)="setDepreciationDate()" />
+                                    <mat-datepicker-toggle matSuffix [for]="useStartDatePicker"></mat-datepicker-toggle>
+                                    <mat-datepicker #useStartDatePicker></mat-datepicker>
+                                </mat-form-field>
+
+                            </div>
+                        </div>
+
+                        <div class="col-lg-2">
+                            <label for="depreciationStartDate" class="col-form-label">Data Start Amortizare</label>
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <i class="fas fa-check-circle" aria-hidden="true" *ngIf="oper.depreciationStartDate"></i>
+                                    <i class="fas fa-exclamation-circle" aria-hidden="true" *ngIf="!oper.depreciationStartDate"></i>
+                                </span>
+                                <mat-form-field style="width: 90%;">
+                                    <input matInput [matDatepicker]="depreciationStartDatePicker" id="useStartDate"
+                                           name="depreciationStartDate" [(ngModel)]="oper.depreciationStartDate" #depreciationStartDate="ngModel" [disabled]="oper.processedIn && oper.processedInUse" />
+                                    <mat-datepicker-toggle matSuffix [for]="depreciationStartDatePicker"></mat-datepicker-toggle>
+                                    <mat-datepicker #depreciationStartDatePicker></mat-datepicker>
+                                </mat-form-field>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-4">
+                            <label for="assetClassCodesId" class="col-form-label">Cod Clasificare</label>
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <i class="fas fa-check-circle" aria-hidden="true" *ngIf="!assetClassCodesId.invalid"></i>
+                                    <i class="fas fa-exclamation-circle" aria-hidden="true" *ngIf="assetClassCodesId.invalid"></i>
+                                </span>
+                                <select id="assetClassCodesId" name="assetClassCodesId" [(ngModel)]="oper.assetClassCodesId" #assetClassCodesId="ngModel" (change)="getClassCode()" [disabled]="oper.processedIn" class="form-control">
+                                    <option *ngFor="let res of classCode" [ngValue]="res.id">{{res.name}}</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <label for="assetAccountId" class="col-form-label">Cont mijloc fix intrare</label>
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <i class="fas fa-check-circle" aria-hidden="true" *ngIf="!assetAccountId.invalid"></i>
+                                    <i class="fas fa-exclamation-circle" aria-hidden="true" *ngIf="assetAccountId.invalid"></i>
+                                </span>
+                                <select id="assetAccountId" name="assetAccountId" [(ngModel)]="oper.assetAccountId" #assetAccountId="ngModel" class="form-control" [disabled]="oper.processedIn && oper.processedInUse">
+                                    <option *ngFor="let res of accounts?.getAccounts" [ngValue]="res.id">{{res.name}}</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-3">
+                            <label for="assetAccountId" class="col-form-label">Cont mijloc fix punere in functiune</label>
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <i class="fas fa-check-circle" aria-hidden="true" *ngIf="!assetAccountInUseId.invalid"></i>
+                                    <i class="fas fa-exclamation-circle" aria-hidden="true" *ngIf="assetAccountInUseId.invalid"></i>
+                                </span>
+                                <select id="assetAccountInUseId" name="assetAccountInUseId" [(ngModel)]="oper.assetAccountInUseId" #assetAccountInUseId="ngModel" class="form-control" [disabled]="oper.processedIn && oper.processedInUse">
+                                    <option *ngFor="let res of accounts?.getAccounts" [ngValue]="res.id">{{res.name}}</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-3">
+                            <label for="depreciationAccountId" class="col-form-label"> Cont amortizare</label>
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <i class="fas fa-check-circle" aria-hidden="true" *ngIf="!depreciationAccountId.invalid"></i>
+                                    <i class="fas fa-exclamation-circle" aria-hidden="true" *ngIf="depreciationAccountId.invalid"></i>
+                                </span>
+                                <select id="depreciationAccountId" name="depreciationAccountId" [(ngModel)]="oper.depreciationAccountId" #depreciationAccountId="ngModel" class="form-control" [disabled]="oper.processedIn">
+                                    <option *ngFor="let res of accounts?.getAccounts" [ngValue]="res.id">{{res.name}}</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-3">
+                            <label for="expenseAccountId" class="col-form-label">Cont cheltuiala</label>
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <i class="fas fa-check-circle" aria-hidden="true" *ngIf="!expenseAccountId.invalid"></i>
+                                    <i class="fas fa-exclamation-circle" aria-hidden="true" *ngIf="expenseAccountId.invalid"></i>
+                                </span>
+                                <select id="expenseAccountId" name="expenseAccountId" [(ngModel)]="oper.expenseAccountId" #expenseAccountId="ngModel" class="form-control" [disabled]="oper.processedIn">
+                                    <option *ngFor="let res of accounts?.getAccounts" [ngValue]="res.id">{{res.name}}</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <label for="durationInMonths" class="col-form-label">Durata (luni)</label>
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <i class="fas fa-check-circle" aria-hidden="true" *ngIf="!durationInMonths.invalid"></i>
+                                    <i class="fas fa-exclamation-circle" aria-hidden="true" *ngIf="durationInMonths.invalid"></i>
+                                </span>
+                                <input id="durationInMonths" name="durationInMonths" type="text" [(ngModel)]="oper.durationInMonths" #durationInMonths="ngModel" class="form-control" [disabled]="oper.processedIn" required />
+                            </div>
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="row">
+                        <div class="col-lg-2">
+                            <label for="depreciation" class="col-form-label">Amortizare</label>
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <i class="fas fa-check-circle" aria-hidden="true" *ngIf="!depreciation.invalid"></i>
+                                    <i class="fas fa-exclamation-circle" aria-hidden="true" *ngIf="depreciation.invalid"></i>
+                                </span>
+                                <input id="depreciation" name="depreciation" type="text" [(ngModel)]="oper.depreciation" #depreciation="ngModel" class="form-control" [disabled]="oper.processedIn" />
+                            </div>
+                        </div>
+
+                        <div class="col-lg-2">
+                            <label for="fiscalDepreciation" class="col-form-label">Amortizare fiscala</label>
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <i class="fas fa-check-circle" aria-hidden="true" *ngIf="!fiscalDepreciation.invalid"></i>
+                                    <i class="fas fa-exclamation-circle" aria-hidden="true" *ngIf="fiscalDepreciation.invalid"></i>
+
+                                </span>
+                                <input id="fiscalDepreciation" name="fiscalDepreciation" type="text" [(ngModel)]="oper.fiscalDepreciation" #fiscalDepreciation="ngModel" class="form-control" [disabled]="oper.processedIn" />
+                            </div>
+                        </div>
+
+                        <div class="col-lg-2">
+                            <label for="remainingDuration" class="col-form-label">Durata  ramasa</label>
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <i class="fas fa-check-circle" aria-hidden="true" *ngIf="!remainingDuration.invalid"></i>
+                                    <i class="fas fa-exclamation-circle" aria-hidden="true" *ngIf="remainingDuration.invalid"></i>
+
+                                </span>
+                                <input id="remainingDuration" name="remainingDuration" type="text" [(ngModel)]="oper.remainingDuration" #remainingDuration="ngModel" class="form-control" [disabled]="oper.processedIn" />
+                            </div>
+                        </div>
+
+                        <div class="col-lg-2">
+                            <label for="monthlyDepreciation" class="col-form-label">Amortizare lunara </label>
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <i class="fas fa-check-circle" aria-hidden="true" *ngIf="!monthlyDepreciation.invalid"></i>
+                                    <i class="fas fa-exclamation-circle" aria-hidden="true" *ngIf="monthlyDepreciation.invalid"></i>
+
+                                </span>
+                                <input id="monthlyDepreciation" name="monthlyDepreciation" type="text" [(ngModel)]="oper.monthlyDepreciation" #monthlyDepreciation="ngModel" class="form-control" [disabled]="oper.processedIn" />
+                            </div>
+                        </div>
+
+                        <div class="col-lg-3">
+                            <label for="monthlyFiscalDepreciation" class="col-form-label">Amortizare fiscala lunara</label>
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <i class="fas fa-check-circle" aria-hidden="true" *ngIf="!monthlyFiscalDepreciation.invalid"></i>
+                                    <i class="fas fa-exclamation-circle" aria-hidden="true" *ngIf="monthlyFiscalDepreciation.invalid"></i>
+
+                                </span>
+                                <input id="monthlyFiscalDepreciation" type="text" name="monthlyFiscalDepreciation" [(ngModel)]="oper.monthlyFiscalDepreciation" #monthlyFiscalDepreciation="ngModel" class="form-control" [disabled]="oper.processedIn" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-lg-6">
+                            <div class="input-group"  style="display: flex; justify-content: flex-end">
+                                <span class="input-group-addon">
+                                    <i class="fas fa-check-circle" aria-hidden="true" *ngIf="assetForm.form.valid"></i>
+                                    <i class="fas fa-exclamation-circle" aria-hidden="true" *ngIf="!assetForm.form.valid"></i>
+                                </span>
+                                <button *ngIf="!oper.finishAdd" class="btn btn-info" title="Salvare">
+                                    <i class="fas fa-save"></i>
+                                </button>
+                                <a [routerLink]="['/app/conta/imoAsset/imoAssetPV']" class="btn btn-info" *ngIf="oper.finishAdd">Lista operatii</a>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+</div>

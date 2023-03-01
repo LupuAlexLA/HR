@@ -1,0 +1,102 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<XtraReportsLayoutSerializer SerializerVersion="20.2.5.0" Ref="1" ControlType="DevExpress.XtraReports.UI.XtraReport, DevExpress.XtraReports.v20.2, Version=20.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" Name="BVC_PrevResurse" Margins="100, 100, 147, 370" PageWidth="850" PageHeight="1100" Version="20.2" DataSource="#Ref-0" Font="Arial, 9.75pt">
+  <Extensions>
+    <Item1 Ref="2" Key="VSReportExtInfo" Value=".vsrepx" />
+  </Extensions>
+  <Parameters>
+    <Item1 Ref="4" ValueInfo="0" Name="variantaBugetId" Type="#Ref-3" />
+    <Item2 Ref="5" ValueInfo="0" Name="anBVC" Type="#Ref-3" />
+  </Parameters>
+  <Bands>
+    <Item1 Ref="6" ControlType="TopMarginBand" Name="TopMargin" HeightF="146.666672">
+      <Controls>
+        <Item1 Ref="7" ControlType="XRLabel" Name="label3" Multiline="true" TextAlignment="BottomCenter" SizeF="650,23.0000076" LocationFloat="0,90" Font="Georgia, 11pt, style=Bold" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="8" EventName="BeforePrint" PropertyName="Text" Expression="[An]" />
+          </ExpressionBindings>
+          <StylePriority Ref="9" UseFont="false" UseTextAlignment="false" />
+        </Item1>
+        <Item2 Ref="10" ControlType="XRLabel" Name="label1" Multiline="true" Text="Buget prevazut resurse" TextAlignment="MiddleCenter" SizeF="650,23.0000038" LocationFloat="0,67" Font="Georgia, 13.8pt, style=Bold" Padding="2,2,0,0,100">
+          <StylePriority Ref="11" UseFont="false" UseTextAlignment="false" />
+        </Item2>
+        <Item3 Ref="12" ControlType="XRLabel" Name="label2" Multiline="true" Text="label2" TextAlignment="MiddleLeft" SizeF="650,22.9999981" LocationFloat="0,0" Font="Georgia, 10.8pt, style=Bold, charSet=0" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="13" EventName="BeforePrint" PropertyName="Text" Expression="[AppClientName]" />
+          </ExpressionBindings>
+          <StylePriority Ref="14" UseFont="false" UseTextAlignment="false" />
+        </Item3>
+      </Controls>
+    </Item1>
+    <Item2 Ref="15" ControlType="BottomMarginBand" Name="BottomMargin" HeightF="369.791656">
+      <Controls>
+        <Item1 Ref="16" ControlType="XRPageInfo" Name="pageInfo2" TextFormatString="{0}/{1}" TextAlignment="TopRight" SizeF="346.158447,23" LocationFloat="303.841553,0" Font="Georgia, 7.8pt, style=Bold, charSet=0">
+          <StylePriority Ref="17" UseFont="false" />
+        </Item1>
+        <Item2 Ref="18" ControlType="XRPageInfo" Name="pageInfo1" PageInfo="DateTime" TextFormatString="{0:d.MM.yyyy H:mm}" SizeF="303.841553,23" LocationFloat="0,0" Font="Georgia, 7.8pt, style=Bold, charSet=0">
+          <StylePriority Ref="19" UseFont="false" />
+        </Item2>
+      </Controls>
+    </Item2>
+    <Item3 Ref="20" ControlType="DetailBand" Name="Detail" HeightF="20.833334" />
+    <Item4 Ref="21" ControlType="DetailReportBand" Name="DetailReport" Level="0">
+      <Bands>
+        <Item1 Ref="22" ControlType="DetailBand" Name="Detail1">
+          <Controls>
+            <Item1 Ref="23" ControlType="XRCrossTab" Name="crossTab1" GeneralStyleName="crossTabGeneralStyle1" DataAreaStyleName="crossTabDataStyle1" HeaderAreaStyleName="crossTabHeaderStyle1" TotalAreaStyleName="crossTabTotalStyle1" DataSource="#Ref-0" DataMember="PrevResurse" SizeF="495,100" LocationFloat="0,0">
+              <RowFields>
+                <Item1 Ref="24" FieldName="OrderView" />
+                <Item2 Ref="25" FieldName="Descriere" />
+              </RowFields>
+              <ColumnFields>
+                <Item1 Ref="26" FieldName="ActivityTypeName" />
+              </ColumnFields>
+              <DataFields>
+                <Item1 Ref="27" FieldName="Suma" />
+              </DataFields>
+              <ColumnDefinitions>
+                <Item1 Ref="28" Width="123.749992" Visible="false" />
+                <Item2 Ref="29" Width="123.749992" AutoWidthMode="GrowOnly" />
+                <Item3 Ref="30" Width="123.749992" AutoWidthMode="GrowOnly" />
+                <Item4 Ref="31" Width="123.749992" />
+              </ColumnDefinitions>
+              <RowDefinitions>
+                <Item1 Ref="32" Height="25" AutoHeightMode="GrowOnly" />
+                <Item2 Ref="33" Height="25" />
+                <Item3 Ref="34" Height="25" Visible="false" />
+                <Item4 Ref="35" Height="25" Visible="false" />
+              </RowDefinitions>
+              <Cells>
+                <Item1 Ref="36" ControlType="XRCrossTabCell" Name="crossTabHeaderCell1" ColumnIndex="1" RowIndex="0" />
+                <Item2 Ref="37" ControlType="XRCrossTabCell" Name="crossTabDataCell1" TextFormatString="{0:N2}" ColumnIndex="2" RowIndex="1" TextAlignment="MiddleRight" Font="Georgia, 10.2pt" />
+                <Item3 Ref="38" ControlType="XRCrossTabCell" Name="crossTabHeaderCell2" ColumnIndex="2" RowIndex="0" TextAlignment="MiddleCenter" Font="Georgia, 10.2pt, style=Bold" />
+                <Item4 Ref="39" ControlType="XRCrossTabCell" Name="crossTabHeaderCell3" ColumnIndex="1" RowIndex="1" Font="Georgia, 10.2pt, style=Bold" />
+                <Item5 Ref="40" ControlType="XRCrossTabCell" Name="crossTabHeaderCell4" ColumnIndex="3" RowIndex="0" Text="TOTAL " TextAlignment="MiddleCenter" Font="Georgia, 10.2pt, style=Bold" />
+                <Item6 Ref="41" ControlType="XRCrossTabCell" Name="crossTabTotalCell1" TextFormatString="{0:N2}" ColumnIndex="3" RowIndex="1" Font="Georgia, 10.2pt" />
+                <Item7 Ref="42" ControlType="XRCrossTabCell" Name="crossTabHeaderCell5" ColumnIndex="0" RowIndex="3" ColumnSpan="2" Text="Grand Total" />
+                <Item8 Ref="43" ControlType="XRCrossTabCell" Name="crossTabTotalCell2" ColumnIndex="2" RowIndex="3" />
+                <Item9 Ref="44" ControlType="XRCrossTabCell" Name="crossTabTotalCell3" ColumnIndex="3" RowIndex="3" />
+                <Item10 Ref="45" ControlType="XRCrossTabCell" Name="crossTabHeaderCell6" ColumnIndex="0" RowIndex="0" Text="Order View" />
+                <Item11 Ref="46" ControlType="XRCrossTabCell" Name="crossTabHeaderCell7" ColumnIndex="0" RowIndex="1" />
+                <Item12 Ref="47" ControlType="XRCrossTabCell" Name="crossTabHeaderCell8" TextFormatString="Total {0}" ColumnIndex="0" RowIndex="2" ColumnSpan="2" />
+                <Item13 Ref="48" ControlType="XRCrossTabCell" Name="crossTabTotalCell4" ColumnIndex="2" RowIndex="2" />
+                <Item14 Ref="49" ControlType="XRCrossTabCell" Name="crossTabTotalCell5" ColumnIndex="3" RowIndex="2" />
+              </Cells>
+            </Item1>
+          </Controls>
+        </Item1>
+      </Bands>
+    </Item4>
+  </Bands>
+  <StyleSheet>
+    <Item1 Ref="50" Name="crossTabGeneralStyle1" BorderStyle="Inset" Padding="2,2,0,0,100" Font="Arial, 9.75pt" ForeColor="Black" BackColor="White" BorderColor="255,160,160,160" Sides="All" StringFormat="Near;Near;0;None;Character;Default" />
+    <Item2 Ref="51" Name="crossTabHeaderStyle1" BorderStyle="Inset" BackColor="255,240,240,240" StringFormat="Near;Center;0;None;Character;Default" TextAlignment="MiddleLeft" />
+    <Item3 Ref="52" Name="crossTabDataStyle1" BorderStyle="Inset" StringFormat="Far;Center;0;None;Character;Default" TextAlignment="MiddleRight" />
+    <Item4 Ref="53" Name="crossTabTotalStyle1" BorderStyle="Inset" StringFormat="Far;Center;0;None;Character;Default" TextAlignment="MiddleRight" />
+  </StyleSheet>
+  <ComponentStorage>
+    <Item1 Ref="0" ObjectType="DevExpress.DataAccess.ObjectBinding.ObjectDataSource,DevExpress.DataAccess.v20.2" Name="objectDataSource1" Base64="PE9iamVjdERhdGFTb3VyY2UgTmFtZT0ib2JqZWN0RGF0YVNvdXJjZTEiPjxEYXRhTWVtYmVyPkJWQ19QcmV2UmVzdXJzZVJlcG9ydDwvRGF0YU1lbWJlcj48UGFyYW1ldGVycz48UGFyYW1ldGVyIE5hbWU9ImFuQlZDIiBUeXBlPSJEZXZFeHByZXNzLkRhdGFBY2Nlc3MuRXhwcmVzc2lvbiI+KFN5c3RlbS5JbnQzMikoP2FuQlZDKTwvUGFyYW1ldGVyPjxQYXJhbWV0ZXIgTmFtZT0idmFyaWFudGFCdWdldElkIiBUeXBlPSJEZXZFeHByZXNzLkRhdGFBY2Nlc3MuRXhwcmVzc2lvbiI+KFN5c3RlbS5JbnQzMikoP3ZhcmlhbnRhQnVnZXRJZCk8L1BhcmFtZXRlcj48L1BhcmFtZXRlcnM+PC9PYmplY3REYXRhU291cmNlPg==" />
+  </ComponentStorage>
+  <ObjectStorage>
+    <Item1 ObjectType="DevExpress.XtraReports.Serialization.ObjectStorageInfo, DevExpress.XtraReports.v20.2" Ref="3" Content="System.Int32" Type="System.Type" />
+  </ObjectStorage>
+</XtraReportsLayoutSerializer>

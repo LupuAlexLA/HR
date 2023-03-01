@@ -1,0 +1,48 @@
+﻿<div [@routerTransition]>
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <h3>Adaugare / modificare categorie contract</h3>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="content px-2">
+        <div class="container-fluid">
+            <div class="body">
+                <form #categorieContractForm="ngForm" (ngSubmit)="saveCategory()">
+                    <div class="row">
+                        <div class="col-lg-2">
+                            <label for="name" class="col-form-label"> Nume categorie contract</label>
+                        </div>
+                        <div class="col-lg-3">
+                            <input id="name" name="name" class="form-control" [(ngModel)]="categoryContract.name" #name="ngModel" />
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-5">
+                            <a [routerLink]="['/app/economic/contractCategory/contractCategoryList']"
+                               class="btn btn-info"
+                               title="Inapoi">
+                                <i class="fas fa-arrow-left"></i>
+                            </a>
+                        </div>
+                        <div class="col-lg-7">
+                            <div class="form-group">
+                                    <button type="submit"
+                                            class="btn btn-info"
+                                            title="Save"
+                                            [disabled]="categorieContractForm.form.invalid">
+                                        <i class="fas fa-save"></i>
+                                    </button>
+
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+</div>

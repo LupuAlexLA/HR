@@ -1,0 +1,575 @@
+﻿<div [@routerTransition]>
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <h2>Informatii generale</h2>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="content px-2">
+        <div class="container-fluid">
+            <div class="body" >
+                <form #imprumutForm="ngForm" (ngSubmit)="saveImprumut()">
+                    <div class="row">
+                        <div class="col-lg-2 alignContent">
+                            <label for="tipCreditare" class="col-form-label"> Tip Creditare </label>
+                        </div>
+                        <div class="col-lg-2 alignContent">
+                            <div class="form-group">
+                                <select id="tipCreditare" name="tipCreditare" [(ngModel)]="imprumut.tipCreditare" #tipCreditare="ngModel" class="form-control">
+                                    <option value="0" selected="selected"> Credit</option>
+                                    <option value="1"> Linie de Credit</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-lg-2 alignContent">
+                            <label for="beneficiaryId" class="col-form-label">Imprumut primit de la</label>
+                        </div>
+                        <div class="col-lg-4 alignContent">
+                            <mat-form-field style="width: 100%;">
+
+                                <input type="text"
+                                       placeholder="completeaza"
+                                       aria-label="Third Party"
+                                       matInput
+                                       [formControl]="myControlThirdParty"
+                                       [matAutocomplete]="thirdParty">
+
+                                <mat-icon matSuffix><i class="fa fa-angle-down" aria-hidden="true"></i></mat-icon>
+                                <mat-autocomplete autoActiveFirstOption #thirdParty="matAutocomplete" [displayWith]="displayFnThirdParty">
+                                    <mat-option *ngFor="let option of filteredOptionsThirdParty | async" [value]="option">
+                                        {{option.fullName}}
+                                    </mat-option>
+                                </mat-autocomplete>
+
+                            </mat-form-field>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-2 alignContent">
+                            <label for="DocumentType" class="col-form-label"> Tip document </label>
+                        </div>
+
+                        <div class="col-lg-2 alignContent">
+
+                            <mat-form-field style="width: 100%;">
+
+                                <input type="text"
+                                       placeholder="completeaza"
+                                       aria-label="Tip Document"
+                                       matInput
+                                       [formControl]="myControlDocTipuri"
+                                       [matAutocomplete]="tipdoc">
+
+                                <mat-icon matSuffix><i class="fa fa-angle-down" aria-hidden="true"></i></mat-icon>
+                                <mat-autocomplete autoActiveFirstOption #tipdoc="matAutocomplete" [displayWith]="displayFnDocTypes">
+                                    <mat-option *ngFor="let option of filteredOptionsDocumentTypes | async" [value]="option">
+                                        {{option.typeName}}
+                                    </mat-option>
+                                </mat-autocomplete>
+
+                            </mat-form-field>
+                        </div>
+
+                        <div class="col-lg-2 alignContent">
+                            <label for="DocumentNr" class="col-form-label"> Contract </label>
+                        </div>
+                        <div class="col-lg-2 alignContent">
+                            <input id="documentNr" name="documentNr" class="form-control" [(ngModel)]="imprumut.documentNr" #name="ngModel" />
+                        </div>
+
+
+
+
+                    </div>
+
+                    <div class="row">
+
+                        <div class="col-lg-2 alignContent">
+                            <label for="documentDate" class="col-form-label"> Data Angajament </label>
+                        </div>
+
+                        <div class="col-lg-2 alignContent">
+
+                            <mat-form-field style="width: 100%;">
+                                <input matInput
+                                       id="documentDate"
+                                       name="documentDate"
+                                       [matDatepicker]="dataDocumentPicker"
+                                       [(ngModel)]="imprumut.documentDate"
+                                       #dataDocument="ngModel"
+                                       required />
+
+
+                                <mat-datepicker-toggle matSuffix [for]="dataDocumentPicker"></mat-datepicker-toggle>
+                                <mat-datepicker #dataDocumentPicker></mat-datepicker>
+                            </mat-form-field>
+
+                        </div>
+
+                        <div class="col-lg-2 alignContent">
+                            <label for="documentDate" class="col-form-label"> Data Sfarsit </label>
+                        </div>
+
+                        <div class="col-lg-2 alignContent">
+
+                            <mat-form-field style="width: 100%;">
+                                <input matInput
+                                       id="dataEndDocument"
+                                       name="dataEndDocument"
+                                       [matDatepicker]="dataEndDocumentPicker"
+                                       [(ngModel)]="imprumut.endDate"
+                                       required />
+
+
+                                <mat-datepicker-toggle matSuffix [for]="dataEndDocumentPicker"></mat-datepicker-toggle>
+                                <mat-datepicker #dataEndDocumentPicker></mat-datepicker>
+                            </mat-form-field>
+
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-2 alignContent">
+                            <label for="imprumutTipuri" class="col-form-label"> Tip imprumut </label>
+                        </div>
+
+                        <div class="col-lg-4 alignContent">
+
+                            <mat-form-field style="width: 100%;">
+
+                                <input type="text"
+                                       placeholder="completeaza"
+                                       aria-label="Tip Imprumut"
+                                       matInput
+                                       [formControl]="myControlTipuri"
+                                       [matAutocomplete]="tipimprumut">
+
+                                <mat-icon matSuffix><i class="fa fa-angle-down" aria-hidden="true"></i></mat-icon>
+                                <mat-autocomplete autoActiveFirstOption #tipimprumut="matAutocomplete" [displayWith]="displayFn">
+                                    <mat-option *ngFor="let option of filteredOptionsTipuri | async" [value]="option">
+                                        {{option.description}}
+                                    </mat-option>
+                                </mat-autocomplete>
+
+                            </mat-form-field>
+                        </div>
+
+
+
+
+                    </div>
+                    <div class="row">
+                        <!--<div class="col-lg-2 alignContent">
+            <label for="documentDate" class="col-form-label"> Data Incasarii </label>
+        </div>
+
+        <div class="col-lg-2 alignContent">
+
+            <mat-form-field style="width: 100%;">
+                <input matInput
+                       id="loanDate"
+                       name="loanDate"
+                       [matDatepicker]="loanDatePicker"
+                       [(ngModel)]="imprumut.loanDate"
+                       #loanDate="ngModel"
+                       required />
+                <mat-datepicker-toggle matSuffix [for]="loanDatePicker"></mat-datepicker-toggle>
+                <mat-datepicker #loanDatePicker></mat-datepicker>
+            </mat-form-field>
+
+        </div>-->
+
+                        <div class="col-lg-2 alignContent">
+                            <label for="activitateTip" class="col-form-label"> Tip Activitate </label>
+                        </div>
+                        <div class="col-lg-3 alignContent">
+
+                            <select id="activitateTipId"
+                                    name="activitateTipId"
+                                    [(ngModel)]="imprumut.activityTypeId"
+                                    #activitateTipId="ngModel"
+                                    class="form-control"
+                                    required>
+                                <option *ngFor="let item of activitatiTip" [value]="item.id">
+                                    {{item.name}}
+                                </option>
+                            </select>
+
+                        </div>
+
+
+                    </div>
+
+
+
+
+
+
+
+
+                    <div class="row">
+
+
+                        <div class="col-lg-2 alignContent" *ngIf="imprumut.tipCreditare == 0">
+                            <label for="documentDate" class="col-form-label"> Data inceput </label>
+                        </div>
+
+                        <div class="col-lg-2 alignContent" *ngIf="imprumut.tipCreditare == 0">
+
+                            <mat-form-field style="width: 100%;">
+                                <input matInput
+                                       id="startDate"
+                                       name="startDate"
+                                       [matDatepicker]="startDatePicker"
+                                       [(ngModel)]="imprumut.startDate"
+                                       (ngModelChange)="getDuration()"
+                                       #startDate="ngModel"
+                                       required />
+                                <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
+                                <mat-datepicker #startDatePicker></mat-datepicker>
+                            </mat-form-field>
+
+                        </div>
+
+
+
+
+                        <div class="col-lg-1 alignContent" *ngIf="imprumut.tipCreditare == 0">
+                            <mat-checkbox id="isFinalDeLuna" name="isFinalDeLuna" [(ngModel)]="imprumut.isFinalDeLuna" [checked]="imprumut.isFinalDeLuna">Final de luna? </mat-checkbox>
+                        </div>
+
+                        <div class="col-lg-1 alignContent" *ngIf="imprumut.tipCreditare == 0">
+                            <label for="durata" class="col-form-label"> Durata </label>
+                        </div>
+                        <div class="col-lg-1 alignContent" *ngIf="imprumut.tipCreditare == 0">
+                            <input id="durata" name="durata" class="form-control" [(ngModel)]="imprumut.durata" (ngModelChange)="calculateEndDateWithDuration(imprumut.durata)" #durata="ngModel" />
+                        </div>
+
+                        <div class="col-lg-2 alignContent" *ngIf="imprumut.tipCreditare == 0">
+                            <div class="form-group">
+                                <select id="tipDurata" name="tipDurata" [(ngModel)]="imprumut.imprumuturiTipDurata" #tipDurataId="ngModel" class="form-control">
+                                    <option value="0"> Luni</option>
+                                    <option value="1"> Zile</option>
+                                </select>
+                            </div>
+                        </div>
+
+
+                        <div class="col-lg-1 alignContent" *ngIf="imprumut.tipCreditare == 0">
+                            <label for="endDate" class="col-form-label"> Data sfarsit </label>
+                        </div>
+
+                        <div class="col-lg-2 alignContent" *ngIf="imprumut.tipCreditare == 0">
+
+                            <mat-form-field style="width: 100%;">
+                                <input matInput
+                                       id="endDate"
+                                       name="endDate"
+                                       [matDatepicker]="endDatePicker"
+                                       [(ngModel)]="imprumut.endDate"
+                                       (ngModelChange)="getDuration()"
+                                       #endDate="ngModel"
+                                       required />
+                                <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
+                                <mat-datepicker #endDatePicker></mat-datepicker>
+                            </mat-form-field>
+
+                        </div>
+                    </div>
+
+                    <div class="row" *ngIf="imprumut.tipCreditare == 0">
+
+
+                        <div class="col-lg-2 alignContent">
+                            <label for="termen" class="col-form-label"> Termen </label>
+                        </div>
+
+                        <div class="col-lg-3 alignContent">
+
+                            <mat-form-field style="width: 100%;">
+
+                                <input type="text"
+                                       placeholder="completeaza"
+                                       aria-label="imprumuturiTermene"
+                                       matInput
+                                       [formControl]="myControlTermene"
+                                       [matAutocomplete]="termene">
+                                <mat-icon matSuffix><i class="fa fa-angle-down" aria-hidden="true"></i></mat-icon>
+
+                                <mat-autocomplete autoActiveFirstOption #termene="matAutocomplete" [displayWith]="displayFnBankImprumuturiTermene">
+                                    <mat-option *ngFor="let option of filteredOptionsTermene | async" [value]="option">
+                                        {{option.description}}
+                                    </mat-option>
+                                </mat-autocomplete>
+
+                            </mat-form-field>
+                        </div>
+
+                    </div>
+
+                    <div class="row" *ngIf="imprumut.tipCreditare == 0">
+                        <div class="col-lg-2 alignContent">
+                            <label for="periodicitate" class="col-form-label"> Periodicitate </label>
+                        </div>
+                        <div class="col-lg-2 alignContent">
+                            <input id="periodicitate" name="periodicitate" class="form-control" [(ngModel)]="imprumut.periodicitate" #name="ngModel" />
+                        </div>
+
+                        <div class="col-lg-2 alignContent">
+                            <div class="form-group">
+                                <select id="perioadaTipDurata" name="perioadaTipDurata" [(ngModel)]="imprumut.perioadaTipDurata" #perioadaTipDurataId="ngModel" class="form-control" [disabled]="true">
+                                    <option value="0"> Luni</option>
+                                    <option value="1"> Zile</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-2 alignContent">
+                            <label for="tipRata" class="col-form-label"> Tip Rata </label>
+                        </div>
+                        <div class="col-lg-2 alignContent">
+                            <div class="form-group">
+                                <select id="tipRata" name="tipRata" [(ngModel)]="imprumut.tipRata" #tipRataId="ngModel" class="form-control">
+                                    <option value="0"> RataTotalaEgala</option>
+                                    <option value="1"> RateDescrescatoare</option>
+                                </select>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-2 alignContent">
+                            <label for="suma" class="col-form-label"> Suma </label>
+                        </div>
+                        <div class="col-lg-2 alignContent">
+                            <input id="suma" name="suma" class="form-control" [(ngModel)]="imprumut.suma" #name="ngModel" />
+                        </div>
+
+
+                        <div class="col-lg-2 alignContent">
+
+                            <select id="currencyId"
+                                    name="currencyId"
+                                    [(ngModel)]="imprumut.currencyId"
+                                    (change)="changeIbanWhenCurrencyChange()"
+                                    #activitateTipId="ngModel"
+                                    class="form-control"
+                                    required>
+                                <option *ngFor="let item of currency" [value]="item.id">
+                                    {{item.currencyName}}
+                                </option>
+                            </select>
+
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-2">
+
+                            <label for="bankId" class="col-form-label">
+                                Banca
+                            </label>
+                        </div>
+                        <div class="col-lg-2">
+
+                            <select class="form-control"
+                                    name="bankId"
+                                    [(ngModel)]="imprumut.bankId"
+                                    (change)="getBankName()">
+                                <option *ngFor="let value of banks?.getBank" [ngValue]="value.issuerId">{{value.bankName}}</option>
+                            </select>
+                        </div>
+
+
+                    </div>
+
+                    <div class="row">
+
+                        <!--<div class="col-lg-2 alignContent">
+            <label for="contimprumut" class="col-form-label"> Cont imprumut </label>
+        </div>
+
+        <div class="col-lg-4 alignContent">
+
+            <mat-form-field style="width: 100%;">
+
+                <input type="text"
+                       placeholder="completeaza"
+                       aria-label="ContImprumut"
+                       name="contimprumut"
+                       matInput
+                       [formControl]="myControlIban"
+                       [matAutocomplete]="iban">
+
+                <mat-icon matSuffix><i class="fa fa-angle-down" aria-hidden="true"></i></mat-icon>
+                <mat-autocomplete autoActiveFirstOption #iban="matAutocomplete" [displayWith]="displayFnBankIban">
+                    <mat-option *ngFor="let option of filteredOptionsIban | async" [value]="option">
+                        {{option.iban}}
+                    </mat-option>
+                </mat-autocomplete>
+
+            </mat-form-field>
+        </div>
+
+        <div class="col-lg-1 alignContent">
+            <label for="contPlata" class="col-form-label"> Cont plata </label>
+        </div>
+
+        <div class="col-lg-4 alignContent">
+
+            <mat-form-field style="width: 100%;">
+
+                <input type="text"
+                       placeholder="completeaza"
+                       aria-label="ContPlata"
+                       name="contPlata"
+                       matInput
+                       [formControl]="myControlIbanPlata"
+                       [matAutocomplete]="ibanPlata">
+
+                <mat-icon matSuffix><i class="fa fa-angle-down" aria-hidden="true"></i></mat-icon>
+                <mat-autocomplete autoActiveFirstOption #ibanPlata="matAutocomplete" [displayWith]="displayFnBankIbanPlata">
+                    <mat-option *ngFor="let option of filteredOptionsIbanPlata | async" [value]="option">
+                        {{option.iban}}
+                    </mat-option>
+                </mat-autocomplete>
+
+            </mat-form-field>
+        </div>-->
+
+
+
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-2 alignContent">
+                            <label for="contContabil" class="col-form-label"> Cont Contabil</label>
+                        </div>
+
+                        <mat-form-field style="width: 40%;">
+                            <input type="text" matInput id="contContabil"
+                                   name="contContabil"
+                                   [(ngModel)]="imprumut.accountName"
+                                   (input)="getAccountListComputing($event)"
+                                   required [matAutocomplete]="auto">
+                            <mat-autocomplete #auto="matAutocomplete" [displayWith]="getName.bind(this)">
+                                <mat-select *ngFor="let item of accounts">
+                                    un
+                                    <mat-option (click)="setAccountName(item.id,item.name)" [value]="item">
+                                        {{ item.name }}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-autocomplete>
+                        </mat-form-field>
+                        <button class="btn btn-info ml-1"
+                                title="Vizualizeaza sold"
+                                (click)="showDbSold(imprumut.contContabilId)">
+                            <i class="fas fa-comment-dollar"></i>
+                        </button>
+                    </div>
+
+                    <div class="row">
+
+                        <div class="col-lg-2 alignContent">
+                            <label for="tipRata" class="col-form-label"> Tip Dobanda </label>
+                        </div>
+
+                        <div class="col-lg-2 alignContent">
+                            <div class="form-group">
+                                <select id="tipDobanda" name="tipDobanda" [(ngModel)]="imprumut.tipDobanda" #tipRataId="ngModel" class="form-control">
+                                    <option value="0"> Fixa</option>
+                                    <option value="1"> Variabila</option>
+                                </select>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div *ngIf="imprumut.tipDobanda == 0">
+                        <div class="row">
+                            <div class="col-lg-2 alignContent">
+                                <label for="procentDobanda" class="col-form-label"> Procent Dobanda</label>
+                            </div>
+                            <div class="col-lg-2 alignContent">
+                                <input id="procentDobanda" name="procentDobanda" class="form-control" [(ngModel)]="imprumut.procentDobanda" #name="ngModel" />
+
+                            </div>
+                            <div class="col-lg-2 alignContent">
+                                <b>%</b>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div *ngIf="imprumut.tipDobanda == 1">
+                        <div class="row">
+                            <div class="col-lg-2 alignContent">
+                                <label for="dobanziReferinta" class="col-form-label"> Dobanda de Referinta</label>
+                            </div>
+
+                            <div class="col-lg-3 alignContent">
+
+                                <mat-form-field style="width: 100%;">
+
+                                    <input type="text"
+                                           placeholder="completeaza"
+                                           aria-label="dobanziReferinta"
+                                           matInput
+                                           [formControl]="myControlDobanzi"
+                                           [matAutocomplete]="dobanzi">
+                                    <mat-icon matSuffix><i class="fa fa-angle-down" aria-hidden="true"></i></mat-icon>
+
+                                    <mat-autocomplete autoActiveFirstOption #dobanzi="matAutocomplete" [displayWith]="displayFnDobanzi">
+                                        <mat-option *ngFor="let dob of  filteredDobanziReferinta | async" [value]="dob">
+                                            {{dob.dobanda}}
+                                        </mat-option>
+                                    </mat-autocomplete>
+
+                                </mat-form-field>
+                            </div>
+
+                            <div class="col-lg-2 alignContent">
+                                <label for="marjaFixa" class="col-form-label"> Marja Fixa </label>
+                            </div>
+                            <div class="col-lg-2 alignContent">
+                                <input id="marjaFixa" name="marjaFixa" class="form-control" [(ngModel)]="imprumut.marjaFixa" #name="ngModel" />
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+
+
+                    <div class="row">
+                        <div class="col-lg-5">
+                            <a [routerLink]="['/app/imprumuturi/imprumuturiList']"
+                               class="btn btn-info"
+                               title="Inapoi">
+                                <i class="fas fa-arrow-left"></i>
+                            </a>
+                        </div>
+
+                        <div class="col-lg-7">
+                            <div class="form-group">
+                                <button type="submit"
+                                        class="btn btn-info"
+                                        title="Save"
+                                        [disabled]="imprumutForm.form.invalid">
+                                    <i class="fas fa-save"></i>
+                                </button>
+
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                
+            </div>
+            </div>
+
+
+    </section>
+</div>

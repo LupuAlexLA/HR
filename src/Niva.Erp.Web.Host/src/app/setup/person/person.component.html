@@ -1,0 +1,46 @@
+﻿<div [@routerTransition]>
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <h3>
+                        {{ "Date Societate" | localize }}
+                    </h3>
+                    <a href="{{appBaseUrl}}/assets/pdf/Conta - General - Manual utilizare.pdf" title="Manual de utilizare" class="btn btn-info ml-2" target="_blank"><i class="fas fa-question"></i></a>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="content-header px-2">
+        <div class="col-12">
+            <div class="body">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Cod fiscal</th>
+                            <th scope="col">Numar Registrul Comertului</th>
+                            <th scope="col">Nume</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>{{personList?.id1 }}</td>
+                            <td>{{personList?.id2 }}</td>
+                            <td>{{personList?.fullName }}</td>
+                            <td>
+                                <a [routerLink]="['/app/setup/person/personEdit']"
+                                   [queryParams]="{personId: this.personId}"
+                                   class="btn btn-info">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+</div>

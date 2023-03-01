@@ -1,0 +1,528 @@
+﻿<div [@routerTransition]>
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <h3>
+                        {{ "Adaugare / modificare emitent" | localize }}
+                    </h3>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="content px-2">
+        <div class="col-12">
+            <form id="form1" *ngIf="personIssuerEdit.showForm1 === true">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label class="col-form-label">
+                                Cautare persoana
+                            </label>
+                            <div class="input-group">
+                                <input id="search"
+                                       name="search"
+                                       class="form-control"
+                                       type="text"
+                                       [(ngModel)]="search" />
+                                <button type="button"
+                                        (click)="searchPerson(search)"
+                                        class="btn btn-info"
+                                        title="Cautare">
+                                    <i class="fas fa-search"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+                <div class="row">
+                    <div *ngIf="persons.length > 0" class="col-lg-6">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Cod fiscal</th>
+                                    <th scope="col">Numar Registrul Comertului</th>
+                                    <th scope="col">Nume</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let person of persons; let i = index">
+                                    <td scope="row">{{ i + 1 }}</td>
+                                    <td>{{ person.id1 }}</td>
+                                    <td>{{ person.id2 }}</td>
+                                    <td>{{ person.fullName }}</td>
+                                    <td>
+                                        <button type="button"
+                                                class="btn btn-info"
+                                                (click)="selectPerson(person.id)"
+                                                title="Selecteaza persoana">
+                                            <i class="fas fa-check"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="col-lg-6" *ngIf="showAddPerson === true">
+                        <p>Persoana nu a fost gasita.
+                        <button class="btn btn-info"
+                                type="button"
+                                (click)="nextForm(personIssuerEdit, 2)"
+                                title="Adauga persoana">
+                            <i class="fas fa-plus"></i>
+                            </button></p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <button type="button"
+                                class="btn btn-info btn-circle"
+                                [routerLink]="['/app/emitenti']"
+                                title="Inapoi">
+                            <i class="fas fa-arrow-left"></i>
+                        </button>
+                    </div>
+                </div>
+            </form>
+            <form id="form2" *ngIf="personIssuerEdit.showForm2 === true">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label class="col-form-label"
+                                   for="id1">
+                                Cod fiscal
+                                <span *ngIf="id1.invalid && !id1.length">[*]</span>
+                            </label>
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <i class="fas fa-check-circle" aria-hidden="true" *ngIf="!id1.invalid || id1.length"></i>
+                                    <i class="fas fa-exclamation-circle" aria-hidden="true" *ngIf="id1.invalid && !id1.length"></i>
+                                </span>
+                                <input type="text"
+                                       id="id1"
+                                       name="id1"
+                                       [(ngModel)]="personIssuerEdit.id1"
+                                       #id1="ngModel"
+                                       class="form-control"
+                                       ngModel
+                                       required />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label class="col-form-label"
+                                   for="id2">
+                               Numar Registrul Comertului
+                                <span *ngIf="id2.invalid && !id2.length">[*]</span>
+                            </label>
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <i class="fas fa-check-circle" aria-hidden="true" *ngIf="!id2.invalid || id2.length"></i>
+                                    <i class="fas fa-exclamation-circle" aria-hidden="true" *ngIf="id2.invalid && !id2.length"></i>
+                                </span>
+                                <input type="text"
+                                       id="id2"
+                                       name="id2"
+                                       [(ngModel)]="personIssuerEdit.id2"
+                                       #id2="ngModel"
+                                       class="form-control"
+                                       required />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row"
+                     *ngIf="!personIssuerEdit.isNaturalPerson || personIssuerEdit.personType == 'LP'">
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label class="col-form-label"
+                                   for="name">
+                               Nume
+                                <span *ngIf="name.invalid && !name.length">[*]</span>
+                            </label>
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <i class="fas fa-check-circle"
+                                       aria-hidden="true"
+                                       *ngIf="!name.invalid || name.length"></i>
+                                    <i class="fas fa-exclamation-circle"
+                                       aria-hidden="true"
+                                       *ngIf="name.invalid && !name.length"></i>
+                                </span>
+                                <input id="name"
+                                       name="name"
+                                       class="form-control"
+                                       [(ngModel)]="personIssuerEdit.name"
+                                       #name="ngModel"
+                                       type="text"
+                                       required />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label class="col-form-label"
+                                   for="addressStreet">
+                                Strada
+                                <span *ngIf="addressStreet.invalid && !addressStreet.length">[*]</span>
+                            </label>
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <i class="fas fa-check-circle"
+                                       aria-hidden="true"
+                                       *ngIf="!addressStreet.invalid || addressStreet.length"></i>
+                                    <i class="fas fa-exclamation-circle"
+                                       aria-hidden="true"
+                                       *ngIf="addressStreet.invalid && !addressStreet.length"></i>
+
+                                </span>
+                                <input id="addressStreet"
+                                       name="addressStreet"
+                                       class="form-control"
+                                       [(ngModel)]="personIssuerEdit.addressStreet"
+                                       #addressStreet="ngModel"
+                                       type="text"
+                                       required />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label class="col-form-label"
+                                   for="addressNo">
+                                Numar strada
+                                <span *ngIf="addressNo.invalid && !addressNo.length">[*]</span>
+                            </label>
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <i class="fas fa-check-circle"
+                                       aria-hidden="true"
+                                       *ngIf="!addressNo.invalid || addressNo.length"></i>
+                                    <i class="fas fa-exclamation-circle"
+                                       aria-hidden="true"
+                                       *ngIf="addressNo.invalid && !addressNo.length"></i>
+
+                                </span>
+                                <input id="addressNo"
+                                       name="addressNo"
+                                       class="form-control"
+                                       [(ngModel)]="personIssuerEdit.addressNo"
+                                       #addressNo="ngModel"
+                                       type="text"
+                                       required />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label class="col-form-label"
+                                   for="addressBlock">
+                                Bloc
+                                <span *ngIf="addressBlock.invalid && !addressBlock.length">[*]</span>
+                            </label>
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <i class="fas fa-check-circle"
+                                       aria-hidden="true"
+                                       *ngIf="!addressBlock.invalid || addressBlock.length"></i>
+                                    <i class="fas fa-exclamation-circle"
+                                       aria-hidden="true"
+                                       *ngIf="addressBlock.invalid && !addressBlock.length"></i>
+
+                                </span>
+                                <input id="addressBlock"
+                                       name="addressBlock"
+                                       class="form-control"
+                                       [(ngModel)]="personIssuerEdit.addressBlock"
+                                       #addressBlock="ngModel"
+                                       type="text"
+                                       required />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label class="col-form-label"
+                                   for="addressFloor">
+                                Etaj
+                                <span *ngIf="addressFloor.invalid && !addressFloor.length">[*]</span>
+                            </label>
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <i class="fas fa-check-circle"
+                                       aria-hidden="true"
+                                       *ngIf="!addressFloor.invalid || addressFloor.length"></i>
+                                    <i class="fas fa-exclamation-circle"
+                                       aria-hidden="true"
+                                       *ngIf="addressFloor.invalid && !addressFloor.length"></i>
+
+                                </span>
+                                <input id="addressFloor"
+                                       name="addressFloor"
+                                       class="form-control"
+                                       [(ngModel)]="personIssuerEdit.addressFloor"
+                                       #addressFloor="ngModel"
+                                       type="text"
+                                       required />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label class="col-form-label"
+                                   for="addressCountryId">
+                               Tara
+                                <span *ngIf="addressCountryId.invalid && !addressCountryId.length">[*]</span>
+                            </label>
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <i class="fas fa-check-circle"
+                                       aria-hidden="true"
+                                       *ngIf="!addressCountryId.invalid || addressCountryId.length"></i>
+                                    <i class="fas fa-exclamation-circle"
+                                       aria-hidden="true"
+                                       *ngIf="addressCountryId.invalid && !addressCountryId.length"></i>
+                                </span>
+                                <select class="form-control"
+                                        name="addressCountryId"
+                                        [(ngModel)]="personIssuerEdit.addressCountryId"
+                                        #addressCountryId="ngModel"
+                                        ngModel
+                                        (change)="onSelectCountry($event)">
+                                    <option *ngFor="let value of countries" [ngValue]="value.id">{{value.countryName}}</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label class="col-form-label"
+                                   for="addressRegionId">
+                                Judet
+                                <span *ngIf="addressRegionId.invalid && !addressRegionId.length">[*]</span>
+                            </label>
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <i class="fas fa-check-circle"
+                                       aria-hidden="true"
+                                       *ngIf="!addressRegionId.invalid || addressRegionId.length"></i>
+                                    <i class="fas fa-exclamation-circle"
+                                       aria-hidden="true"
+                                       *ngIf="addressRegionId.invalid && !addressRegionId.length"></i>
+
+                                </span>
+                                <select class="form-control"
+                                        name="addressRegionId"
+                                        [(ngModel)]="personIssuerEdit.addressRegionId"
+                                        #addressRegionId="ngModel"
+                                        ngModel>
+                                    <option *ngFor="let value of regions" [ngValue]="value.id">{{value.regionName}}</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label class="col-form-label"
+                                   for="addressLocality">
+                                Localitate
+                                <span *ngIf="addressLocality.invalid && !addressLocality.length">[*]</span>
+                            </label>
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <i class="fas fa-check-circle"
+                                       aria-hidden="true"
+                                       *ngIf="!addressLocality.invalid || addressLocality.length"></i>
+                                    <i class="fas fa-exclamation-circle"
+                                       aria-hidden="true"
+                                       *ngIf="addressLocality.invalid && !addressLocality.length"></i>
+
+                                </span>
+                                <input id="addressLocality"
+                                       name="addressLocality"
+                                       class="form-control"
+                                       [(ngModel)]="personIssuerEdit.addressLocality"
+                                       #addressLocality="ngModel"
+                                       type="text"
+                                       required />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label class="col-form-label"
+                                   for="addressZipCode">
+                                Cod postal
+                                <span *ngIf="addressZipCode.invalid && !addressZipCode.length">[*]</span>
+                            </label>
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <i class="fas fa-check-circle"
+                                       aria-hidden="true"
+                                       *ngIf="!addressZipCode.invalid || addressZipCode.length"></i>
+                                    <i class="fas fa-exclamation-circle"
+                                       aria-hidden="true"
+                                       *ngIf="addressZipCode.invalid && !addressZipCode.length"></i>
+
+                                </span>
+                                <input id="addressZipCode"
+                                       name="addressZipCode"
+                                       class="form-control"
+                                       [(ngModel)]="personIssuerEdit.addressZipCode"
+                                       #addressZipCode="ngModel"
+                                       type="text"
+                                       required />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6" *ngIf="issuerId !== 0">
+                        <button type="button"
+                                class="btn btn-info btn-circle"
+                                [routerLink]="['/app/emitenti']"
+                                title="Inapoi">
+                            <i class="fas fa-arrow-left"></i>
+                        </button>
+                    </div>
+                    <div class="col-lg-6" *ngIf="issuerId === 0">
+                        <button type="button"
+                                class="btn btn-info btn-circle"
+                                (click)="nextForm(personIssuerEdit, 1)"
+                                title="Inapoi">
+                            <i class="fas fa-arrow-left"></i>
+                        </button>
+                    </div>
+                    <div class="col-lg-5">
+                        <button type="button"
+                                class="btn btn-info"
+                                title="Inainte"
+                                (click)="nextForm(personIssuerEdit, 3)">
+                            <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
+
+                </div>
+            </form>
+            <form id="form3" *ngIf="personIssuerEdit.showForm3 === true">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label class="col-form-label">
+                               Tip emitent
+                            </label>
+                            <div class="input-group">
+                                <select class="form-control"
+                                        name="issuerType"
+                                        [(ngModel)]="personIssuerEdit.issuerDetails.issuerType"
+                                        #issuerType="ngModel"
+                                        ngModel>
+                                    <option *ngFor="let value of issuerTypeList" [ngValue]="value.id">{{value.name}}</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label class="col-form-label">Cod statistic</label>
+                            <div class="input-group">
+                                <select [(ngModel)]="personIssuerEdit.sectorBnrId" #sectorBnrId="ngModel" class="form-control">
+                                    <option *ngFor="let item of sectorBnrList" [ngValue]="item.id">{{ item.denumire }}</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" *ngIf="personIssuerEdit.issuerDetails.issuerType === 1">
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label class="col-form-label"
+                                   for="ibanAbrv">
+                                IBAN Abrv
+                                <span *ngIf="ibanAbrv.invalid && !ibanAbrv.length">[*]</span>
+                            </label>
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <i class="fas fa-check-circle"
+                                       aria-hidden="true"
+                                       *ngIf="!ibanAbrv.invalid || ibanAbrv.length"></i>
+                                    <i class="fas fa-exclamation-circle"
+                                       aria-hidden="true"
+                                       *ngIf="ibanAbrv.invalid && !ibanAbrv.length"></i>
+
+                                </span>
+                                <input id="ibanAbrv"
+                                       name="ibanAbrv"
+                                       class="form-control"
+                                       [(ngModel)]="personIssuerEdit.issuerDetails.ibanAbrv"
+                                       #ibanAbrv="ngModel"
+                                       type="text"
+                                       required />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label class="col-form-label"
+                                   for="bic">
+                                Bic
+                                <span *ngIf="bic.invalid && !bic.length">[*]</span>
+                            </label>
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <i class="fas fa-check-circle"
+                                       aria-hidden="true"
+                                       *ngIf="!bic.invalid || bic.length"></i>
+                                    <i class="fas fa-exclamation-circle"
+                                       aria-hidden="true"
+                                       *ngIf="bic.invalid && !bic.length"></i>
+
+                                </span>
+                                <input id="bic"
+                                       name="bic"
+                                       class="form-control"
+                                       [(ngModel)]="personIssuerEdit.issuerDetails.bic"
+                                       #bic="ngModel"
+                                       type="text"
+                                       required />
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <button type="button"
+                                class="btn btn-info btn-circle"
+                                (click)="nextForm(personIssuerEdit, 2)"
+                                title="Inapoi">
+                            <i class="fas fa-arrow-left"></i>
+                        </button>
+                    </div>
+                    <div class="col-lg-5">
+                        <button type="submit"
+                                class="btn btn-info"
+                                (click)="savePersonIssuer()"
+                                title="Save">
+                            <i class="fas fa-save"></i>
+                        </button>
+                    </div>
+
+                </div>
+            </form>
+        </div>
+    </section>
+</div>

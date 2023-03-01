@@ -1,0 +1,42 @@
+﻿<form class="form-horizontal"
+      autocomplete="off"
+      #referatForm="ngForm"
+      (ngSubmit)="save()">
+    <abp-modal-header [title]="'Adaugare / Modificare referat'"
+                      (onCloseClick)="bsModalRef.hide()"></abp-modal-header>
+    <div class="modal-body">
+        <div class="form-group row required">
+            <label class="col-md-3 col-form-label" for="operationDate">
+                Data
+            </label>
+            <div class="col-md-9">
+                <mat-form-field style="width: 100%;">
+                    <input matInput
+                           id="operationDate"
+                           name="operationDate"
+                           [matDatepicker]="operationDatePicker"
+                           [(ngModel)]="paapReferat.operationDate"
+                           #operationDate="ngModel" />
+                    <mat-datepicker-toggle matSuffix [for]="operationDatePicker"></mat-datepicker-toggle>
+                    <mat-datepicker #operationDatePicker></mat-datepicker>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="form-group row required">
+            <label class="col-md-3 col-form-label" for="name">
+                Denumire
+            </label>
+            <div class="col-md-9">
+                <input id="name" name="name" [(ngModel)]="paapReferat.name" #name="ngModel" class="form-control" />
+            </div>
+        </div>
+        <div class="form-group row required">
+            <label class="col-md-3 col-form-label" for="name">Suma</label>
+            <div class="col-md-9">
+                <input id="suma" name="suma" [(ngModel)]="paapReferat.suma" #suma="ngModel" class="form-control" />
+            </div>
+        </div>
+    </div>
+    <abp-modal-footer [saveDisabled]="!referatForm.form.valid"
+                      (onCancelClick)="bsModalRef.hide()"></abp-modal-footer>
+</form>

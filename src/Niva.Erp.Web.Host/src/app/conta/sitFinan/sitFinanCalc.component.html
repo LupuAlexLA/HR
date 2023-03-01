@@ -1,0 +1,94 @@
+﻿<div [@routerTransition]>
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <h3>Calcul situatii financiare</h3>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="content px-2">
+        <div class="container-fluid" [busy]="isLoading">
+            <div class="body">
+                <div class="row">
+                    <div class="col-lg-2">
+                        <label for="searchStartDate" class="col-form-label">Data start</label>
+                        <mat-form-field>
+                            <input matInput
+                                   id="searchStartDate"
+                                   name="searchStartDate"
+                                   [matDatepicker]="searchStartDatePicker"
+                                   [(ngModel)]="form.startDate"
+                                   #startDate="ngModel">
+                            <mat-datepicker-toggle matSuffix [for]="searchStartDatePicker"></mat-datepicker-toggle>
+                            <mat-datepicker #searchStartDatePicker></mat-datepicker>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-lg-2">
+                        <label for="searchEndDate" class="col-form-label">Data sfarsit </label>
+                        <mat-form-field>
+                            <input matInput
+                                   id="searchEndDate"
+                                   name="searchEndDate"
+                                   [matDatepicker]="searchEndDatePicker"
+                                   [(ngModel)]="form.endDate"
+                                   #endDate="ngModel">
+                            <mat-datepicker-toggle matSuffix [for]="searchEndDatePicker"></mat-datepicker-toggle>
+                            <mat-datepicker #searchEndDatePicker></mat-datepicker>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-lg-2">
+                        <label for="isDailyBalance" class="col-form-label">Balanta zilnica</label>
+                        <div class="custom-control custom-checkbox">
+                            <input id="isDailyBalance"
+                                   name="isDailyBalance"
+                                   type="checkbox"
+                                   class="custom-control-input"
+                                   [(ngModel)]="form.isDailyBalance" />
+                            <label for="isDailyBalance" class="custom-control-label mt-2"> Este balanta zilnica</label>
+                        </div>
+                    </div>
+                    <div class="col-lg-1">
+
+                        <button (click)="calcList()" class="btn btn-info"><i class="fas fa-search"></i></button>
+                        <a href="{{appBaseUrl}}/assets/pdf/Conta - Situatii financiare - Manual utilizare.pdf" title="Manual de utilizare" class="btn btn-info ml-2" target="_blank"><i class="fas fa-question"></i></a>
+                    </div>
+                </div>
+                <div class="row">
+                    <!--<div class="row">-->
+                        <div class="col-lg-5">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col"></th>
+                                        <th scope="col">Data balantei</th>
+                                        <th scope="col">Tip balanta</th>
+                                        <th scope="col">Situatii financiare</th>
+                                        <th scope="col"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let detail of form.balanceList; let i = index">
+                                        <td scope="row">{{ i + 1}}</td>
+                                        <td>{{ detail.saveDate | date: 'dd.MM.yyyy' }}</td>
+                                        <td>{{ detail.balanceName }}</td>
+                                        <td>
+                                            <input id="calcSitFinan{{i}}" name="calcSitFinan{{i}}" type="checkbox" [(ngModel)]="detail.calcSitFinan" #calcSitFinan="ngModel" disabled />
+                                        </td>
+                                        <td>
+                                            <button (click)="calcRapoarte(detail.id)" class="btn btn-info" title="Calcul situatii financiare"><i class="fas fa-laptop"></i></button>
+                                            <a [routerLink]="['/app/conta/sitFinan/sitFinanCalcReport']"
+                                               [queryParams]="{balanceId: detail.id}" class="btn btn-info ml-2" title="Detalii rapoarte"><i class="fas fa-list"></i></a>
+                                            <button (click)="deleteCalcRapoarte(detail.id)" class="btn btn-danger ml-2" title="Sterge calcul"><i class="fas fa-trash"></i></button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    <!--</div>-->
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

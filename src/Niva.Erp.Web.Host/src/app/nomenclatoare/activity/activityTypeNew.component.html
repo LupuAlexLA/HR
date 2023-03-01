@@ -1,0 +1,42 @@
+﻿<div [@routerTransition]>
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <h3>Adaugare / Modificare tip activitate</h3>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="content px-2">
+        <div class="container-fluid">
+            <form id="activityType" name="activityType" #activityTypeForm="ngForm" (ngSubmit)="savaActivityType()">
+                <div class="row">
+                    <div class="col-lg-3">
+                        <label for="name" class="col-form-label"> Tip activitate</label>
+                        <input id="name" name="name" type="text" class="form-control" [(ngModel)]="activityType.name" #name="ngModel" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-3">
+                        <label for="mainActivity" class="col-form-label"> Activitate principala</label>
+                        <div class="custom-control custom-checkbox">
+                            <input id="mainActivity" name="mainActivity" class="custom-control-input" type="checkbox" [(ngModel)]="activityType.mainActivity" #mainActivity="ngModel" />
+                            <label for="mainActivity" class="custom-control-label mt-2"> Activitate principala</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-lg-3">
+                        <a [routerLink]="['/app/nomenclatoare/activity/activityType']"
+                           class="btn btn-info"
+                           ><i class="fas fa-arrow-left"></i></a>
+                    </div>
+                    <div class="col-lg-1">
+                        <button type="submit" class="btn btn-info" title="Save"><i class="fas fa-save"></i></button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </section>
+</div>

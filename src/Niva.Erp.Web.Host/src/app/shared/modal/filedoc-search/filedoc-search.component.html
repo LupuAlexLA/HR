@@ -1,0 +1,102 @@
+﻿<form class="form-horizontal"
+      autocomplete="off"
+      #editUserModal="ngForm"
+       >
+    
+    <abp-modal-header [title]="'Cautare Filedoc' | localize"
+                      (onCloseClick)="bsModalRef.hide()"></abp-modal-header>
+    <div class="modal-body">
+        <table class="table table-hover text-nowrap" [busy]="isTableLoading">
+            <thead class="bg-light">
+                <tr>
+                    <th>{{ "Emitent" | localize }}</th>
+                    <th>{{ "Destinatar" | localize }}</th>
+                    <th>{{ "Tip Doc." | localize }}</th>
+                    <th>{{ "Tip inreg." | localize }}</th>
+                    <th>{{ "Nr" | localize }}</th>
+                    
+                    <th>
+                        
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <ng-container *ngFor="let arhiva of documentArhive| paginate : {
+                          id: 'server',
+                          itemsPerPage: pageSize,
+                          currentPage: pageNumber,
+                          totalItems: totalItems
+                        }
+                ">
+                    <tr>
+
+                        <td>{{ arhiva.emitentArhivare }}</td>
+                        <td>{{ arhiva.destinatarArhivare }}</td>
+                        <td>{{ arhiva.tipDocument }}</td>
+                        <td>{{ arhiva.tipInregistrare }}</td>
+                        <td>{{ arhiva.numarArhivare }}</td>
+
+                        
+                        <td>
+                            <button type="button"
+                                    class="btn btn-sm bg-secondary"
+                                    (click)="select(arhiva.id)">
+                                <i class="fas fa-pencil-alt"></i>
+                                {{ "Alege" | localize }}
+                            </button>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="6">
+                            <b>Subiect:</b> {{ arhiva.subiect}}
+                            <div class="row">
+                                <ng-container *ngFor="let atribut of arhiva.atributeDocument">
+                                    <div class="col-4 text-wrap">
+                                        <b>{{ atribut.simbol}}:</b> {{ atribut.valoare}}
+                                    </div>
+                                </ng-container>
+                            </div>
+                        </td>
+                    </tr>
+                </ng-container>
+              
+            </tbody>
+        </table>
+
+        <!--<dx-data-grid id="gridContainer"
+                  [dataSource]="documentArhive"
+                  keyExpr="id"
+                  [columnAutoWidth]="true"
+                  [showBorders]="true"
+                  dataRowTemplate="dataRowTemplateName">
+
+        <dxi-column dataField="id" [width]="70" caption="Title"></dxi-column>
+        <dxi-column dataField="destinatarArhivare"></dxi-column>
+        <dxi-column dataField="emitentArhivare"></dxi-column>
+        <dxi-column dataField="numarArhivare"></dxi-column>
+        <dxi-column dataField="tipDocument"  ></dxi-column>
+        <dxi-column dataField="tipInregistrare"  ></dxi-column>
+
+        <ng-container *dxTemplate="let arhiva of 'dataRowTemplateName'">
+            <tr class="main-row">
+
+                <td>{{ arhiva.id }}</td>
+                <td>{{ arhiva.destinatarArhivare }}</td>
+                <td>{{ arhiva.emitentArhivare }}</td>
+                <td>{{ arhiva.numarArhivare }}</td>
+                <td>{{ arhiva.tipDocument }}</td>
+                <td>{{ arhiva.tipInregistrare }}</td>
+            </tr>
+            <tr class="notes-row">
+                <td colspan="6">
+                    <div>{{ arhiva.subiect}}</div>
+                </td>
+            </tr>
+        </ng-container>
+    </dx-data-grid>-->
+
+
+    </div>
+    <!--<abp-modal-footer   (onCancelClick)="bsModalRef.hide()" ></abp-modal-footer>-->
+</form>

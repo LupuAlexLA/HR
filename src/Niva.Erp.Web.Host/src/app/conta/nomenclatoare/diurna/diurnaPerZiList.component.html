@@ -1,0 +1,66 @@
+﻿<div [@routerTransition]>
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <h3>
+                        Valori diurna pe zi in functie de tara de deplasare
+                    </h3>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="body">
+                <div class="panel-heading" style="position: relative;">
+                    <div class="row">
+                        <h4 class="panel-title col-xs-6">
+                            Tari deplasare - <span>{{ getDiurnaCount() }}</span> &nbsp;
+                            <a [routerLink]="['/app/conta/nomenclatoare/diurna/diurnaPerZiEdit']" class="btn btn-info"><i class="fas fa-plus"></i></a>
+                        </h4>
+                    </div>
+                </div>
+                <table class="table small-font">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Tara</th>
+                            <th scope="col">Valuta</th>
+                            <th scope="col">Indemnizatie deplasare categoria I diurna</th>
+                            <th scope="col">Data valabilitate</th>
+                            <th scope="col"></th>
+                            <th scope="col"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of diurnaList; let i = index;">
+                            <td scope="row">{{ i + 1 }}</td>
+                            <td>{{ item.countryName }}</td>
+                            <td>{{ item.currencyName }}</td>
+                            <td>{{ item.value }}</td>
+                            <td>{{ item.dataValabilitate | date: 'dd.MM.yyyy'}}</td>
+                            <td>
+                                <a id="editBtn"
+                                   name="editBtn"
+                                   class="btn btn-info"
+                                   title="Editeaza"
+                                   [routerLink]="['/app/conta/nomenclatoare/diurna/diurnaPerZiEdit']"
+                                   [queryParams]="{ diurnaId: item.id }"><i class="fas fa-edit"></i></a>
+                            </td>
+                            <td>
+                                <button id="deleteBtn"
+                                        name="deleteBtn"
+                                        class="btn btn-danger"
+                                        (click)="delete(item.id)"
+                                        title="Sterge">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+</div>

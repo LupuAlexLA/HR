@@ -1,0 +1,52 @@
+﻿<div [@routerTransition]>
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <h2>Adaugare / modificare Tip Imprumut</h2>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- De ce sunt astea aici? -->
+    
+    <!--import { GarantiiListComponent } from './imprumuturi/garantie/garantiiList.component';
+    import { GarantiiEditComponent } from './imprumuturi/garantie/garantiiEdit.component';-->
+
+    <section class="content px-2">
+        <div class="container-fluid">
+            <div class="body">
+                <form #imprumuturiTipuriForm="ngForm" (ngSubmit)="saveTip()">
+                    <div class="row">
+                        <div class="col-lg-2">
+                            <label for="description" class="col-form-label"> Descriere </label>
+                        </div>
+                        <div class="col-lg-3">
+                            <input id="description" name="description" class="form-control" [(ngModel)]="imprumuturiTip.description" #name="ngModel" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-5">
+                            <a [routerLink]="['/app/imprumuturi/imprumuturiTipuri']"
+                               class="btn btn-info"
+                               title="Inapoi">
+                                <i class="fas fa-arrow-left"></i>
+                            </a>
+                        </div>
+                        <div class="col-lg-7">
+                            <div class="form-group">
+                                <button type="submit"
+                                        class="btn btn-info"
+                                        title="Save"
+                                        [disabled]="imprumuturiTipuriForm.form.invalid">
+                                    <i class="fas fa-save"></i>
+                                </button>
+
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+</div>

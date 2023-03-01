@@ -1,0 +1,184 @@
+﻿<div [@routerTransition]>
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <h3>Calcul sfarsit de luna</h3>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="content px-2">
+        <div class="container-fluid">
+            <div class="body">
+                <div class="row">
+                    <div class="col-lg-2">
+                        <label for="dataStart" class="col-form-label">Data inceput</label>
+                        <mat-form-field style="width: 100%">
+                            <input matInput [matDatepicker]="dataStartPicker" id="dataStart"
+                                   name="dataStart" [(ngModel)]="dataStart" />
+                            <mat-datepicker-toggle matSuffix [for]="dataStartPicker"></mat-datepicker-toggle>
+                            <mat-datepicker #dataStartPicker></mat-datepicker>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-lg-2">
+                        <label for="dataEnd" class="col-form-label">Data sfarsit</label>
+                        <mat-form-field style="width: 100%">
+                            <input matInput [matDatepicker]="dataEndPicker" id="dataEnd"
+                                   name="dataEnd" [(ngModel)]="dataEnd" />
+                            <mat-datepicker-toggle matSuffix [for]="dataEndPicker"></mat-datepicker-toggle>
+                            <mat-datepicker #dataEndPicker></mat-datepicker>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-lg-1">
+                        <button class="btn btn-info" (click)="generateOperList()"><i class="fas fa-search"></i></button>
+                        <a href="{{appBaseUrl}}/assets/pdf/Conta - Balanta - Manual utilizare.pdf" title="Manual de utilizare" class="btn btn-info ml-2" target="_blank"><i class="fas fa-question"></i></a>
+                    </div>
+                </div>
+                <div class="panel-heading" style="position: relative;">
+                    <div class="row">
+                        <h4 class="panel-title col-xs-6">
+                            <span>Lista operatii generate - {{countOper()}}</span> &nbsp;
+                            <a [routerLink]="['/app/conta/balance/operGenerate/operGenerateAdd']"
+                               class="btn btn-info"
+                               title="Adaugare"
+                               *ngIf="isGranted('Conta.Balanta.SfarsitLuna.Modificare')"><i class="fas fa-plus"></i></a>
+                        </h4>
+                    </div>
+                </div>
+                <table class="table small-font">
+                    <thead>
+                        <tr>
+                            <th scope="col">Data operatiei</th>
+                            <th scope="col">Categorie operatie</th>
+                            <th scope="col">Denumire operatie</th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody *ngFor="let oper of operGenerateList; let i = index">
+                        <tr>
+                            <td>{{ oper.dataOperatie | date: 'dd/MM/yyyy' }}</td>
+                            <td>{{ oper.categorieOperatie }}</td>
+                            <td>{{ oper.tipOperatie }}</td>
+                            <td>
+                                <button class="btn btn-info"
+                                        (click)="showDetail(oper.id, i)"
+                                        title="Detalii">
+                                    <i class="fas fa-search"></i>
+                                </button>
+                            </td>
+                            <td>
+                                <button (click)="deleteOperation(oper.id)"
+                                        class="btn btn-danger"
+                                        title="Sterge"
+                                        *ngIf="isGranted('Conta.Balanta.SfarsitLuna.Modificare')">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        <tr *ngIf="oper.showDetail">
+                            <td colspan="1">
+                                <button *ngIf="oper.showDetail"
+                                        (click)="hideDetail(i)"
+                                        class="btn btn-info">
+                                    <i class="fas fa-angle-up"></i>
+                                </button>
+                            </td>
+                            <td colspan="9">
+                                <table class="table table-responsive">
+                                    <thead class="thead-light">
+                                        <tr>
+                                            <th scope="col">#</th>
+                                            <th scope="col">Id</th>
+                                            <th scope="col">DataOperatiei</th>
+                                            <th scope="col">TipDocument</th>
+                                            <th scope="col">Document / Data</th>
+                                            <th scope="col">TipOperatieContabila</th>
+                                            <th scope="col">Moneda</th>
+                                            <th scope="col" class="align-right">Valoare</th>
+                                            <th scope="col">OperExterna</th>
+                                            <th scope="col">Validat</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody *ngFor="let operation of searchOperationList[i]; let j = index">
+                                        <tr>
+                                            <td scope="row">{{ j + 1}}</td>
+                                            <td>{{operation.id}}</td>
+                                            <td>{{ operation.operationDate | date: 'dd/MM/yyyy' }}</td>
+                                            <td>{{ operation.documentType }}</td>
+                                            <td>{{ operation.documentNumber }} / {{ operation.documentDate | date: 'dd/MM/yyyy' }}</td>
+                                            <td>{{ operation.operationType }}</td>
+                                            <td>{{ operation.currencyName }}</td>
+                                            <td class="align-right">{{ operation.value  | number: '1.2-2' }}</td>
+                                            <td>
+                                                <input id="externalOperation{{j}}"
+                                                       name="externalOperation{{j}}"
+                                                       type="checkbox"
+                                                       style="position: relative; left:0px; opacity:100"
+                                                       [(ngModel)]="operation.externalOperation"
+                                                       disabled />
+                                            </td>
+                                            <td>
+                                                <input id="operationStatus{{j}}"
+                                                       name="operationStatus{{j}}"
+                                                       type="checkbox"
+                                                       style="position: relative; left:0px; opacity:100"
+                                                       [(ngModel)]="operation.operationStatus" 
+                                                       disabled/>
+                                            </td>
+                                            <td>
+                                                <button class="btn btn-info"
+                                                        (click)="showOperDetail(i, j)"
+                                                        title="Detalii">
+                                                    <i class="fas fa-search"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        <tr *ngIf="operation.showDetail">
+                                            <td colspan="1">
+                                                <button *ngIf="operation.showDetail"
+                                                        (click)="hideOperDetail(i,j)"
+                                                        class="btn btn-info">
+                                                    <i class="fas fa-angle-up"></i>
+                                                </button>
+                                            </td>
+                                            <td colspan="9">
+                                                <table class="table detailbk">
+                                                    <thead class="thead-light">
+                                                        <tr class="detailbk">
+                                                            <th scope="col" colspan="8" class="font-bold">Detalii Nota Contabila</th>
+                                                        </tr>
+                                                        <tr class="detailbk">
+                                                            <th scope="col" colspan="1">NR</th>
+                                                            <th scope="col" colspan="2">Debit</th>
+                                                            <th scope="col" colspan="2">Credit</th>
+                                                            <th scope="col" class="align-right">Valoare</th>
+                                                            <th scope="col">Explicatii</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr *ngFor="let detail of operation.operationsDetails" class="detailbk">
+                                                            <td>{{ detail.detailNr }}</td>
+                                                            <td>{{ detail.debit }}</td>
+                                                            <td>{{ detail.debitName }}</td>
+                                                            <td>{{ detail.credit }}</td>
+                                                            <td>{{ detail.creditName }}</td>
+                                                            <td class="align-right">{{ detail.value | number: '1.2-2' }}</td>
+                                                            <td>{{ detail.details }}</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+</div>

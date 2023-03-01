@@ -1,0 +1,80 @@
+﻿<div [@routerTransition]>
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <h3>Adaugare / Modificare expresii</h3>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="content px-2">
+        <div class="container-fluid">
+            <div class="body">
+                <form>
+                    <div class="row mt-3">
+                        <div class="col-lg-2">
+                            <label for="account" class="col-form-label">Cont </label>
+                        </div>
+                        <div class="col-lg-3">
+                            <mat-form-field style="width: 100%;">
+                                <input type="text" matInput id="accountId"
+                                       name="accountId"
+                                       [(ngModel)]="dictionary.accountId"
+                                       #accountId="ngModel"
+                                       (input)="getAccountListComputing($event)"
+                                       required [matAutocomplete]="autoCr">
+                                <mat-autocomplete #autoCr="matAutocomplete" [displayWith]="getAccountSymbol.bind(this)">
+                                    <mat-select *ngFor="let item of accounts">
+                                        <mat-option (click)="selectedInput(item.name, item.id)" [ngValue]="item.id">
+                                            {{ item.name }}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-autocomplete>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-lg-2">
+                            <label for="expression" class="col-form-label">Expresie</label>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="input-group">
+                                <input id="expresie" name="expresie" [(ngModel)]="dictionary.expression" #expression="ngModel" class="form-control" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-lg-2">
+                            <label for="foDictionaryType" class="col-form-label">Tip operatiune</label>
+                        </div>
+                        <div class="col-lg-3">
+                            <select id="foDictionaryType" name="foDictionaryType" class="form-control" [(ngModel)]="dictionary.foDictionaryType" #foDictionaryType="ngModel" >
+                                <option *ngFor="let item of foDictionaryTypes" [ngValue]="item.id">{{item.name}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-lg-3">
+                            <button type="button"
+                                    (click)="backToList()"
+                                    class="btn btn-info"
+                                    title="Inapoi">
+                                <i class="fas fa-arrow-left"></i>
+                            </button>
+                        </div>
+
+                        <div class="col-lg-2" style = "display: flex; justify-content: flex-end">
+                            <button type="button"
+                                    (click)="save()"
+                                    class="btn btn-info"
+                                    title="Salveaza">
+                                <i class="fas fa-save"></i>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+</div>

@@ -1,0 +1,102 @@
+﻿<div [@routerTransition]>
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <h3>Operatii Mijloace fixe </h3>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="content px-2">
+        <div class="container-fluid">
+            <div class="body">
+                <form id="operList" name="operList" #operListForm="ngForm" (ngSubmit)="searchOper()">
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <label for="dataStart" class="col-form-label">Data Inceput</label>
+                            <mat-form-field style="width: 100%;">
+                                <input matInput [matDatepicker]="dataStartPicker" id="dataStart"
+                                       name="dataStart" [(ngModel)]="operList.dataStart" #dataStart="ngModel" />
+                                <mat-datepicker-toggle matSuffix [for]="dataStartPicker"></mat-datepicker-toggle>
+                                <mat-datepicker #dataStartPicker></mat-datepicker>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-lg-3">
+                            <label for="dataEnd" class="col-form-label">Data Sfarsit</label>
+                            <mat-form-field style="width: 100%;">
+                                <input matInput [matDatepicker]="dataEndPicker" id="dataEnd"
+                                       name="dataEnd" [(ngModel)]="operList.dataEnd" #dataEnd="ngModel" />
+                                <mat-datepicker-toggle matSuffix [for]="dataEndPicker"></mat-datepicker-toggle>
+                                <mat-datepicker #dataEndPicker></mat-datepicker>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-lg-6">
+                            <button [disabled]="!operListForm.form.valid" class="btn btn-info"><i class="fas fa-search"></i></button>
+                            <a href="{{appBaseUrl}}/assets/pdf/Conta - Mijloace fixe - Manual utilizare.pdf" title="Manual de utilizare" class="btn btn-info ml-2" target="_blank"><i class="fas fa-question"></i></a>
+                        </div>
+                    </div>
+                    <div class="panel-heading" style="position: relative;">
+                        <div class="row">
+                            <h4 class="panel-title col-xs-6">
+                                Operatii - <span>{{operListCount()}}</span> &nbsp;
+                                <a [routerLink]="['/app/conta/imoAsset/imoAssetOperationEdit']"  *ngIf="isGranted('Conta.MF.Operatii.Modificare')" class="btn btn-info"><i class="fas fa-plus"></i></a>
+                            </h4>
+                        </div>
+                    </div>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Data Operatiei</th>
+                                <th scope="col">Tipul Operatiei</th>
+                                <th scope="col">Tip Document</th>
+                                <th scope="col">Nr Document</th>
+                                <th scope="col">Data Document</th>
+                                <th scope="col">Procesat</th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let detail of operList.listDetail; let i = index;">
+                                <td scope="row">{{ i + 1}}</td>
+                                <td>{{detail.operationDate | date: 'dd/MM/yyyy'}}</td>
+                                <td>{{detail.operationType}}</td>
+                                <td>{{detail.documentType}}</td>
+                                <td>{{detail.documentNr}}</td>
+                                <td>{{detail.documentDate | date: 'dd/MM/yyyy'}}</td>
+                                <td>
+                                    <input id="processed" name="processed" type="checkbox" [(ngModel)]="detail.processed" #processed="ngModel" *ngIf="detail.processed" disabled/>
+                                </td>
+                                <td>
+                                    <a [routerLink]="['/app/conta/imoAsset/imoAssetOperationEdit']"
+                                       [queryParams]="{operationId: detail.id}"
+                                       *ngIf="isGranted('Conta.MF.Operatii.Modificare')" 
+                                       class="btn btn-info"><i class="fas fa-edit"></i></a>
+                                </td>
+                                <td>
+                                    <a [routerLink]="['/app/conta/imoAsset/imoAssetOperationView']"
+                                       [queryParams]="{operationId: detail.id}"
+                                       class="btn btn-info"><i class="fas fa-search"></i></a>
+                                </td>
+                                <td>
+                                    <button (click)="deleteOperationFnc(detail.id)" 
+                                            *ngIf="isGranted('Conta.MF.Operatii.Modificare')" 
+                                            class="btn btn-danger"
+                                            ><i class="fas fa-trash"></i></button>
+                                </td>
+                                <td>
+                                    <button (click)="generareRaport(detail.id)"  *ngIf="detail.showReportBtn && isGranted('Conta.MF.Operatii.Modificare')"
+                                            class="btn btn-info" title="Genereaza raport"><i class="fas fa-download"></i></button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </form>
+            </div>
+        </div>
+    </section>
+</div>

@@ -1,0 +1,370 @@
+﻿<div [@routerTransition]>
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12" *ngIf="operation !== undefined">
+                    <h3 *ngIf="operation.id == 0">
+                        {{ "Adauga nota contabila" | localize }}
+                    </h3>
+                    <h3 *ngIf="operation.id != 0">
+                        {{ "Modifica nota contabila" | localize }}
+                    </h3>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="content px-2">
+        <div class="container-fluid">
+            <div class="body">
+                <form id="operation" name="operation" #operationForm="ngForm" *ngIf="operation !== undefined" [busy]="isLoading">
+                    <div class="row">
+                        <div class="col-lg-2">
+                            <div class="form-group">
+                                <label for="operationDate"
+                                       class="col-form-label">
+                                    Data operatiei
+                                </label>
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <i class="fas fa-check-circle"
+                                           aria-hidden="true"
+                                           *ngIf="!operationDate.invalid"></i>
+                                        <i class="fas fa-exclamation-circle"
+                                           aria-hidden="true"
+                                           *ngIf="operationDate.invalid"></i>
+                                    </span>
+                                    <mat-form-field>
+                                        <input matInput [matDatepicker]="operationDatePicker" id="operationDate"
+                                               name="operationDate" [(ngModel)]="operation.operationDate" #operationDate="ngModel" />
+                                        <mat-datepicker-toggle matSuffix [for]="operationDatePicker"></mat-datepicker-toggle>
+                                        <mat-datepicker #operationDatePicker></mat-datepicker>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-2">
+                            <div class="form-group">
+                                <label for="documentTypeId"
+                                       class="col-form-label">
+                                    Tip document
+                                </label>
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <i class="fas fa-check-circle"
+                                           aria-hidden="true"
+                                           *ngIf="!documentTypeId.invalid"></i>
+                                        <i class="fas fa-exclamation-circle"
+                                           aria-hidden="true"
+                                           *ngIf="documentTypeId.invalid"></i>
+                                    </span>
+                                    <select id="documentTypeId"
+                                            name="documentTypeId"
+                                            [(ngModel)]="operation.documentTypeId"
+                                            #documentTypeId="ngModel"
+                                            class="form-control"
+                                            (ngModelChange)="checkAutoNumberForDoc(operation.documentTypeId)">
+                                        <option *ngFor="let item of documentTypeList.getDocumentType"
+                                                [ngValue]="item.id">
+                                            {{ item.name }}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-2">
+                            <div class="form-group">
+                                <label for="documentNumber"
+                                       class="col-form-label">
+                                    Nr document
+                                </label>
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <i class="fas fa-check-circle"
+                                           aria-hidden="true"
+                                           *ngIf="!documentNumber.invalid"></i>
+                                        <i class="fas fa-exclamation-circle"
+                                           aria-hidden="true"
+                                           *ngIf="documentNumber.invalid"></i>
+                                    </span>
+                                    <input id="documentNumber"
+                                           name="documentNumber"
+                                           type="text"
+                                           [(ngModel)]="operation.documentNumber"
+                                           #documentNumber="ngModel"
+                                           class="form-control" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-2">
+                            <div class="form-group">
+                                <label for="documentDate"
+                                       class="col-form-label">
+                                    Data document
+                                </label>
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <i class="fas fa-check-circle"
+                                           aria-hidden="true"
+                                           *ngIf="!documentDate.invalid"></i>
+                                        <i class="fas fa-exclamation-circle"
+                                           aria-hidden="true"
+                                           *ngIf="documentDate.invalid"></i>
+                                    </span>
+                                    <mat-form-field>
+                                        <input matInput [matDatepicker]="documentDatePicker" id="documentDate"
+                                               name="documentDate" [(ngModel)]="operation.documentDate" #documentDate="ngModel" />
+                                        <mat-datepicker-toggle matSuffix [for]="documentDatePicker"></mat-datepicker-toggle>
+                                        <mat-datepicker #documentDatePicker></mat-datepicker>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-1">
+                            <div class="form-group">
+                                <label for="currencyId"
+                                       class="col-form-label">
+                                    Moneda
+                                </label>
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <i class="fas fa-check-circle"
+                                           aria-hidden="true"
+                                           *ngIf="!currencyId.invalid"></i>
+                                        <i class="fas fa-exclamation-circle"
+                                           aria-hidden="true"
+                                           *ngIf="currencyId.invalid"></i>
+                                    </span>
+                                    <select class="form-control"
+                                            name="currencyId"
+                                            [(ngModel)]="operation.currencyId"
+                                            #currencyId="ngModel"
+                                            (ngModelChange)="changeCurrency()">
+                                        <option *ngFor="let value of currency" [ngValue]="value.id">{{value.name}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-2">
+                            <!--<label for="salveazaS" class="col-form-label"></label>-->
+                            <button (click)="saveAsOperationDefinition()" type="button" class="btn btn-info mr-2">Salveaza Sablon</button>
+                            <button (click)="showOperationDefinitionListDialog()" type="button" class="btn btn-info">Alege Sablon</button>
+                        </div>
+                        <!--<div class="col-lg-1">
+                            <label for="AlegeS" class="col-form-label"></label>
+                                <button (click)="showOperationDefinitionListDialog()" type="button" class="btn btn-info">Alege Sablon</button>
+                        </div>-->
+                    </div>
+                    <div class="row">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <h4 class="panel-title col-xs-6">
+                                    Detalii nota
+                                </h4>
+                            </div>
+                            <div class="row">
+
+                            </div>
+                        </div>
+                        <table class="table table-responsive">
+                            <thead>
+                                <tr>
+                                    <th scope="col" class="col-md-4">Debit</th>
+                                    <th scope="col" class="col-md-4">Credit</th>
+                                    <th scope="col" class="col-md-1">Valoare</th>
+                                    <th scope="col">Explicatii</th>
+                                    <th>
+
+                                        <button (click)="newAccount()" type="button" class="btn btn-info">Cont nou...</button>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody *ngFor="let detail of operation.operationDetails; let i = index">
+                                <tr>
+                                    <td>
+                                        <mat-form-field style="width: 80%;">
+                                            <input type="text" matInput id="debitId_{{i}}"
+                                                   name="debitId_{{i}}"
+                                                   [(ngModel)]="operation.operationDetails[i].debitId"
+                                                   (input)="getAccountListComputingDebit($event, i)"
+                                                   required [matAutocomplete]="auto">
+                                            <mat-autocomplete #auto="matAutocomplete" [displayWith]="getDebitName.bind(this)">
+                                                <mat-select *ngFor="let item of accountsDb">
+                                                    <mat-option (click)="selectedInputDb(item.name, item.id, i)" [ngValue]="item.id">
+                                                        {{ item.name }}
+                                                    </mat-option>
+                                                </mat-select>
+                                            </mat-autocomplete>
+                                        </mat-form-field>
+                                        <button class="btn btn-info ml-1"
+                                                title="Vizualizeaza sold"
+                                                (click)="showDbSold(operation.operationDetails[i].debitId)">
+                                            <i class="fas fa-comment-dollar"></i>
+                                        </button>
+                                    </td>
+                                    <td>
+                                        <mat-form-field style="width: 80%;">
+                                            <input type="text" matInput id="creditId_{{i}}"
+                                                   name="creditId_{{i}}"
+                                                   [(ngModel)]="operation.operationDetails[i].creditId"
+                                                   (input)="getAccountListComputingCredit($event, i)"
+                                                   required [matAutocomplete]="autoCr">
+                                            <mat-autocomplete #autoCr="matAutocomplete" [displayWith]="getCreditName.bind(this)">
+                                                <mat-select *ngFor="let item of accountsCr">
+                                                    <mat-option (click)="selectedInputCr(item.name, item.id, i)" [ngValue]="item.id">
+                                                        {{ item.name }}
+                                                    </mat-option>
+                                                </mat-select>
+                                            </mat-autocomplete>
+                                        </mat-form-field>
+                                        <button class="btn btn-info ml-1" title="Vizualizeaza sold" (click)="showDbSold(operation.operationDetails[i].creditId)"><i class="fas fa-comment-dollar"></i></button>
+                                    </td>
+                                    <td>
+                                        <input id="value_{{i}}"
+                                               name="value_{{i}}"
+                                               type="text"
+                                               [(ngModel)]="operation.operationDetails[i].value"
+                                               class="form-control"
+                                               required />
+                                    </td>
+                                    <td>
+                                        <input id="details_{{i}}"
+                                               name="details_{{i}}"
+                                               type="text"
+                                               [(ngModel)]="operation.operationDetails[i].details"
+                                               class="form-control"
+                                               required />
+                                    </td>
+                                    <td>
+                                        <button (click)="showDetails(i)" class="btn btn-info" *ngIf="!detail.showInvoiceDetails"> <i class="fas fa-angle-down"></i> </button>
+
+                                        <button (click)="deleteOperationDetail(i)"
+                                                class="btn btn-danger ml-2"
+                                                title="Sterge">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr *ngIf="detail.showInvoiceDetails === true">                                   
+                                    <td colspan="10">
+                                        <table class="table detailbk">
+                                            <thead class="thead-light">
+                                                <tr class="detailbk">
+                                                    <th>
+                                                        <button (click)="hideDetails(i)" class="btn btn-info ml-2" *ngIf="detail.showInvoiceDetails"><i class="fas fa-angle-up"></i> </button>
+                                                    </th>
+                                                    <th scope="col">Categorie element</th>
+                                                    <th scope="col">Element</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>
+
+                                                    </td>
+                                                    <td>
+                                                        <select id="categoryElement{{i}}" name="categoryElement{{i}}" class="form-control" [(ngModel)]="detail.invoiceElementsDetailsCategoryId" (change)="getInvoiceElementDetailsByCategoryId(detail.invoiceElementsDetailsCategoryId, i)">
+                                                            <option *ngFor="let item of elementDetailsCategories"
+                                                                    value="{{item.id}}">
+                                                                {{item.categoryElementDetName}}
+                                                            </option>
+                                                        </select>
+                                                    </td>
+                                                    <td>
+                                                        <select id="invoiceElementsDetailsId{{i}}" name="invoiceElementsDetailsId{{i}}" class="form-control" [(ngModel)]="detail.invoiceElementsDetailsId" #invoiceElementsDetailsId="ngModel">
+                                                            <option value="">Selecteaza</option>
+                                                            <option *ngFor="let item of invoiceElementsDetails[i]" [ngValue]="item.id">{{item.description}}</option>
+                                                        </select>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-5">
+                            <button [routerLink]="['/app/conta/operations/operationsList']"
+                                    class="btn btn-info"
+                                    title="Inapoi">
+                                <i class="fas fa-arrow-left"></i>
+                            </button>
+                        </div>
+                        <div class="col-lg-3 col-lg-offset-4">
+                            <button (click)="addOperationDetail()"
+                                    class="btn btn-info">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                        </div>
+                        <div class="col-lg-4">
+                            <div style="float: right;">
+                                <span class="input-group-addon">
+                                    <i class="fas fa-check-circle"
+                                       aria-hidden="true"
+                                       *ngIf="!operationForm.form.invalid"></i>
+                                    <i class="fas fa-exclamation-circle"
+                                       aria-hidden="true"
+                                       *ngIf="operationForm.form.invalid"></i>
+                                </span>
+                                <button (click)="saveOperation()"
+                                        [disabled]="operationForm.form.invalid"
+                                        type="submit"
+                                        class="btn btn-info "
+                                        title="Save">
+                                    <i class="fas fa-save"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="panel-heading" style="position: relative;">
+                            <div class="row">
+                                <h4 class="panel-title col-xs-7">
+                                    Ultimele 10 note contabile inregistrate
+                                </h4>
+                            </div>
+                        </div>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Id</th>
+                                    <th scope="col">DataOperatiei</th>
+                                    <th scope="col">TipDocument</th>
+                                    <th scope="col">DocumentNr / Data</th>
+                                    <th scope="col">TipOperatieContabila</th>
+                                    <th scope="col">Moneda</th>
+                                    <th scope="col" class="align-right">Valoare</th>
+                                    <!--<th scope="col">[Validat]</th>-->
+                                </tr>
+                            </thead>
+                            <tbody *ngFor="let operation of operation.last10; let i = index">
+                                <tr>
+                                    <td scope="row">{{ i + 1 }}</td>
+                                    <td>{{ operation.id }}</td>
+                                    <td>{{ operation.operationDate | date: 'dd/MM/yyyy' }}</td>
+                                    <td>{{ operation.documentType }}</td>
+                                    <td>{{ operation.documentNumber }} / {{ operation.documentDate | date: 'dd/MM/yyyy'}}</td>
+                                    <td>{{ operation.operationType }}</td>
+                                    <td>{{ operation.currencyName }}</td>
+                                    <td class="align-right">{{ operation.value | number }}</td>
+                                    <!--<td>
+                                        <input id="operationStatus{{i}}"
+                                               name="operationStatus{{i}}"
+                                               type="checkbox"
+                                               [disabled]="true"
+                                               [(ngModel)]="operation.operationStatus"
+                                                />
+                                    </td>-->
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+</div>

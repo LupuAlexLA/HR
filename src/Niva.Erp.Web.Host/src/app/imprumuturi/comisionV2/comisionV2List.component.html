@@ -1,0 +1,155 @@
+﻿<div [@routerTransition]>
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <h2>Imprumut Selectat</h2>
+                </div>
+                <div class="col-lg-5">
+                    <a [routerLink]="['/app/imprumuturi/imprumuturiList']"
+                       class="btn btn-info"
+                       title="Inapoi">
+                        <i class="fas fa-arrow-left"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="content px-3">
+        <div class="container-fluid">
+            <div class="body">
+
+                <div class="row mt-3">
+                    <div class="col-lg-6">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <td scope="col"><b>#</b></td>
+                                    <td scope="col"><b>Tip Document</b></td>
+                                    <td scope="col"><b>Numar Document</b></td>
+                                    <td scope="col"><b>Data document</b></td>
+                                    <td scope="col"><b>Tip imprumut</b></td>
+                                    
+                                    
+                                    <td scope="col"><div *ngIf="imprumut.tipCreditare == 'Credit'"><b>Data inceput/Data sfarsit</b></div></td>
+                                    <td scope="col"><div *ngIf="imprumut.tipCreditare == 'Credit'"><b>Durata</b></div></td>
+                                    <td scope="col"><div *ngIf="imprumut.tipCreditare == 'Credit'"><b>Tip imprumut durata</b> </div></td>
+                                    <td scope="col"><div *ngIf="imprumut.tipCreditare == 'Credit'"><b>Termen imprumut</b> </div></td>
+                                    <td scope="col"><b>Suma</b></td>
+
+                                    <td scope="col" *ngIf="imprumut.tipDobanda == 'Fixa'"><b>Procent Dobanda</b></td>
+
+                                    <td scope="col" *ngIf="imprumut.tipDobanda == 'Variabila'"><b>Marja Fixa</b></td>
+
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td> </td>
+                                    <td>{{ imprumut.documentType }}</td>
+                                    <td>{{ imprumut.documentNr }}</td>
+                                    <td>{{ imprumut.documentDate | date: 'dd/MM/yyyy' }}</td>
+                                    <td>{{ imprumut.imprumuturiTipuri}}</td>
+                                    
+                                    
+                                    <td><div *ngIf="imprumut.tipCreditare == 'Credit'">{{ imprumut.startDate | date: 'dd/MM/yyyy'}} - {{imprumut.endDate | date: 'dd/MM/yyyy'}}</div></td>
+                                    <td><div *ngIf="imprumut.tipCreditare == 'Credit'">{{ imprumut.durata}}</div></td>
+                                    <td><div *ngIf="imprumut.tipCreditare == 'Credit'">{{ imprumut.imprumuturiTipDurata}}</div></td>
+                                    <td><div *ngIf="imprumut.tipCreditare == 'Credit'">{{ imprumut.imprumuturiTermen}}</div></td>
+                                    <td>{{ imprumut.suma}}</td>
+
+                                    <td *ngIf="imprumut.tipDobanda == 'Fixa'">{{ imprumut.procentDobanda}}%</td>
+
+
+                                    <td *ngIf="imprumut.tipDobanda == 'Variabila'">{{ imprumut.marjaFixa}} %</td>
+
+
+                                </tr>
+                            </tbody>
+
+                        </table>
+                    </div>
+                </div>
+
+
+                <div class="row">
+                    <div class="col-lg-9 col-lg-offset-3">
+                        <h2>
+                            Comisioane <span>({{ getComisioaneCount() }})</span>&nbsp;
+                            <a [routerLink]="['/app/imprumuturi/imprumuturiComisioaneV2Edit']" [queryParams]="{ imprumutId: imprumut.id }" class="btn btn-info" title="Adauga"><i class="fas fa-plus">  </i></a>
+                            &nbsp;
+
+                        </h2>
+
+                    </div>
+                </div>
+
+                <div class="row mt-3">
+                    <div class="col-lg-6">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <td scope="col"><b>#</b></td>
+                                    <td scope="col"><b>Tip Comision</b></td>
+                                    <td scope="col"><b>Descriere </b></td>
+                                    <td scope="col"><b>Tip Valoare Comision</b></td>
+                                    <td scope="col"><b>Valoare Comision</b></td>
+                                    <td scope="col"><b>Tip Comision</b></td>
+                                    <td scope="col"><b>Data Start</b></td>
+                                    <td scope="col"><b>Data Sfarsit</b></td>
+
+
+                                    <td scope="col"><b>Baza De Calcul</b></td>
+
+
+
+                                    <td><b>Editare</b></td>
+                                    <td><b>Delete</b></td>
+
+                                </tr>
+                            </thead>
+                            <tbody *ngFor="let element of comisioane; let i = index">
+                                <tr>
+                                    <td scope="row">{{ i + 1 }}</td>
+                                    <td>{{ element.tipComision }}</td>
+                                    <td>{{ element.descriere }}</td>
+                                    <td>{{ element.tipValoareComision}}</td>
+                                    <td>{{ element.valoareComision}}</td>
+                                    <td>{{ element.tipComision}}</td>
+                                    <td>{{ element.dataStart | date: 'dd/MM/yyyy'}}</td>
+                                    <td>{{ element.dataEnd | date: 'dd/MM/yyyy'}}</td>
+
+                                    <td>{{ element.bazaDeCalcul }}</td>
+
+
+
+                                    <td>
+                                        <button [routerLink]="['/app/imprumuturi/imprumuturiComisioaneV2Edit']"
+                                                [queryParams]="{ comisionId: element.id }"
+                                                class="btn btn-info"
+                                                title="Modifica">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                    </td>
+                                    <td>
+                                        <button (click)="delete(element.id)"
+                                                class="btn btn-danger"
+                                                title="Sterge">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+
+
+    </section>
+</div>

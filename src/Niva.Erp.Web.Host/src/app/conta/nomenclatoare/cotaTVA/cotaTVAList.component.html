@@ -1,0 +1,54 @@
+﻿<div [@routerTransition]>
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <h3>Cote TVA ({{ getCoteCount() }})</h3>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="content px-2">
+        <div class="container-fluid">
+            <div class="body">
+                <div class="row">
+                    <button class="btn btn-info"
+                            title="Adaugare"
+                            [routerLink]="['/app/conta/nomenclatoare/cotaTVA/cotaTVAEdit']">
+                        <i class="fas fa-plus"></i>
+                    </button>
+                </div>
+                <table class="table table-responsive mt-3">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Cota TVA (%)</th>
+                            <th scope="col">Data inceput</th>
+                            <th scope="col">Data sfarsit</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody *ngFor="let cota of coteTVAList; let i = index">
+                        <tr>
+                            <td scope="row">{{ i + 1 }}</td>
+                            <td style="text-align: right">{{ cota.vat }}</td>
+                            <td style="text-align: center">{{ cota.startDate | date: 'dd/MM/yyyy' }}</td>
+                            <td style="text-align: center">{{ cota.endDate | date: 'dd/MM/yyyy' }}</td>
+                            <td>
+                                <button [routerLink]="['/app/conta/nomenclatoare/cotaTVA/cotaTVAEdit']"
+                                        [queryParams]="{cotaId: cota.id}"
+                                        class="btn btn-info mr-2"
+                                        title="Modifica">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="btn btn-danger"
+                                        title="Sterge" (click)="delete(cota.id)">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+</div>

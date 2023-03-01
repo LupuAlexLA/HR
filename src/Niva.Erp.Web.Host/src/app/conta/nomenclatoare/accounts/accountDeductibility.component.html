@@ -1,0 +1,190 @@
+﻿<div [@routerTransition]>
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <h3 *ngIf="accountDeductibility !== undefined">
+                        Deductibilitate cont {{ accountDeductibility.accountName }}
+                    </h3>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="content-header">
+        <div class="col-12" *ngIf="accountDeductibility !== undefined">
+            <form id="accountPropertyList"
+                  name="accountPropertyList"
+                  *ngIf="accountDeductibility.showList">
+                <div class="row">
+                    <h3 class="panel-title col-xs-6">
+                        <button type="button"
+                                class="btn btn-info"
+                                title="Inapoi"
+                                [routerLink]="['/app/conta/nomenclatoare/accounts/accountEdit']"
+                                [queryParams]="{account: accountId, accountSearch: accountSearch}">
+                            <i class="fas fa-arrow-left"></i>
+                        </button>
+                        <button type="submit"
+                                class="btn btn-info mx-2"
+                                title="Adaugare"
+                                (click)="accountDeductibilityEditInit()">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                    </h3>
+                </div>
+                <div class="row">
+                    <table class="table">
+                        <thead>
+                            <tr class="small-font">
+                                <th scope="col">#</th>
+                                <th scope="col">Data</th>
+                                <th scope="col">Tip deductibilitate</th>
+                                <th scope="col">Procent deductibilitate</th>
+                                <th scope="col">Cont nedeductibil corespondent</th>
+                                <th></th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of accountDeductibility.deductibilityList; let i = index" class="small-font">
+                                <td scope="row">{{ i + 1 }}</td>
+                                <td>{{ item.propertyDate | date: 'd/MM/yyyy' }}</td>
+                                <td>{{item.propertyValueStr}}</td>
+                                <td>{{ item.propertyValue }}</td>
+                                <td>{{item.accountNeded}}</td>
+                                <td>
+                                    <button type="button"
+                                            class="btn btn-info"
+                                            (click)="accountDeductibilityEditInit(item.id)">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                </td>
+                                <td>
+                                    <button type="submit"
+                                            class="btn btn-danger"
+                                            (click)="accountDeductibilityDelete(item.id)"
+                                            title="Stergere">
+                                        <i class="fas fa-trash"></i>
+
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </form>
+
+            <form *ngIf="accountDeductibility.showEdit" autocomplete="off">
+                <div class="panel-heading" style="position: relative;">
+                    <div class="row">
+
+                        <!-- Title -->
+                        <h3 class="panel-title col-xs-12">
+                            Adaugare / modificare procent deductibilitate
+                        </h3>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-3">
+                        <div class="form-group">
+                            <div class="col-form-label">
+                                <label for="propertyDate"
+                                       class="form-label">
+                                    Data modificarii
+                                    <!--<span *ngIf="propertyDate.invalid">*</span>-->
+                                </label>
+                            </div>
+                            <div class="input-group">
+                                <input bsDatepicker
+                                       [ngModel]="accountDeductibility.deductibilityEdit.propertyDate | date: 'dd/MM/YYYY'"
+                                       (ngModelChange)="selectDate($event)"
+                                       #propertyDate="ngModel"
+                                       type="text"
+                                       name="propertyDate"
+                                        class="form-control"
+                                       [bsConfig]="{dateInputFormat: 'DD/MM/YYYY'}"
+                                       />
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div  class="row">
+                    <div class="col-lg-3">
+                            <label for="propertyTypeId" class="form-label">Tip deductibilitate</label>
+                            <select id="propertyTypeId" name="propertyTypeId" [(ngModel)]="accountDeductibility.deductibilityEdit.propertyTypeId" #propertyTypeId="ngModel" class="form-control" (change)="propertyTypeChange()">
+                                <option *ngFor="let res of propertyTypes" [ngValue]="res.id">{{res.name}}</option>
+                            </select>
+                    </div>
+                </div>
+
+                <div class="row" *ngIf="accountDeductibility.deductibilityEdit.propertyTypeId == 1">
+                    <div class="col-lg-3">
+                        <div class="form-group">
+                            <div class="col-form-label">
+                                <label for="propertyValue" class="form-label">
+                                    Procent deductibilitate
+                                    <span *ngIf="propertyValue.invalid">*</span>
+                                </label>
+                            </div>
+                            <div class="input-group">
+                                <input id="propertyValue"
+                                       name="propertyValue"
+                                       type="text"
+                                       [(ngModel)]="accountDeductibility.deductibilityEdit.propertyValue"
+                                       class="form-control"
+                                       #propertyValue="ngModel"
+                                       required />
+
+                            </div><!-- /input-group -->
+                        </div>
+                    </div>
+                    <div class="col-lg-9">
+                        Daca procentul de deductibilitate este diferit de 100%, atunci trebuie sa specificati contul nedeductibil corespunzator. Acesta va fi folosit generarea notelor automate (facturi, cheltuieli in avans, etc.)
+                    </div>
+                </div>
+
+                <div class="row" *ngIf="accountDeductibility.deductibilityEdit.propertyTypeId == 1 && (accountDeductibility.deductibilityEdit.propertyValue != 0 && accountDeductibility.deductibilityEdit.propertyValue != 100)">
+                    <div class="col-lg-3">
+                        <div class="form-group">
+                            <label for="accountNededId" class="col-form-label">Cont nedeductibil corespondent</label>
+                            <mat-form-field style="width: 100%;">
+                                <input type="text" matInput id="accountNededId"
+                                       name="accountNededId"
+                                       [(ngModel)]="accountDeductibility.deductibilityEdit.accountNededId"
+                                       #accountNededId="ngModel"
+                                       (input)="getAccountsNeded($event)"
+                                       required [matAutocomplete]="auto">
+                                <mat-autocomplete #auto="matAutocomplete" [displayWith]="getAccountNededName.bind(this)">
+                                    <mat-select *ngFor="let item of accountsNeded">
+                                        <mat-option (click)="selectedAccount(item.name, item.id)" [ngValue]="item.id">
+                                            {{ item.name }}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-autocomplete>
+                            </mat-form-field>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-3">
+                        <button (click)="accountDeductibilityEditBack()" type="submit" class="btn btn-info" title="Inapoi">
+                            <i class="fas fa-arrow-left"></i>
+                        </button>
+                    </div>
+                    <div class="col-lg-2">
+                        <div class="input-group">
+                            <button (click)="accountDeductibilityEditSave()" type="submit" class="btn btn-info" title="Save">
+                                <i class="fas fa-save"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </form>
+        </div>
+    </section>
+</div>

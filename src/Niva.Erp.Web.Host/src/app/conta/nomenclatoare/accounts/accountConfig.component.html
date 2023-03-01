@@ -1,0 +1,77 @@
+﻿<div [@routerTransition]>
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <h3>Configurare Conturi Contari Automate</h3>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="content px-2">
+        <div class="container-fluid">
+            <div class="body">
+                <div class="panel-heading" style="position: relative">
+                    <div class="row">
+                        <h4 class="panel-title col-xs-6">
+                            Configurare conturi - <span>{{ accountListCount() }}</span> &nbsp;
+                            <a [routerLink]="['/app/conta/nomenclatoare/accounts/accountConfigEdit']" class="btn btn-info"><i class="fas fa-plus"></i></a>
+                        </h4>
+                    </div>
+                </div>
+
+                <table class="table">
+                    <thead>
+                        <tr class="small-font">
+                            <th scope="col">#</th>
+                            <th scope="col">Simbol</th>
+                            <th scope="col">Radacina Cont</th>
+                            <th scope="col">Sufix</th>
+                            <th scope="col">Cont tert</th>
+                            <th scope="col">Includ CIF</th>
+                            <th scope="col">Includ Moneda</th>
+                            <th scope="col">Cont Fix</th>
+                            <th scope="col">Nr caractere secventa</th>
+                            <th scope="col">Gestiune Mijloace Fixe</th>
+                            <th scope="col">Tip activitate</th>
+                            <th scope="col">Data Valabilitate</th>
+                            <th scope="col"></th>
+                            <th scope="col"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let account of accountList; let i = index">
+                            <td scope="row">{{ i + 1 }}</td>
+                            <td>{{account.symbol}}</td>
+                            <td>{{account.accountRad}}</td>
+                            <td>{{account.sufix}}</td>
+                            <td>
+                                <input id="thirdPartyAccount" name="thirdPartyAccount" type="checkbox" style="position: relative; left:0px; opacity:100" [(ngModel)]="account.thirdPartyAccount" [disabled]="true" />
+                            </td>
+                            <td>
+                                <input id="includId1" name="includId1" type="checkbox" style="position: relative; left: 0px; opacity: 100" [(ngModel)]="account.includId1" [disabled]="true" />
+                            </td>
+                            <td>
+                                <input id="includMoneda" name="includMoneda" type="checkbox" style="position: relative; left: 0px; opacity: 100" [(ngModel)]="account.includMoneda" [disabled]="true" />
+                            </td>
+                            <td>
+                                <input id="exactAccount" name="exactAccount" type="checkbox" style="position: relative; left: 0px; opacity: 100" [(ngModel)]="account.exactAccount" [disabled]="true" />
+                            </td>
+                            <td>{{ account.nrCaractere }}</td>
+                            <td>{{account.imoAssetStorage}}</td>
+                            <td>{{ account.activityType }}</td>
+                            <td>{{account.valabilityDate | date: 'dd/MM/yyyy'}}</td>
+                            <td>
+                                <a [routerLink]="['/app/conta/nomenclatoare/accounts/accountConfigEdit']"
+                                   [queryParams]="{account: account.id}" class="btn btn-info"><i class="fas fa-edit"></i></a>
+                            </td>
+                            <td>
+                                <button (click)="deleteAccountConfig(account.id)" class="btn btn-danger"><i class="fas fa-trash"></i></button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+</div>

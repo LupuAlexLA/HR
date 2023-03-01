@@ -1,0 +1,197 @@
+﻿<div [@routerTransition]>
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <h3>Contracte ({{ getFacturiCountText() }})</h3>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="content px-2">
+        <div class="container-fluid">
+            <div class="body">
+                <form class="form" id="contractForm" name="contractForm" #contractForm="ngForm">
+                    <div class="row">
+                        <div class="col-lg-2">
+                            <label for="dataStart" class="col-form-label">
+                                Data inceput
+                            </label>
+                            <mat-form-field style="width: 100%;">
+                                <input matInput
+                                       id="dataStart"
+                                       name="dataStart"
+                                       [matDatepicker]="dataStartPicker"
+                                       [(ngModel)]="contractSearchParam.dataStart"
+                                       #dataStart="ngModel">
+                                <mat-datepicker-toggle matSuffix [for]="dataStartPicker"></mat-datepicker-toggle>
+                                <mat-datepicker #dataStartPicker></mat-datepicker>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-lg-2">
+                            <label for="dataEnd" class="col-form-label">
+                                Data sfarsit
+                            </label>
+                            <mat-form-field style="width: 100%;">
+                                <input matInput
+                                       id="dataEnd"
+                                       name="dataEnd"
+                                       [matDatepicker]="dataEndPicker"
+                                       [(ngModel)]="contractSearchParam.dataEnd"
+                                       #dataEnd="ngModel">
+                                <mat-datepicker-toggle matSuffix [for]="dataEndPicker"></mat-datepicker-toggle>
+                                <mat-datepicker #dataEndPicker></mat-datepicker>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-lg-2">
+                            <label for="thirdPartyQuality" class="col-form-label">
+                                Calitate tert
+                            </label>
+                            <select id="thirdPartyQuality" 
+                                    name="thirdPartyQuality" 
+                                    class="form-control"
+                                    [(ngModel)]="contractSearchParam.thirdPartyQuality"
+                                    #thirdPartyQuality="ngModel">
+                                <option [ngValue]="null">Selecteaza</option>
+                                <option [ngValue]="0">Client</option>
+                                <option [ngValue]="1">Furnizor</option>
+                            </select>
+                        </div>
+                        <div class="col-lg-2">
+                            <label for="thirdParty" class="col-form-label">
+                                Tert
+                            </label>
+                            <input id="thirdParty" name="thirdParty" type="text" [(ngModel)]="contractSearchParam.thirdParty" class="form-control" />
+                        </div>
+                        <div class="col-lg-2">
+                            <label for="state" class="col-form-label">
+                                Stare contract
+                            </label>
+                            <select id="state" name="state" [(ngModel)]="contractSearchParam.state" class="form-control">
+                                <option [ngValue]="null">Selecteaza</option>
+                                <option *ngFor="let contract of contractsStatus" [ngValue]="contract.id">{{contract.name}}</option>
+                            </select>
+                        </div>
+                        <div class="col-lg-2">
+                            <button type="submit" class="btn btn-info" title="Cauta" (click)="contractSearch()"><i class="fas fa-search"></i></button>
+                            <a href="{{appBaseUrl}}/assets/pdf/Conta - General - Manual utilizare.pdf" title="Manual de utilizare" class="btn btn-info ml-2" target="_blank"><i class="fas fa-question"></i></a>
+                        </div>
+                    </div>
+                </form>
+                <div>
+                    <div class="text-left" *ngIf="isGranted('General.Contracte.Modificare')">
+                        <button [routerLink]="['/app/economic/contracts/contractNew']" class="btn btn-info" title="Adaugare"><i class="fas fa-plus"></i></button>
+                    </div>
+                     
+                    <hr />
+
+                    <dx-data-grid id="gridContainerAccountList"
+                                  [dataSource]="contractsList"
+                                  [showBorders]="true"
+                                  [allowColumnResizing]="true"
+                                  [wordWrapEnabled]="true"
+                                  [remoteOperations]="false"
+                                  (onCellPrepared)="onCellPrepared($event)">
+                        <dxo-editing model="cell"
+                                     [allowUpdating]="false"
+                                     [allowAdding]="false"
+                                     [allowDeleting]="false">
+                        </dxo-editing>
+                        <dxo-group-panel [visible]="true"></dxo-group-panel>
+                        <dxo-grouping [autoExpandAll]="true"></dxo-grouping>
+                        <dxo-selection mode="multiple"></dxo-selection>
+                        <dxo-scrolling mode="infinite"></dxo-scrolling>
+
+                        <!--<dxi-column caption="Nr. crt." [calculateDisplayValue]="getRowIndex"></dxi-column>-->
+                        <dxi-column dataField="thirdPartyName" caption="Tert"></dxi-column>
+                        <dxi-column dataField="thirdPartyQualityStr" caption="Calitate tert"></dxi-column>
+                        <dxi-column dataField="startDate" caption="Data inceput" alignment="center" dataType="date"></dxi-column>
+                        <dxi-column dataField="endDate" caption="Data sfarsit" alignment="center" dataType="date"></dxi-column>
+                        <dxi-column [calculateDisplayValue]="getNrAndData" caption="Nr / Data"></dxi-column>
+                        <dxi-column [calculateDisplayValue]="getValueAndCurrency" caption="Valoare / Moneda"></dxi-column>
+                        <dxi-column dataField="contractObject" caption="Obiectul contractului"></dxi-column>
+                        <dxi-column dataField="masterContract?.contractObject" caption="Contract initial"></dxi-column>
+                        <dxi-column dataField="contractsCategoryName" caption="Categorie"></dxi-column>
+                        <dxi-column dataField="contract_State" caption="Stare"></dxi-column>
+                        <dxi-column dataField="fileDocId"
+                                    caption="Nr registratura"
+                                    [allowFiltering]="false"
+                                    [allowSorting]="false"
+                                    [allowEditing]="false"
+                                    cellTemplate="cellTemplate"></dxi-column>
+                        <div *dxTemplate="let data of 'cellTemplate'">
+                            <app-file-doc-attachment [fileId]="data.data.fileDocId" [regNumber]="data.data.contractNr"></app-file-doc-attachment>
+                        </div>
+                        <dxi-column type="buttons">
+                            <dxi-button icon="edit" text="Modifica" [onClick]="editContract"></dxi-button>
+                            <dxi-button icon="trash" text="Sterge" [onClick]="delete" *ngIf="isGranted('General.Contracte.Modificare')"></dxi-button>
+                            <dxi-button icon="fa fa-cog" text="Schimbare stare contract" [onClick]="changeStateDialog" *ngIf="isGranted('General.Contracte.Modificare')"></dxi-button>
+                            <dxi-button icon="fa fa-history" text="Lista stare contract" [onClick]="stateListDialog"></dxi-button>
+                        </dxi-column>
+
+                        <dxo-export [enabled]="true" [allowExportSelectedData]="true"></dxo-export>
+
+                    </dx-data-grid>
+
+                    <!--<table class="table table-responsive">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Tert</th>
+                <th scope="col">Calitate tert</th>
+                <th scope="col">Data inceput</th>
+                <th scope="col">Data sfarsit</th>
+                <th scope="col">Nr / Data</th>
+                <th scope="col">Valoare / moneda</th>
+                <th scope="col">Obiectul contractului</th>
+                <th scope="col">Contract initial</th>
+                <th scope="col">Categorie</th>
+                <th scope="col">Stare</th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let contract of contractsList; let i = index">
+                <td scope="row">{{ i + 1 }}</td>
+                <td>{{ contract.thirdPartyName }}</td>
+                <td>{{ contract.thirdPartyQualityStr }}</td>
+                <td>{{contract.startDate | date: 'dd/MM/yyyy'}}</td>
+                <td>{{contract.endDate | date: 'dd/MM/yyyy'}}</td>
+                <td>{{contract.contractNr}} / {{contract.contractDate | date: 'dd/MM/yyyy'}}</td>
+                <td>{{contract.value | number}} / {{contract.currencyName}} </td>
+                <td>{{contract.contractObject}}</td>
+                <td>{{contract.masterContract?.contractObject}}</td>
+                <td>{{contract.contractsCategoryName}}</td>
+                <td>{{contract.contract_State}}</td>
+                <td width="5%">
+                    <button type="button" [routerLink]="['/app/economic/contracts/contractNew']"
+                            [queryParams]="{contractId: contract.id}"
+                            class="btn btn-info"
+                            title="Modifica">
+                        <i class="fas fa-edit"></i>
+                    </button>
+                </td>
+                <td>
+                    <button (click)="delete(contract.id)"
+                            class="btn btn-danger"
+                            title="Sterge">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </td>
+                <td>
+                    <button class="btn btn-info" id="changeState" name="changeState" (click)="changeStateDialog(contract.id)" title="Schimbare stare contract"><i class="fa fa-cog"></i></button>
+                </td>
+                <td>
+                    <button class="btn btn-info" id="contractStateList" name="contractStateList" (click)="stateListDialog(contract.id)" title="Lista stare contract"><i class="fa fa-history"></i></button>
+                </td>
+            </tr>
+        </tbody>
+    </table>-->
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

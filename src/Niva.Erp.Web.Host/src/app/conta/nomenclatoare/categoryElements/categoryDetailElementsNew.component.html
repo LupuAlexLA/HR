@@ -1,0 +1,56 @@
+﻿<div [@routerTransition]>
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <h3>Adaugare / modificare categorie element factura</h3>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="content px-2">
+        <div class="container-fluid">
+            <div class="body">
+                <form #newInvoiceForm="ngForm" (ngSubmit)="saveInvoiceCategoryElement()" [busy]="isLoading">
+                    <div class="row mt-3">
+
+                        <div class="col-lg-2">
+                            <label for="categoryElementDetName" class="col-form-label"> Denumire categorie</label>
+                        </div>
+                        <div class="col-lg-3">
+                            <input id="categoryElementDetName" name="categoryElementDetName" type="text" [(ngModel)]="elementDetailsCategory.categoryElementDetName" #categoryElementDetName="ngModel" class="form-control" required />
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-lg-2">
+                            <label for="categoryTypeId" class="col-form-label"> Tip categorie</label>
+                        </div>
+                        <div class="col-lg-3">
+                            <select id="categoryTypeId" name="categoryTypeId" [(ngModel)]="elementDetailsCategory.categoryTypeId" #categoryTypeId="ngModel" class="form-control">
+                                <option value="null">Selecteaza</option>
+                                <option *ngFor="let item of categoryTypeList" [ngValue]="item.id">{{item.name}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-lg-3">
+                            <a [routerLink]="['/app/conta/nomenclatoare/categoryElements/categoryDetailElementsList']"
+                               class="btn btn-info"
+                               title="Inapoi"><i class="fas fa-arrow-left"></i></a>
+                        </div>
+                        <div class="col-lg-2" style = "display: flex; justify-content: flex-end">
+                            <button id="btnSave"
+                                    [disabled]="!newInvoiceForm.form.valid"
+                                    type="submit"
+                                    class="btn btn-info"
+                                    title="Save">
+                                <i class="fas  fa-save"></i>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+</div>
+

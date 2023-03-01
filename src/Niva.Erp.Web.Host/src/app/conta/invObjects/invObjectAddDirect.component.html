@@ -1,0 +1,237 @@
+﻿<div [@routerTransition]>
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <h3>Adaugare / Modificare obiect de inventar</h3>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="content px-2">
+        <div class="container-fluid">
+            <div class="body">
+                <form id="invObject" name="invObject" #invObjectForm="ngForm" (ngSubmit)="saveInvObjectDirect()" [busy]="isLoading">
+                    <div class="row">
+                        <div class="col-lg-1">
+                            <a [routerLink]="['/app/conta/invObjects/invObject']" class="btn btn-info" title="Inapoi"><i class="fas fa-arrow-left"></i></a>
+                        </div>
+                        <div class="col-lg-11">
+                            <h4>Adauga obiect de inventar</h4>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <label for="operationDate" class="col-form-label"> Data Operatiei</label>
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <i class="fas fa-check-circle" aria-hidden="true" *ngIf="oper.operationDate"></i>
+                                    <i class="fas fa-exclamation-circle" aria-hidden="true" *ngIf="!oper.operationDate"></i>
+                                </span>
+                                <mat-form-field style="width:90%;">
+                                    <input matInput [matDatepicker]="operationDatePicker" id="operationDate"
+                                           name="operationDate" [(ngModel)]="oper.operationDate" #operationDate="ngModel" />
+                                    <mat-datepicker-toggle matSuffix [for]="operationDatePicker"></mat-datepicker-toggle>
+                                    <mat-datepicker #operationDatePicker></mat-datepicker>
+                                </mat-form-field>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-2">
+                            <label for="documentNr" class="col-form-label">Nr Document</label>
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <i class="fas fa-check-circle" aria-hidden="true" *ngIf="!documentNr.invalid"></i>
+                                    <i class="fas fa-exclamation-circle" aria-hidden="true" *ngIf="documentNr.invalid"></i>
+                                </span>
+                                <input id="documentNr" name="documentNr" type="text" [(ngModel)]="oper.documentNr" #documentNr="ngModel" class="form-control" required />
+                            </div>
+                        </div>
+
+                        <div class="col-lg-3">
+                            <label for="documentDate" class="col-form-label">Data Document</label>
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <i class="fas fa-check-circle" aria-hidden="true" *ngIf="oper.documentDate"></i>
+                                    <i class="fas fa-exclamation-circle" aria-hidden="true" *ngIf="!oper.documentDate"></i>
+                                </span>
+                                <mat-form-field style="width: 90%;">
+                                    <input matInput [matDatepicker]="documentDatePicker" id="documentDate"
+                                           name="documentDate" [(ngModel)]="oper.documentDate" #documentDate="ngModel" />
+                                    <mat-datepicker-toggle matSuffix [for]="documentDatePicker"></mat-datepicker-toggle>
+                                    <mat-datepicker #documentDatePicker></mat-datepicker>
+                                </mat-form-field>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-4">
+                            <label for="name" class="col-form-label">Denumire Activ</label>
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <i class="fas fa-check-circle" aria-hidden="true" *ngIf="!name.invalid"></i>
+                                    <i class="fas fa-exclamation-circle" aria-hidden="true" *ngIf="name.invalid"></i>
+                                </span>
+                                <input id="name" name="name" type="text" [(ngModel)]="oper.name" #name="ngModel" class="form-control" required />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <label for="primDocumentTypeId" class="col-form-label">Tip Doc Primar</label>
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <i class="fas fa-check-circle" aria-hidden="true" *ngIf="!primDocumentTypeId.invalid"></i>
+                                    <i class="fas fa-exclamation-circle" aria-hidden="true" *ngIf="primDocumentTypeId.invalid"></i>
+                                </span>
+                                <select id="primDocumentTypeId" name="primDocumentTypeId" [(ngModel)]="oper.primDocumentTypeId" #primDocumentTypeId="ngModel" class="form-control"
+                                         (ngModelChange)="checkAutoNumberForDoc(oper.primDocumentTypeId)">
+                                    <option *ngFor="let res of documentType?.getDocumentType" [ngValue]="res.id">{{ res.name }}</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-2">
+                            <label for="primDocumentNr" class="col-form-label">Nr Doc Primar</label>
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <i class="fas fa-check-circle" aria-hidden="true" *ngIf="!primDocumentNr.invalid"></i>
+                                    <i class="fas fa-exclamation-circle" aria-hidden="true" *ngIf="primDocumentNr.invalid"></i>
+                                </span>
+                                <input id="primDocumentNr" name="primDocumentNr" type="text" [(ngModel)]="oper.primDocumentNr" #primDocumentNr="ngModel" class="form-control" required />
+                            </div>
+                        </div>
+
+                        <div class="col-lg-3">
+                            <label for="primDocumentDate" class="col-form-label">Data Doc Prim</label>
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <i class="fas fa-check-circle" aria-hidden="true" *ngIf="oper.primDocumentDate"></i>
+                                    <i class="fas fa-exclamation-circle" aria-hidden="true" *ngIf="!oper.primDocumentDate"></i>
+                                </span>
+                                <mat-form-field style="width: 90%;">
+                                    <input matInput [matDatepicker]="primDocumentDatePicker" id="primDocumentDate"
+                                           name="primDocumentDate" [(ngModel)]="oper.primDocumentDate" #primDocumentDate="ngModel" />
+                                    <mat-datepicker-toggle matSuffix [for]="primDocumentDatePicker"></mat-datepicker-toggle>
+                                    <mat-datepicker #primDocumentDatePicker></mat-datepicker>
+                                </mat-form-field>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-4">
+                            <label for="thirdPartyId" class="col-form-label">Furnizor</label>
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <i class="fas fa-check-circle" aria-hidden="true" *ngIf="!thirdPartyId.invalid"></i>
+                                    <i class="fas fa-exclamation-circle" aria-hidden="true" *ngIf="thirdPartyId.invalid"></i>
+                                </span>
+                                <mat-form-field style="width: 85%;">
+                                    <input type="text" matInput id="thirdPartyId"
+                                           name="thirdPartyId"
+                                           [(ngModel)]="oper.thirdPartyId"
+                                           (input)="searchThirdPartyByInput($event)"
+                                           required
+                                           [matAutocomplete]="auto"
+                                           #thirdPartyId="ngModel"
+                                           [disabled]="oper.processed" />
+                                    <mat-autocomplete #auto="matAutocomplete" [displayWith]="getThirdPartyName.bind(this)">
+                                        <mat-select *ngFor="let thirdParty of thirdParties?.getThirdParty">
+                                            <mat-option (click)="selectedThirdParty(thirdParty.personId, thirdParty.fullName)" [ngValue]="thirdParty.personId">
+                                                {{ thirdParty.fullName }}
+                                                <small>Furnizor: </small><small>{{ thirdParty.personId }}</small>
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-autocomplete>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr />
+
+                    <div class="row">
+                        <div class="col-lg-2">
+                            <label for="inventoryValue" class="col-form-label">Valoare inventar</label>
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <i class="fas fa-check-circle" aria-hidden="true" *ngIf="!inventoryValue.invalid"></i>
+                                    <i class="fas fa-exclamation-circle" aria-hidden="true" *ngIf="inventoryValue.invalid"></i>
+                                </span>
+                                <input id="inventoryValue" name="inventoryValue" type="text" [(ngModel)]="oper.inventoryValue" #inventoryValue="ngModel" class="form-control" required />
+                            </div>
+                        </div>
+
+                        <div class="col-lg-3">
+                            <label for="storageInId" class="col-form-label">Magazie</label>
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <i class="fas fa-check-circle" aria-hidden="true" *ngIf="!storageInId.invalid"></i>
+                                    <i class="fas fa-exclamation-circle" aria-hidden="true" *ngIf="storageInId.invalid"></i>
+                                </span>
+                                <select id="storageInId" name="storageInId" [(ngModel)]="oper.storageInId" #storageInId="ngModel" class="form-control">
+                                    <option *ngFor="let res of storageList?.getInvObjectStorage" [ngValue]="res.id">{{res.storageName}}</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-4">
+                            <label for="categoryId" class="col-form-label">Categorie</label>
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <i class="fas fa-check-circle" aria-hidden="true" *ngIf="!invCategoryId.invalid"></i>
+                                    <i class="fas fa-exclamation-circle" aria-hidden="true" *ngIf="invCategoryId.invalid"></i>
+                                </span>
+                                <select id="categoryId" name="categoryId" [(ngModel)]="oper.invCategoryId" #invCategoryId="ngModel" class="form-control">
+                                    <option *ngFor="let res of categories?.getCategoryList" [ngValue]="res.id">{{res.categoryName}}</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <label for="invObjectAccountId" class="col-form-label">Cont obiect de inventar</label>
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <i class="fas fa-check-circle" aria-hidden="true" *ngIf="!invAccountId.invalid"></i>
+                                    <i class="fas fa-exclamation-circle" aria-hidden="true" *ngIf="invAccountId.invalid"></i>
+                                </span>
+                                <select id="invObjectAccountId" name="invObjectAccountId" [(ngModel)]="oper.invAccountId" #invAccountId="ngModel" class="form-control">
+                                    <option *ngFor="let res of accounts?.getAccounts" [ngValue]="res.id">{{res.name}}</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-3">
+                            <label for="expenseAccountId" class="col-form-label">Cont cheltuiala</label>
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <i class="fas fa-check-circle" aria-hidden="true" *ngIf="!expenseAccountId.invalid"></i>
+                                    <i class="fas fa-exclamation-circle" aria-hidden="true" *ngIf="expenseAccountId.invalid"></i>
+                                </span>
+                                <select id="expenseAccountId" name="expenseAccountId" [(ngModel)]="oper.expenseAccountId" #expenseAccountId="ngModel" class="form-control">
+                                    <option *ngFor="let res of accounts?.getAccounts" [ngValue]="res.id">{{res.name}}</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mt-3" *ngIf="isGranted('Conta.ObInventar.Intrari.Modificare')">
+                        <div class="col-lg-6">
+                            <div class="input-group" style="display: flex; justify-content: flex-end">
+                                <span class="input-group-addon">
+                                    <i class="fas fa-check-circle" aria-hidden="true" *ngIf="invObjectForm.form.valid"></i>
+                                    <i class="fas fa-exclamation-circle" aria-hidden="true" *ngIf="!invObjectForm.form.valid"></i>
+                                </span>
+                                <button class="btn btn-info" title="Salvare" *ngIf="!oper.finishAdd">
+                                    <i class="fas fa-save"></i>
+                                </button>
+                                <a [routerLink]="['/app/conta/invObjects/invObject']" class="btn btn-info" *ngIf="oper.finishAdd">Lista operatii</a>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+</div>

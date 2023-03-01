@@ -1,0 +1,56 @@
+﻿<div [@routerTransition]>
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row">
+                <h3>
+                    <a [routerLink]="['/app/buget/paap/paapList']" class="btn btn-info" title="Inapoi"><i class="fas fa-arrow-left"></i></a>
+                    Lista redistribuire achizitii - {{ anAchizitie }}
+                </h3>
+            </div>
+        </div>
+    </section>
+    <section class="content px-2">
+        <div class="container-fluid" [busy]="isLoading">
+            <div class="body">
+                <div class="panel-heading" style="position: relative;">
+                    <div class="row">
+                        <h4 class="panel-title col-xs-6 alignContent">
+                            Achizitii redistribuite - <span>{{ paapRedistribCount() }}</span> &nbsp;
+                            <a class="btn btn-info mr-2" 
+                               [routerLink]="['/app/buget/paap/redistribuire/redistribuirePaapAdd']"
+                               [queryParams]="{an: anAchizitie}"
+                               title="Adaugare"><i class="fas fa-plus"></i></a>
+                        </h4>
+                    </div>
+                </div>
+                <table class="table small-font table-responsive">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th scope="col">Data</th>
+                            <th scope="col">Denumire compartiment</th>
+                            <th scope="col">Denumire categorie</th>
+                            <th scope="col">Denumire achizitie</th>
+                            <th scope="col">Suma primita</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of paapRedistribuire;let i = index">
+                            <td>{{ i +1 }}</td>
+                            <td class="alignDateInTable">{{ item.dataRedistribuire | date: 'dd/MM/yyyy' }}</td>
+                            <td>{{ item.numeCompartiment }}</td>
+                            <td>{{ item.numeCategorie }}</td>
+                            <td>{{ item.denumireAchizitie }}</td>
+                            <td class="alignSum">{{ item.sumaPrimita | number:'1.2'}}</td>
+                            <th>
+                                <button id="detailsBtn" name="detailsBtn" class="btn btn-info mr-3" title="Afisare detalii" (click)="openDetails(item.id)"><i class="fas fa-list"></i></button>
+                                <button id="deleteBtn" name="deleteBtn" class="btn btn-danger" title="Sterge" (click)="delete(item.id)"><i class="fas fa-trash"></i></button>
+                            </th>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+</div>

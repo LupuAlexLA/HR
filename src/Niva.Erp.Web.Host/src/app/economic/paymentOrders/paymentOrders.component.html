@@ -1,0 +1,287 @@
+﻿<div [@routerTransition]>
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <h3>Ordine de plata</h3>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="content px-2">
+        <div class="container-fluid">
+            <div class="body" *ngIf="form !== undefined">
+                <form id="list" name="list" *ngIf="form.showList" #paymentOrdForm="ngForm">
+                    <div class="row">
+                        <div class="col-lg-2">
+                            <label for="searchStartDate" class="col-form-label">Data Start</label>
+                            <mat-form-field style="width: 100%;">
+                                <input matInput
+                                       id="searchStartDate"
+                                       name="searchStartDate"
+                                       [matDatepicker]="searchStartDatePicker"
+                                       [(ngModel)]="form.searchStartDate">
+                                <mat-datepicker-toggle matSuffix [for]="searchStartDatePicker"></mat-datepicker-toggle>
+                                <mat-datepicker #searchStartDatePicker></mat-datepicker>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-lg-2">
+                            <label for="searchEndDate" class="col-form-label"> Data End</label>
+                            <mat-form-field style="width: 100%;">
+                                <input matInput
+                                       id="searchEndDate"
+                                       name="searchEndDate"
+                                       [matDatepicker]="searchEndDatePicker"
+                                       [(ngModel)]="form.searchEndDate">
+                                <mat-datepicker-toggle matSuffix [for]="searchEndDatePicker"></mat-datepicker-toggle>
+                                <mat-datepicker #searchEndDatePicker></mat-datepicker>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-lg-1">
+                            <button [disabled]="!paymentOrdForm.form.valid" (click)="paymentOrdersList()" class="btn btn-info"><i class="fas fa-search"></i></button>
+                            <a href="{{appBaseUrl}}/assets/pdf/Conta - Casierie - Manual utilizare.pdf" title="Manual de utilizare" class="btn btn-info ml-2" target="_blank"><i class="fas fa-question"></i></a> 
+                        </div>
+                    </div>
+                    <div class="panel-heading" style="position:relative">
+                        <div class="row">
+                            <h4 class="panel-title col-xs-6 ">
+                                Ordine de plata - <span>{{ getPaymentOrderListCount() }}</span> &nbsp;
+                                <button *ngIf="isGranted('Casierie.OP.Modificare')" (click)="paymentOrderDetailAdd(0)" class="btn btn-info" ><i class="fas fa-plus" ></i></button>
+                            </h4>
+                            <h4 class="panel-title col-xs-6 align-self-end mx-4">
+                                <button (click)="selectAll()" class="btn btn-info mx-4" *ngIf="isGranted('Casierie.OP.Modificare')">SelecteazaTot</button>
+                                <button (click)="selectNone()" class="btn btn-info mx-4" *ngIf="isGranted('Casierie.OP.Modificare')">DeselecteazaTot</button>
+                                <button (click)="saveValidation()" class="btn btn-info mx-4" *ngIf="isGranted('Casierie.OP.Modificare')">Valideaza</button>
+                                <a id="exportCSV" name="exportCSV" class="btn btn-info mx-4" [routerLink]="['/app/economic/paymentOrders/exportCSV']">Export</a>
+                            </h4>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <!--<table class="table table-responsive">
+                            <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">NrOrd</th>
+                                    <th scope="col">DataEmiterii</th>
+                                    <th scope="col">BancaPlatitorului</th>
+                                    <th scope="col">ContPlat</th>
+                                    <th scope="col">Beneficiar</th>
+                                    <th scope="col">BancaBenef</th>
+                                    <th scope="col">ContBenef</th>
+                                    <th scope="col">Valoare</th>
+                                    <th scope="col">Moneda</th>
+                                    <th scope="col">Reprezinta</th>
+                                    <th scope="col">Finalizat</th>
+                                    <th scope="col"></th>
+                                    <th scope="col"></th>
+                                </tr>
+                            </thead>
+                            <tbody *ngFor="let order of form.opList; let i = index">
+                                <tr>
+                                    <td scope="row">{{ i + 1 }}</td>
+                                    <td>{{order.orderNr}}</td>
+                                    <td>{{order.orderDate | date: 'dd/MM/yyyy'}}</td>
+                                    <td>{{order.payerBank}}</td>
+                                    <td>{{order.payerBankAccount}}</td>
+                                    <td>{{order.beneficiary}}</td>
+                                    <td>{{order.benefBank}}</td>
+                                    <td>{{order.benefBankAccount}}</td>
+                                    <td class="align-right">{{order.value | number: '1.2-2'}}</td>
+                                    <td>{{order.currency}}</td>
+                                    <td>{{order.paymentDetails}}</td>
+                                    <td>
+                                        <input id="finalised_{{i}}" name="finalised_{{i}}" type="checkbox" [(ngModel)]="order.finalised" />
+                                    </td>
+                                    <td>
+                                        <button *ngIf="!order.finalisedDb" (click)="paymentOrderDetail(order.id)" class="btn btn-info"><i class="fas fa-edit"></i></button>
+                                    </td>
+                                    <td>
+                                        <button *ngIf="!order.finalisedDb" (click)="paymentOrderDelete(order.id)" class="btn btn-danger"><i class="fas fa-trash"></i></button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>-->
+
+                        <dx-data-grid id="gridContainer"
+                                      [dataSource]="form.opList"
+                                      [showBorders]="true"
+                                      (onCellPrepared)="onCellPrepared($event)"
+                                      [columnAutoWidth]="true"
+                                      [columnResizingMode]="true"
+                                      [wordWrapEnabled]="true">
+
+                            <dxo-editing mode="cell"
+                                         [allowUpdating]="true"
+                                         [allowAdding]="false"
+                                         [allowDeleting]="false">
+                            </dxo-editing>
+                            <dxo-group-panel [visible]="true"></dxo-group-panel>
+                            <dxo-grouping [autoExpandAll]="true"></dxo-grouping>
+                            <dxo-selection mode="multiple"></dxo-selection>
+
+                            <dxi-column dataField="id" [visible]="false" caption="id" [allowEditing]="false"></dxi-column>
+                            <dxi-column dataField="orderNr" caption="NrOrd" [allowEditing]="false"></dxi-column>
+                            <dxi-column dataField="orderDate" dataType="date" caption="DataEmiterii"[format]="'dd/MM/yyyy'" [allowEditing]="false"></dxi-column>
+                            <dxi-column dataField="payerBank" caption="BancaPlatitorului" [allowEditing]="false"></dxi-column>
+                            <dxi-column dataField="payerBankAccount" caption="ContPlat" [allowEditing]="false"></dxi-column>
+                            <dxi-column dataField="beneficiary" caption="Beneficiar" [allowEditing]="false"></dxi-column>
+                            <dxi-column dataField="benefBank" caption="BancaBenef" [allowEditing]="false"></dxi-column>
+                            <dxi-column dataField="benefBankAccount" [visible]="true" caption="ContBenef" [allowEditing]="false"></dxi-column>
+                            <dxi-column dataField="value" caption="Valoare" [format]="',##0.00#'" [allowEditing]="false"></dxi-column>
+                            <dxi-column dataField="currency" caption="Moneda"  [allowEditing]="false"></dxi-column>
+                            <dxi-column dataField="paymentDetails" caption="Reprezinta" [allowEditing]="false"></dxi-column>
+                            <dxi-column dataField="finalised" caption="Finalizat"></dxi-column>
+                            <dxi-column type="buttons" >
+                                <dxi-button icon="edit" [onClick]="paymentOrderDetail2" [visible]="isVisible"> </dxi-button>
+                                <dxi-button icon="clear" [onClick]="paymentOrderDelete2" [visible]="isVisible"></dxi-button>
+                            </dxi-column>
+                            <dxo-export [enabled]="true" [allowExportSelectedData]="true"></dxo-export>
+                        </dx-data-grid>
+                    </div>
+                </form>
+                <form id="detail" name="detail" #detailPaymentForm="ngForm" *ngIf="form.showEditForm" (ngSubmit)="paymentOrderSave()" [busy]="isLoading">
+                    <div class="panel-heading" style="position:relative">
+                        <div class="row">
+                            <h4 class="panel-title col-xs-6" *ngIf="form.opDetail.id == 0"> AdaugareOrdinDePlata</h4>
+                            <h4 class="panel-title col-xs-6" *ngIf="form.opDetail.id != 0"> ModificareOrdinDePlata </h4>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <label for="beneficiaryId" class="col-form-label">Beneficiar</label>
+                                <mat-form-field style="width: 100%;">
+                                    <input type="text" matInput id="beneficiaryId"
+                                           name="beneficiaryId"
+                                           [(ngModel)]="form.opDetail.beneficiaryId"
+                                           (input)="searchThirdPartyByInput($event)"
+                                           required
+                                           [matAutocomplete]="auto"
+                                           #beneficiaryId="ngModel" />
+                                    <mat-autocomplete #auto="matAutocomplete" [displayWith]="getThirdPartyName.bind(this)">
+                                        <mat-select *ngFor="let thirdParty of thirdPartyList?.getThirdParty" (ngModelChange)="bankForBenefFnc()">
+                                            <mat-option (click)="selectedThirdParty(thirdParty.personId, thirdParty.fullName)" [ngValue]="thirdParty.personId">
+                                                {{ thirdParty.fullName }}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-autocomplete>
+                                </mat-form-field>
+                        </div>
+                        <div class="col-lg-3">
+                            <label for="benefBankId" class="col-form-label"> BancaBeneficiar</label>
+                            <select id="benefBankId" name="benefBankId" [(ngModel)]="form.opDetail.benefBankId" #benefBankId="ngModel" class="form-control" (ngModelChange)="bankAccountsForBenefFnc()">
+                                <option [ngValue]="null" selected="selected">Selecteaza</option>
+                                <option *ngFor="let item of bankForBenef" [ngValue]="item.id">{{item.bankName}}</option>
+                            </select>
+                        </div>
+                        <div class="col-lg-3">
+                            <label for="benefBankAccountId" class="col-form-label"> ContBeneficiar</label>
+                            <select id="benefBankAccountId" name="benefBankAccountId" [(ngModel)]="form.opDetail.benefBankAccountId" #benefBankAccountId="ngModel" class="form-control">
+                                <option [ngValue]="null" selected="selected">Selecteaza</option>
+                                <option *ngFor="let item of bankAccountsForBenef" [ngValue]="item.id">{{item.iban}}</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-1">
+                            <label for="orderNr" class="col-form-label">NrOrdin</label>
+                            <input id="orderNr" name="orderNr" type="text" [(ngModel)]="form.opDetail.orderNr" #orderNr="ngModel" class="form-control" />
+                        </div>
+                        <div class="col-lg-2">
+                            <label for="orderDate" class="col-form-label">Data Emiterii</label>
+                            <mat-form-field style="width: 100%;">
+                                <input matInput
+                                       id="orderDate"
+                                       name="orderDate"
+                                       [matDatepicker]="orderDatePicker"
+                                       [(ngModel)]="form.opDetail.orderDate">
+                                <mat-datepicker-toggle matSuffix [for]="orderDatePicker"></mat-datepicker-toggle>
+                                <mat-datepicker #orderDatePicker></mat-datepicker>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-lg-2">
+                            <label for="value" class="col-form-label">Suma</label>
+                            <input id="value" name="value" type="text" [(ngModel)]="form.opDetail.value" #value="ngModel" class="form-control" />
+                        </div>
+                        <div class="col-lg-1">
+                            <label for="moneda" class="col-form-label">Moneda</label>
+                            <select id="moneda" name="moneda" [(ngModel)]="form.opDetail.currencyId" #currencyId="ngModel" class="form-control" (ngModelChange)="filterInvoicesListByCurrency(form.opDetail.currencyId)">
+                                <option [ngValue]="null">Selecteaza</option>
+                                <option *ngFor="let item of currencies?.getCurrency" [ngValue]="item.id">{{item.currencyName}}</option>
+                            </select>
+                        </div>
+                        <div class="col-lg-3">
+                            <label for="payerBank" class="col-form-label">BancaPlatitor</label>
+                            <select id="payerBank" name="payerBank" class="form-control" [(ngModel)]="form.opDetail.payerBankId" #payerBankId="ngModel" (ngModelChange)="bankAccountsForPayerFnc()">
+                                <option [ngValue]="null">Selecteaza</option>
+                                <option *ngFor="let item of bankForPayer" [ngValue]="item.id">{{item.bankName}}</option>
+                            </select>
+                        </div>
+                        <div class="col-lg-3">
+                            <label for="payerBankAccount" class="col-form-label"> ContPlatitor</label>
+                            <select id="payerBankAccount" name="payerBankAccount" [(ngModel)]="form.opDetail.payerBankAccountId" #payerBankAccountId="ngModel" class="form-control">
+                                <option [ngValue]="null" selected="selected">Selecteaza</option>
+                                <option *ngFor="let item of bankAccountsForPayer" [ngValue]="item.id">{{item.iban}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class=" col-12">
+                            <h4>Facturi - {{getInvoicesCount()}}</h4>
+                        </div>
+                        <div>
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col"></th>
+                                        <th scope="col">Descriere</th>
+                                        <th scope="col">Total de plata</th>
+                                        <th scope="col">Rest de plata</th>
+                                        <th scope="col">Rest</th>
+                                        <th scope="col">Platit</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody *ngFor="let invoice of form.opDetail.invoicesList; let i = index;">
+                                    <tr>
+                                        <td>
+                                            <input id="selectedInvoice_{{i}}" name="selectedInvoice_{{i}}" type="checkbox" [(ngModel)]="invoice.selected" #invoice.selected="ngModel" (change)="calculateInvoiceTotal(i)" [disabled]="form.opDetail.value === 0" />
+                                        </td>
+                                        <td>{{ invoice.details }}</td>
+                                        <td class="alignSum">{{ invoice.totalValue | number: '1.2' }}</td>
+                                        <td class="alignSum">{{ invoice.remainingValue | number: '1.2' }}</td>
+
+                                        <td class="alignSum">{{ invoice.rest | number: '1.2' }}</td>
+                                        <td>
+                                            <input id="payedValue_{{i}}" name="payedValue_{{i}}" [(ngModel)]="invoice.payedValue" #payedValue="ngModel" class="form-control" />
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <label for="paymentDetails" class="col-form-label">Reprezinta</label>
+                            <input id="paymentDetails" name="paymentDetails" type="text" class="form-control" [(ngModel)]="form.opDetail.paymentDetails" #paymentDetails="ngModel" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-1">
+                            <button (click)="backToList()" class="btn btn-info"><i class="fas fa-arrow-left"></i></button>
+                        </div>
+                        <div class="col-lg-2 col-lg-offset-4">
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <span class="fas fa-check-circle" *ngIf="!detailPaymentForm.form.valid"></span>
+                                    <span class="fas fa-exclamation-circle" *ngIf="detailPaymentForm.form.valid"></span>
+                                </span>
+                                <button [disabled]="!detailPaymentForm.form.valid" type="submit" class="btn btn-info" title="Save"><i class="fas fa-save"></i> </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+</div>

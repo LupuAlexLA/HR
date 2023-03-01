@@ -1,0 +1,8 @@
+﻿<dx-report-viewer [reportUrl]="reportUrl" height="800px">
+    <dxrv-request-options [invokeAction]="invokeAction" [host]="hostUrl"></dxrv-request-options>
+    <dxrv-callbacks (CustomizeParameterEditors)="onCustomizeParameterEditors($event)" (CustomizeMenuActions)="CustomizeMenuActions($event)" (CustomizeElements)="onCustomizeElements($event)">
+    </dxrv-callbacks>
+</dx-report-viewer>
+
+<!--<input [(ngModel)]="reportName" type="text"/>
+<button (click)="open()"></button>-->

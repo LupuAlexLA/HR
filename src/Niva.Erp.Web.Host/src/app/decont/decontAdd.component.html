@@ -1,0 +1,262 @@
+﻿<!--<div style="width: 100%; height: 100%;">
+    <div style="position: absolute; z-index: 1002; background-color: rgba(255, 255, 255, 0.5); width: 100%; height: 100%;" *ngIf="isLoading">
+            <mat-spinner mode="indeterminate" value="50" style=" top: 40%; left: 40%; "></mat-spinner>
+    </div>
+</div>-->
+
+<div [@routerTransition] >
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <h3>Adaugare / Modificare decont</h3>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="content px-2">
+        <div class="container-fluid">
+            <div class="body">
+                <form id="decontForm" name="decontform" #decontForm="ngForm" [busy]="isLoading">
+                    <div class="row">
+                        <div class="col-lg-2">
+                            <label for="documentType" class="col-form-label">Tip document</label>
+                        </div>
+                        <div class="col-lg-2">
+                            <select id="documentType" name="documentType" class="form-control" [(ngModel)]="decontEdit.documentType" #documentType="ngModel" (change)="changeNumber()">
+                                <option value="DEC">Decont</option>
+                                <option value="OD">Ordin deplasare</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-lg-2">
+                            <label for="decontDate" class="col-form-label">Data decont</label>
+                        </div>
+                        <div class="col-lg-2">
+                            <mat-form-field style="width: 100%;">
+                                <input matInput
+                                       id="decontDate"
+                                       name="decontDate"
+                                       [matDatepicker]="decontDatePicker"
+                                       [(ngModel)]="decontEdit.decontDate"
+                                       #decontDate="ngModel"
+                                       required />
+                                <mat-datepicker-toggle matSuffix [for]="decontDatePicker"></mat-datepicker-toggle>
+                                <mat-datepicker #decontDatePicker></mat-datepicker>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-lg-2">
+                            <label for="decontNumber" class="col-form-label">Numar decont</label>
+                        </div>
+                        <div class="col-lg-2">
+                            <!--<input type="text" name="decontNumber" id="decontNumber" [(ngModel)]="decontEdit.decontNumber" #decontNumber="ngModel" class="form-control" required />-->
+                            {{decontEdit.decontNumber}}
+                        </div>
+                        <div class="col-lg-2">
+                            <label for="currencyId"
+                                   class="col-form-label">
+                                Moneda
+                            </label>
+                        </div>
+                        <div class="col-lg-2">
+                            <div class="input-group">
+                                <select class="form-control"
+                                        name="currencyId"
+                                        [(ngModel)]="decontEdit.currencyId"
+                                        #currencyId="ngModel">
+                                    <option *ngFor="let value of currency" [ngValue]="value.id">{{value.name}}</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-2">
+                            <label for="thirdPartyId" class="col-form-label"> Angajat</label>
+                        </div>
+                        <div class="col-lg-2">
+                            <mat-form-field style="width: 100%;">
+                                <input type="text" matInput id="thirdPartyId"
+                                       name="thirdPartyId"
+                                       [(ngModel)]="decontEdit.thirdPartyId"
+                                       (input)="searchThirdPartyByInput($event)"
+                                       [matAutocomplete]="auto"
+                                       #thirdPartyId="ngModel"
+                                       required />
+                                <mat-autocomplete #auto="matAutocomplete" [displayWith]="getThirdPartyName.bind(this)">
+                                    <mat-select *ngFor="let thirdParty of thirdParties?.getThirdParty">
+                                        <mat-option (click)="selectedThirdParty(thirdParty.personId, thirdParty.fullName)" [ngValue]="thirdParty.personId">
+                                            {{ thirdParty.fullName }}
+                                            <small>Furnizor: </small><small>{{ thirdParty.personId }}</small>
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-autocomplete>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-lg-2">
+                            <label for="decontType" class="col-form-label"> Tip decont</label>
+                        </div>
+                        <div class="col-lg-2">
+                            <select id="decontTypeId" name="decontTypeId" [(ngModel)]="decontEdit.decontTypeId" #decontTypeId="ngModel" required class="form-control">
+                                <option [ngValue]="null">Selecteaza</option>
+                                <option *ngFor="let res of decontTypeList" [ngValue]="res.id">{{ res.name }}</option>
+                            </select>
+                        </div>
+                        <div class="col-lg-2">
+                            <label for="scopDeplasareTypeId" class="col-form-label"> Scop delegatie</label>
+                        </div>
+                        <div class="col-lg-2">
+                            <div class="input-group">
+                                <select id="scopDeplasareTypeId" name="scopDeplasareTypeId" [(ngModel)]="scopDeplasareId" class="form-control" (change)="hideInfo()">
+                                    <option *ngFor="let res of scopDeplasareList" [ngValue]="res.id">{{res.name}}</option>
+                                </select>
+                            </div>
+                        </div> 
+                    </div>
+                    <div class="row" *ngIf="showInfo">
+                        <h4>
+                            Informatii delegatie
+                        </h4>
+                    </div>
+                    <div class="row" *ngIf="showInfo">
+                        <div class="col-lg-2">
+                            <label for="diurnaLegalaId" class="col-form-label"> Tara</label>
+                        </div>
+                        <div class="col-lg-2">
+                            <select id="diurnaLegalaId" name="diurnaLegalaId" class="form-control" [(ngModel)]="decontEdit.diurnaLegalaId" #diurnaLegalaId="ngModel" (ngModelChange)="getDiurnaValues(decontEdit.diurnaLegalaId)">
+                                <option *ngFor="let item of diurnaList" [ngValue]="item.id">{{item.countryName}}</option>
+                            </select>
+                        </div>
+                        <div class="col-lg-2">
+                            <label for="diurnaZi" class="col-form-label"> Diurna zi</label>
+                        </div>
+                        <div class="col-lg-2">
+                            <input type="text" name="diurnaZi" id="diurnaZi" [(ngModel)]="decontEdit.diurnaZi" #diurnaZi="ngModel" class="form-control" (ngModelChange)="actDiurnaImpoz()" />
+                        </div>
+                        <div class="col-lg-2">
+                            <label for="diurnaLegala" class="col-form-label"> Diurna legala</label>
+                        </div>
+                        <div class="col-lg-2">
+                            <input type="text" name="diurnaLegala" id="diurnaLegala" [(ngModel)]="decontEdit.diurnaLegala" #diurnaLegala="ngModel" class="form-control" (ngModelChange)="actDiurnaImpoz()" />
+                        </div>
+                    </div>
+                    <div class="row mt-2"  *ngIf="showInfo">
+                        <div class="col-lg-2">
+                            <label for="diurnaImpozabila" class="col-form-label"> Diurna impozabila</label>
+                        </div>
+                        <div class="col-lg-2">
+                            <input type="text" name="diurnaImpozabila" id="diurnaImpozabila" [(ngModel)]="decontEdit.diurnaImpozabila" #diurnaImpozabila="ngModel" class="form-control" disabled readonly />
+                        </div>
+                        <div class="col-lg-2">
+                            <label for="nrZile" class="col-form-label"> Nr zile</label>
+                        </div>
+                        <div class="col-lg-2">
+                            <input type="text" name="nrZile" id="nrZile" [(ngModel)]="decontEdit.nrZile" #nrZile="ngModel" class="form-control" (ngModelChange)="calculateDiurna()" />
+                        </div>
+                    </div>
+                    <div class="row mt-2" *ngIf="showInfo">
+                        <div class="col-lg-2">
+                            <label for="dateStart" class="col-form-label">Data inceput</label>
+                        </div>
+                        <div class="col-lg-2">
+                            <mat-form-field style="width: 100%;">
+                                <input matInput
+                                       type="datetime-local"
+                                       id="dateStart"
+                                       name="dateStart"
+                                       [ngModel]="startDate | date:'yyyy-MM-ddThh:mm'"
+                                       #dateStart="ngModel"
+                                       (ngModelChange)="setDateStart($event)" />
+                            </mat-form-field>
+                        </div>
+                        <div class="col-lg-2">
+                            <label for="dateEnd" class="col-form-label">Data sfarsit</label>
+                        </div>
+                        <div class="col-lg-2">
+                            <mat-form-field style="width: 100%;">
+                                <input matInput
+                                       type="datetime-local"
+                                       id="dateEnd"
+                                       name="dateEnd"
+                                       [ngModel]="endDate | date:'yyyy-MM-ddTHH:mm'"
+                                       #dateEnd="ngModel"
+                                       (ngModelChange)="setDateEnd($event)" />
+                                <!--<mat-datepicker-toggle matSuffix [for]="dateEndPicker"></mat-datepicker-toggle>
+            <mat-datepicker #dateEndPicker></mat-datepicker>-->
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="row mt-2" *ngIf="showInfo">
+                        <div class="col-lg-2">
+                            <label class="col-form-label">Total diurna acordata: {{ decontEdit.totalDiurnaAcordata }} </label>
+                        </div>
+                        <div class="col-lg-3">
+                            <label class="col-form-label">Total diurna acordata FileDoc: {{ decontEdit.totalDiurnaAcordataFileDoc }} </label>
+                        </div>
+                        <div class="col-lg-3">
+                            <label class="col-form-label">Total diurna impozabila: {{ decontEdit.totalDiurnaImpozabila }} </label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="table-responsive">
+                                <h4>
+                                    Documente &nbsp;&nbsp;<button id="add" name="add" type="submit" (click)="saveDecont('add')" class="btn btn-info mr-2" title="Adauga document" *ngIf="decontId === null"><i class="fas fa-plus"></i></button>
+                                    <button id="search" name="search" *ngIf="decontId == null" (click)="saveDecont('search')" class="btn btn-info" title="Cauta facturi"><i class="fas fa-search"></i></button>
+                                    <a [routerLink]="['/app/economic/invoices/invoiceNew']" [queryParams]="{decontId: decontId}" class="btn btn-info mr-2 " title="Adauga document" *ngIf="decontId !== null"><i class="fas fa-plus"></i></a>
+                                    <a [routerLink]="['/app/economic/invoices/searchInvoice']" [queryParams]="{decontId: decontId, currencyId: decontEdit.currencyId}" class="btn btn-info" title="Cauta facturi" *ngIf="decontId !== null"><i class="fas fa-search"></i></a>
+                                </h4>
+                            </div>
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">Tert</th>
+                                        <th scope="col">Tip Document</th>
+                                        <th scope="col">Serie/Nr/Data Document</th>
+                                        <th scope="col">Valoare Totala</th>
+                                        <th scope="col">Valoare Totala File Doc</th>
+                                        <th scope="col">Moneda</th>
+                                        <th scope="col">Descriere</th>
+                                        <th scope="col"></th>
+                                        <th scope="col"></th>
+                                    </tr>
+                                </thead>
+                                <tbody *ngFor="let invoice of invoicesForDecont; let i = index;">
+                                    <tr>
+                                        <td scope="row">{{ i + 1 }}</td>
+                                        <td>{{ invoice.thirdPartyName }}</td>
+                                        <td>{{ invoice.documentType }}</td>
+                                        <td>{{ invoice.invoiceSeries }} / {{ invoice.invoiceNumber }} / {{ invoice.invoiceDate | date: 'dd.MM.yyyy' }}</td>
+                                        <td>{{ invoice.value | number: '1.2'}}</td>
+                                        <td>{{ invoice.fileDocValue | number: '1.2'}}</td>
+                                        <td>{{ invoice.currencyName }}</td>
+                                        <td>{{ invoice.description }}</td>
+                                        <td>
+                                            <a class="btn btn-info" [routerLink]="['/app/economic/invoices/invoiceNew']"
+                                               [queryParams]="{ facturaId: invoice.id, decontId: decontId }" title="Editeaza"><i class="fas fa-edit"></i></a>
+                                        </td>
+                                        <td>
+                                            <button type="button" title="Sterge" (click)="deleteInvoice(invoice.id)" class="btn btn-danger"><i class="fas fa-trash"></i></button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <a [routerLink]="['/app/decont']" class="btn btn-info" title="Inapoi"><i class="fas fa-arrow-left"></i></a>
+                        </div>
+                        <div class="col-lg-2" style="display: flex; justify-content: flex-end">
+                            <div class="input-group">
+                                <button (click)="addToConta()" type="button" class="btn btn-info" title="Inregistreaza in contabilitate" [disabled]="!decontForm.form.valid && showInfo"><i class="fas fa-save"></i> </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+</div>
+

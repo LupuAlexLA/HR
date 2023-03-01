@@ -1,0 +1,250 @@
+﻿<div [@routerTransition]>
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <h3>Adauga / Modifica mijloc fix</h3>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="content px-2">
+        <div class="container-fluid">
+            <div class="body">
+                <form id="asset1" name="asset1" *ngIf="oper.showForm1">
+                    <div class="row">
+                        <div class="col-lg-1">
+                            <a [routerLink]="['/app/conta/imoAsset/imoAssetPVAdd']" class="btn btn-info" title="Inapoi"><i class="fas fa-arrow-left"></i></a>
+                        </div>
+                        <div class="col-lg-11">
+                            <h4>Selecteaza Factura</h4>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <label for="operationDate" class="col-form-label"> Data Operatiei</label>
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <i class="fas fa-check-circle" aria-hidden="true" *ngIf="operationDate.valid"></i>
+                                    <i class="fas fa-exclamation-circle" aria-hidden="true" *ngIf="!operationDate.valid"></i>
+                                </span>
+                                <mat-form-field>
+                                    <input matInput [matDatepicker]="operationDatePicker" id="operationDate"
+                                           name="operationDate" [(ngModel)]="oper.operationDate" #operationDate="ngModel" />
+                                    <mat-datepicker-toggle matSuffix [for]="operationDatePicker"></mat-datepicker-toggle>
+                                    <mat-datepicker #operationDatePicker></mat-datepicker>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <label for="invoiceId" class="col-form-label"> Factura</label>
+
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <i class="fas fa-check-circle" aria-hidden="true" *ngIf="invoiceId.valid"></i>
+                                    <i class="fas fa-exclamation-circle" aria-hidden="true" *ngIf="!invoiceId.valid"></i>
+                                </span>
+                                <select id="invoiceId" name="invoiceId" #invoiceId="ngModel" [(ngModel)]="oper.invoiceId" class="form-control">
+                                    <option *ngFor="let res of invoiceList?.getInvoices" [ngValue]="res.id">{{res.name}}</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row" >
+                        <div class="col-lg-1">
+                            <a [routerLink]="['/app/conta/imoAsset/imoAssetPVAdd']" class="btn btn-info"><i class="fas fa-arrow-left"></i></a>
+                        </div>
+
+                        <div class="col-lg-6"  >
+                            <div class="input-group" style = "display: flex; justify-content: flex-end">
+                                <span class="input-group-addon">
+                                    <i class="fas fa-check-circle" aria-hidden="true" *ngIf="!oper.invalid"></i>
+                                    <i class="fas fa-exclamation-circle" aria-hidden="true" *ngIf="oper.invalid"></i>
+                                </span>
+                                <button (click)="showInvoiceDetails()" [disabled]="oper.invalid" type="submit" class="btn btn-info"><i class="fas fa-arrow-right"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <form id="asset2" name="asset2" *ngIf="oper.showForm2">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <h4>Detalii Factura</h4>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">Nr Document</th>
+                                        <th scope="col">Data Document</th>
+                                        <th scope="col">Denumire Activ</th>
+                                        <th scope="col">Cantitate</th>
+                                        <th scope="col">Valoare Inventar</th>
+                                        <th scope="col">Magazie</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let detail of oper.invoiceDetail;let i = index;">
+                                        <td scope="row">{{ i + 1 }}</td>
+                                        <td>
+                                            <input id="documentNr{{i}}" name="documentNr{{i}}" type="text" [(ngModel)]="detail.documentNr" class="form-control" required />
+                                        </td>
+                                        <td>
+                                            <mat-form-field>
+                                                <input matInput [matDatepicker]="documentDatePicker" id="documentDate{{i}}"
+                                                       name="documentDate{{i}}" [(ngModel)]="detail.documentDate" #documentDate="ngModel" />
+                                                <mat-datepicker-toggle matSuffix [for]="documentDatePicker"></mat-datepicker-toggle>
+                                                <mat-datepicker #documentDatePicker></mat-datepicker>
+                                            </mat-form-field>
+                                        </td>
+                                        <td>
+                                            <input id="assetName{{i}}" name="assetName{{i}}" type="text" [(ngModel)]="detail.assetName" class="form-control" required />
+                                        </td>
+                                        <td>{{detail.quantity}}</td>
+                                        <td>
+                                            <input id="invValue{{i}}" name="invValue{{i}}" type="text" [(ngModel)]="detail.invValue" class="form-control" required />
+                                        </td>
+                                        <td>
+                                            <select id="storageInId{{i}}" name="storageInId{{i}}" [(ngModel)]="detail.storageInId" class="form-control">
+                                                <option *ngFor="let res  of storageList?.getImoAssetStorage" [ngValue]="res.id">{{res.storageName}}</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="row" >
+                        <div class="col-lg-1">
+                            <button [disabled]="oper.invalid" (click)="showForm(1)" class="btn btn-info"><i class="fas fa-arrow-left"></i></button>
+                        </div>
+
+                        <div class="col-lg-10">
+                            <div class="input-group" style = "display: flex; justify-content: flex-end">
+                                <span class="input-group-addon">
+                                    <i class="fas fa-check-circle" aria-hidden="true" *ngIf="!oper.invalid"></i>
+                                    <i class="fas fa-exclamation-circle" aria-hidden="true" *ngIf="oper.invalid"></i>
+                                </span>
+                                <button (click)="prepareAssets()" [disabled]="oper.invalid" type="submit" class="btn btn-info"><i class="fas fa-arrow-right"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <form id="asset3" name="asset3" *ngIf="oper.showForm3" [busy]="isLoading">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <h4>Detalii Mijloace Fixe</h4>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <table class="table">
+                                <tbody *ngFor="let detail of oper.assets; let i = index;">
+                                    <tr>
+                                        <td class="font-bold" width="10%">Denumire Activ</td>
+                                        <td width="15%">{{detail.name}}</td>
+
+                                        <td class="font-bold" width="10%">Cantitate</td>
+                                        <td width="15%">{{detail.quantity}}</td>
+
+                                        <td class="font-bold" width="10%">Magazie</td>
+                                        <td width="15%">{{detail.storageIn}}</td>
+
+                                        <td class="font-bold" width="10%">ValoareInventar</td>
+                                        <td width="15%">{{detail.inventoryValue}}</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="font-bold">Valoare fiscala</td>
+                                        <td>{{detail.fiscalInventoryValue}}</td>
+
+                                        <!--<td class="font-bold">Data Dare In Folosinta</td>
+                                        <td>
+                                            <mat-form-field>
+                                                <input matInput [matDatepicker]="useStartDatePicker" id="useStartDate{{i}}"
+                                                       name="useStartDate{{i}}" [(ngModel)]="detail.useStartDate" #useStartDate="ngModel"  />
+                                                <mat-datepicker-toggle matSuffix [for]="useStartDatePicker"></mat-datepicker-toggle>
+                                                <mat-datepicker #useStartDatePicker></mat-datepicker>
+                                            </mat-form-field>
+                                        </td>
+
+                                        <td class="font-bold">Data Start Amortizare</td>
+                                        <td>
+                                            <mat-form-field>
+                                                <input matInput [matDatepicker]="depreciationStartDatePicker" id="depreciationStartDate{{i}}"
+                                                       name="depreciationStartDate{{i}}" [(ngModel)]="detail.depreciationStartDate" #depreciationStartDate="ngModel" />
+                                                <mat-datepicker-toggle matSuffix [for]="depreciationStartDatePicker"></mat-datepicker-toggle>
+                                                <mat-datepicker #depreciationStartDatePicker></mat-datepicker>
+                                            </mat-form-field>
+                                        </td>-->
+
+                                        <td class="font-bold">Cod de clasificare</td>
+                                        <td>
+                                            <select id="assetClassCodesId" name="assetClassCodesId" [(ngModel)]="detail.assetClassCodesId" #assetClassCodesId="ngModel" class="form-control" (change)="getDurationMax(detail.assetClassCodesId, i)">
+                                                <option [ngValue]="null">Selecteaza</option>
+                                                <option *ngFor="let item of classCode" [ngValue]="item.id">{{ item.name }}</option>
+                                            </select>
+                                        </td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="font-bold">Cont Mijloc Fix</td>
+                                        <td>
+                                            <select id="assetAccountId{{i}}" name="assetAccountId{{i}}" [(ngModel)]="detail.assetAccountId" #assetAccountId="ngModel" class="form-control">
+                                                <option *ngFor="let res of accounts?.getAccounts" [ngValue]="res.id">{{res.name}}</option>
+                                            </select>
+                                        </td>
+
+                                        <td class="font-bold">Cont Amortizare</td>
+                                        <td>
+                                            <select id="depreciationAccountId{{i}}" name="depreciationAccountId{{i}}" [(ngModel)]="detail.depreciationAccountId" #depreciationAccountId="ngModel" class="form-control">
+                                                <option *ngFor="let res of accounts?.getAccounts" [ngValue]="res.id">{{res.name}}</option>
+                                            </select>
+                                        </td>
+
+                                        <td class="font-bold">Cont Cheltuiala</td>
+                                        <td>
+                                            <select id="expenseAccountId{{i}}" name="expenseAccountId{{i}}" [(ngModel)]="detail.expenseAccountId" #expenseAccountId="ngModel" class="form-control">
+                                                <option *ngFor="let res of accounts?.getAccounts" [ngValue]="res.id">{{res.name}}</option>
+                                            </select>
+                                        </td>
+
+                                        <td class="font-bold">Durata (luni)</td>
+                                        <td>
+                                            <input id="durationInMonths{{i}}" name="durationInMonths{{i}}" type="text" [(ngModel)]="detail.durationInMonths" class="form-control" required />
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-1">
+                            <button [disabled]="oper.invalid" (click)="showForm(2)" class="btn btn-info" *ngIf="!oper.finishAdd"><i class="fas fa-arrow-left"></i></button>
+                        </div>
+
+                        <div class="col-lg-10">
+                            <div class="input-group" style = "display: flex; justify-content: flex-end">
+                                <span class="input-group-addon">
+                                    <i class="fas fa-check-circle" aria-hidden="true" *ngIf="!oper.invalid"></i>
+                                    <i class="fas fa-exclamation-circle" aria-hidden="true" *ngIf="oper.invalid"></i>
+                                </span>
+                                <button (click)="saveAssets()" [disabled]="oper.invalid" type="submit" class="btn btn-info" *ngIf="!oper.finishAdd" title="Salveaza"><i class="fas fa-save"></i></button>
+                                <a [routerLink]="['/app/conta/imoAsset/imoAssetPV']"
+                                   class="btn btn-primary"
+                                   *ngIf="oper.finishAdd">Operation List</a>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+</div>

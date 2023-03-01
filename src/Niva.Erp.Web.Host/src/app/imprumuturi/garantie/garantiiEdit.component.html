@@ -1,0 +1,276 @@
+﻿<div [@routerTransition]>
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <h2>Adaugare / modificare Garantie Imprumut</h2>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="content px-2">
+        <div class="container-fluid">
+            <div class="body">
+                <form #imprumuturiGarantieForm="ngForm" (ngSubmit)="saveGarantie()">
+
+
+                    <div class="row">
+                        <div class="col-lg-2 alignContent">
+                            <label for="document" class="col-form-label"> Document Nr </label>
+                        </div>
+                        <div class="col-lg-2 alignContent">
+                            <input id="document" name="document" class="form-control" [(ngModel)]="garantie.documentNr" #name="ngModel" />
+                        </div>
+
+                        <div class="col-lg-2 alignContent">
+                            <label for="documentDate" class="col-form-label"> Data Document </label>
+                        </div>
+
+                        <div class="col-lg-2 alignContent">
+
+                            <mat-form-field style="width: 100%;">
+                                <input matInput
+                                       id="documentDate"
+                                       name="documentDate"
+                                       [matDatepicker]="documentDate"
+                                       [(ngModel)]="garantie.documentDate"
+                                       #dataDocument="ngModel"
+                                       required />
+                                <mat-datepicker-toggle matSuffix [for]="documentDate"></mat-datepicker-toggle>
+                                <mat-datepicker #documentDate></mat-datepicker>
+                            </mat-form-field>
+
+                        </div>
+
+                    </div>
+
+
+
+
+
+                    <div class="row">
+                        <div class="col-lg-2 alignContent">
+                            <label for="partenerGarantie" class="col-form-label"> Partener Garantie </label>
+                        </div>
+                        <div class="col-lg-4 alignContent">
+
+                            <mat-form-field style="width: 100%;">
+
+                                <input type="text"
+                                       placeholder="completeaza"
+                                       aria-label="legalPerson"
+                                       matInput
+                                       [formControl]="myControlLegalPerson"
+                                       [matAutocomplete]="legalPerson">
+
+
+                                <mat-autocomplete autoActiveFirstOption #legalPerson="matAutocomplete" [displayWith]="displayFnLegalPerson">
+                                    <mat-option *ngFor="let option of filteredOptionsLegalPerson | async" [value]="option">
+                                        {{option.fullName}}
+                                    </mat-option>
+                                </mat-autocomplete>
+
+                            </mat-form-field>
+                        </div>
+                    </div>
+
+
+
+
+                    <div class="row">
+                        <div class="col-lg-2 alignContent">
+                            <label for="garantieCont" class="col-form-label"> Garantie Cont </label>
+                        </div>
+                        <div class="col-lg-4 alignContent">
+
+                            <mat-form-field style="width: 100%;">
+
+                                <input type="text"
+                                       placeholder="completeaza"
+                                       aria-label="ContImprumut"
+                                       matInput
+                                       [formControl]="myControlIban"
+                                       [matAutocomplete]="iban">
+
+
+                                <mat-autocomplete autoActiveFirstOption #iban="matAutocomplete" [displayWith]="displayFnBankIban">
+                                    <mat-option *ngFor="let option of filteredOptionsIban | async" [value]="option">
+                                        {{option.iban}}
+                                    </mat-option>
+                                </mat-autocomplete>
+
+                            </mat-form-field>
+                        </div>
+
+
+                    </div>
+
+                    <div class="row">
+
+                        <div class="col-lg-2 alignContent">
+                            <label for="tipGarantiePrimitaData" class="col-form-label"> Tip Garantie Primita/Data </label>
+                        </div>
+                        <div class="col-lg-3 alignContent">
+                            <select id="garantieTipPrimitaDataId"
+                                    name="garantieTipPrimitaDataId"
+                                    [(ngModel)]="garantie.garantiePrimitaDataEnum"
+                                    #garantieTipId="ngModel"
+                                    class="form-control"
+                                    required>
+                                <option *ngFor="let item of garanriePrimitaDataList" [value]="item.id">
+                                    {{item.name}}
+                                </option>
+                            </select>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="row">
+                        <div class="col-lg-2 alignContent">
+                            <label for="tipGarantie" class="col-form-label"> Tip Garantie </label>
+                        </div>
+                        <div class="col-lg-3 alignContent">
+                            <select id="garantieTipId"
+                                    name="garantieTipId"
+                                    [(ngModel)]="garantie.garantieTipId"
+                                    #garantieTipId="ngModel"
+                                    class="form-control"
+                                    required>
+                                <option *ngFor="let item of garantieTip" [value]="item.id">
+                                    {{item.description}}
+                                </option>
+                            </select>
+                            
+                        </div>
+
+                        <div class="col-lg-2 alignContent">
+                            <label for="ceGaranteaza" class="col-form-label"> Ce Garanteaza </label>
+                        </div>
+                        <div class="col-lg-3 alignContent">
+
+                            <select id="garantieCeGaranteazaId"
+                                    name="garantieCeGaranteazaId"
+                                    [(ngModel)]="garantie.garantieCeGaranteazaId"
+                                    #garantieCeGaranteazaId="ngModel"
+                                    class="form-control"
+                                    required>
+                                <option *ngFor="let item of garantieCeGaranteaza" [value]="item.id">
+                                    {{item.description}}
+                                </option>
+                            </select>
+
+
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-2 alignContent">
+                            <label for="sumaGarantiei" class="col-form-label"> Suma Garantiei</label>
+                        </div>
+                        <div class="col-lg-3 alignContent">
+                            <input id="sumaGarantiei" name="sumaGarantiei" class="form-control" [(ngModel)]="garantie.sumaGarantiei" #name="ngModel" [disabled]="editValoare"/>
+                        </div>
+
+
+
+                        <div class="col-lg-2 alignContent">
+
+                            <select id="currencyId"
+                                    name="currencyId"
+                                    [(ngModel)]="garantie.currencyId"
+                                    #activitateTipId="ngModel"
+                                    class="form-control"
+                                    [disabled]="editValoare"
+                                    required>
+                                <option *ngFor="let item of currency" [value]="item.id">
+                                    {{item.currencyName}}
+                                </option>
+                            </select>
+
+                        </div>
+                    </div>
+
+
+                    <div class="row">
+
+                        <div class="col-lg-2 alignContent">
+                            <label for="startDateGarantie" class="col-form-label"> Data Inceput Garantie </label>
+                        </div>
+
+                        <div class="col-lg-2 alignContent">
+
+                            <mat-form-field style="width: 100%;">
+                                <input matInput
+                                       id="startDateGarantie"
+                                       name="startDateGarantie"
+                                       [matDatepicker]="startDateGarantiePicker"
+                                       [(ngModel)]="garantie.startDateGarantie"
+                                       #dataDocument="ngModel"
+                                       required />
+                                <mat-datepicker-toggle matSuffix [for]="startDateGarantiePicker"></mat-datepicker-toggle>
+                                <mat-datepicker #startDateGarantiePicker></mat-datepicker>
+                            </mat-form-field>
+
+                        </div>
+
+                        <div class="col-lg-2 alignContent">
+                            <label for="endDateGarantie" class="col-form-label"> Data Sfarsit Garantie </label>
+                        </div>
+
+                        <div class="col-lg-2 alignContent">
+
+                            <mat-form-field style="width: 100%;">
+                                <input matInput
+                                       id="endDateGarantie"
+                                       name="endDateGarantie"
+                                       [matDatepicker]="endDateGarantiePicker"
+                                       [(ngModel)]="garantie.endDateGarantie"
+                                       #dataDocument="ngModel"
+                                       required />
+                                <mat-datepicker-toggle matSuffix [for]="endDateGarantiePicker"></mat-datepicker-toggle>
+                                <mat-datepicker #endDateGarantiePicker></mat-datepicker>
+                            </mat-form-field>
+
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-2 alignContent">
+                            <label for="sumaGarantiei" class="col-form-label"> Mentiuni </label>
+                        </div>
+                        <div class="col-lg-4 alignContent">
+                            <input id="mentiuni" name="mentiuni" class="form-control" [(ngModel)]="garantie.mentiuni" #name="ngModel" />
+                        </div>
+
+
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-5">
+                            <a [routerLink]="['/app/imprumuturi/imprumuturiGarantiiList']"
+                               [queryParams]="{ imprumutId: imprumutId}"
+                               class="btn btn-info"
+                               title="Inapoi">
+                                <i class="fas fa-arrow-left"></i>
+                            </a>
+                        </div>
+                        <div class="col-lg-7">
+                            <div class="form-group">
+                                <button type="submit"
+                                        class="btn btn-info"
+                                        title="Save"
+                                        [disabled]="imprumuturiGarantieForm.form.invalid">
+                                    <i class="fas fa-save"></i>
+                                </button>
+
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+</div>

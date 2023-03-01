@@ -1,0 +1,67 @@
+﻿<div [@routerTransition]>
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <h3>Cheltuieli/Venituri in avans - Adaugare/modificare documente pentru operatii</h3>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="content px-2">
+        <div class="container-fluid">
+            <div class="body">
+                <form id="operDocType" name="operDocType" (ngSubmit)="saveOperDocTypeFnc()" [busy]="isLoading">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <label for="operTypeId" class="col-form-label">Operatie</label>
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <span class="input-group-addon">
+                                        <i class="fas fa-check-circle" aria-hidden="true" *ngIf="operTypeId"></i>
+                                        <i class="fas fa-exclamation-circle" aria-hidden="true" *ngIf="!operTypeId"></i>
+                                    </span>
+                                </span>
+                                <select id="operTypeId" name="operTypeId" [(ngModel)]="operDocType.operTypeId" #operTypeId="ngModel" class="form-control">
+                                    <option *ngFor="let res of operType" [ngValue]="res.id">{{res.name}}</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6">
+                            <label for="documentTypeId" class="col-form-label">Document</label>
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <span class="input-group-addon">
+                                        <i class="fas fa-check-circle" aria-hidden="true" *ngIf="documentTypeId"></i>
+                                        <i class="fas fa-exclamation-circle" aria-hidden="true" *ngIf="!documentTypeId"></i>
+                                    </span>
+                                </span>
+                                <select id="documentTypeId" name="documentTypeId" [(ngModel)]="operDocType.documentTypeId" #documentTypeId="ngModel" class="form-control">
+                                    <option *ngFor="let res of documentType?.getDocumentType" [ngValue]="res.id">{{res.typeName}}</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mt-3">
+                        <div class="col-lg-1">
+                            <a [routerLink]="['/app/conta/prepayments/prepaymentsOperDocType']" class="btn btn-info" title="Inapoi"><i class="fas fa-arrow-left"></i></a>
+                        </div>
+                        <div class="col-lg-5">
+                            <div class="input-group" style = "display: flex; justify-content: flex-end">
+                                <span class="input-group-addon">
+                                    <span class="input-group-addon">
+                                        <i class="fas fa-check-circle" aria-hidden="true" *ngIf="operDocType"></i>
+                                        <i class="fas fa-exclamation-circle" aria-hidden="true" *ngIf="!operDocType"></i>
+                                    </span>
+                                </span>
+                                <button [disabled]="!operDocType" class="btn btn-info" title="Salveaza"><i class="fas fa-save"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+</div>

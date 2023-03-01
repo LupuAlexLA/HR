@@ -1,0 +1,24 @@
+﻿<div [@routerTransition]>
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <h3>Obiecte de inventar - Nomenclatoare</h3>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="content px-2">
+        <div class="container-fluid">
+            <div class="body">
+                <div class="row">
+                    <div class="col-lg-9 col-lg-offset-3">
+                        <a [routerLink]="['/app/conta/invObjects/invObjectNomStorage']" class="btn btn-primary  mr-1" *ngIf="isGranted('Administrare.ObInventar.Nomenclatoare.Acces')">Gestiuni</a>
+                        <a [routerLink]="['/app/conta/invObjects/invObjectNomCategory']" class="btn btn-primary  mr-1" *ngIf="isGranted('Administrare.ObInventar.Nomenclatoare.Acces')">Categorie</a>
+                        <a [routerLink]="['/app/conta/invObjects/invObjectNomOperDocType']" class="btn btn-primary" *ngIf="isGranted('Administrare.ObInventar.Nomenclatoare.Acces')">Documente</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

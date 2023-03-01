@@ -1,0 +1,96 @@
+﻿<div [@routerTransition]>
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-9 col-lg-offset-3">
+                    <h2>
+                        Calculator Dobanda: &nbsp;
+        
+                    </h2>
+                    <a href="{{appBaseUrl}}/assets/pdf/Conta - Imprumuturi - Manual utilizare.pdf" title="Manual de utilizare" class="btn btn-info ml-2" target="_blank"><i class="fas fa-question"></i></a>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="content px-2" [busy]="isLoading">
+        <div class="container-fluid">
+            <div class="body">
+                <div class="row">
+                    <div>
+                       
+                    </div>
+                
+                </div>
+                <div class="row mt-3">
+                    <div class="col-lg-6">
+
+                        <table class="table">
+
+                            <thead>
+                                <tr>
+                                    <td scope="col"><b>#</b></td>
+                                    <td scope="col"><b>Date</b></td>
+
+                                    <td scope="col"></td>
+                                    <td scope="col"></td>
+                                    <td scope="col"></td>
+                                </tr>
+                            </thead>
+
+
+
+                            <tbody>
+                                <tr *ngFor="let element of dateList; let i = index">
+
+                                    <td scope="row">{{ i + 1 }}</td>
+                                    <td scope="row">
+                                        {{element.dataTragere | date: 'dd/MM/yyyy'}}
+                                    </td>
+
+                                    <td scope="row"><button class="btn btn-danger" (click)="deleteDate(element.dataTragere)"
+                                                title="Sterge">
+                                            <i class="fas fa-trash"></i>
+                                        </button></td>
+                                    <td scope="row"><button class="btn btn-info" (click)="refreshDate(element.dataTragere)"
+                                                title="Refresh">
+                                            <i class="fas fa-sync"></i>
+                                        </button></td>
+                                    <td scope="row"></td>
+                                </tr>
+                                <tr>
+                                    <td scope="row"></td>
+
+                                    <td scope="row">
+                                        <mat-form-field>
+                                            <input matInput
+                                                   name="operationDate"
+                                                   [matDatepicker]="OperationDatePicker"
+                                                   [(ngModel)]="newDate"
+                                                   #operationDate="ngModel"
+                                                   required />
+                                            <mat-datepicker-toggle matSuffix [for]="OperationDatePicker"></mat-datepicker-toggle>
+                                            <mat-datepicker #OperationDatePicker></mat-datepicker>
+                                        </mat-form-field>
+                                    </td>
+
+                                    <td scope="row"></td>
+                                    <td scope="row"></td>
+                                    <td scope="row">
+                                        <button class="btn btn-info" (click)="saveDate()"
+                                                title="Adauga">
+                                            <i class="fas fa-plus"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+
+
+                        </table>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

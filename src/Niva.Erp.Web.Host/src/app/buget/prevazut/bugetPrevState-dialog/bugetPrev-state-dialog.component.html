@@ -1,0 +1,40 @@
+﻿<form class="form-horizontal"
+      autocomplete="off"
+      #changeBugetStatusForm="ngForm"
+      (ngSubmit)="save()">
+    <abp-modal-header [title]="'Modificare stare buget prevazut'"
+                      (onCloseClick)="bsModalRef.hide()"></abp-modal-header>
+    <div class="modal-body">
+        <div class="form-group row required">
+            <label class="col-md-3 col-form-label" for="statusDate">
+                Data
+            </label>
+            <div class="col-md-9">
+                <mat-form-field style="width: 100%;">
+                    <input matInput
+                           id="statusDate"
+                           name="statusDate"
+                           [matDatepicker]="statusDatePicker"
+                           [(ngModel)]="bugetStatus.statusDate"
+                           #statusDate="ngModel" />
+                    <mat-datepicker-toggle matSuffix [for]="statusDatePicker"></mat-datepicker-toggle>
+                    <mat-datepicker #statusDatePicker></mat-datepicker>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="form-group row required">
+            <label class="col-md-3 col-form-label" for="status">
+                Stare
+            </label>
+            <div class="col-md-9">
+                <select id="status" name="status" [(ngModel)]="bugetStatus.status" #status="ngModel" class="form-control">
+                    <option [ngValue]="null">Selecteaza</option>
+                    <option *ngFor="let item of bvcStatusList" [ngValue]="item.id">{{item.name}}</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <abp-modal-footer [saveDisabled]="!changeBugetStatusForm.form.valid"
+                      (onCancelClick)="bsModalRef.hide()"></abp-modal-footer>
+</form>
+

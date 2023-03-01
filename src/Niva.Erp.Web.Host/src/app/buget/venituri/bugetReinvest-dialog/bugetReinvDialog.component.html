@@ -1,0 +1,69 @@
+﻿<form class="form-horizontal"
+      autocomplete="off"
+      #reinvForm="ngForm"
+      (ngSubmit)="save()">
+    <abp-modal-header [title]="'Reinvestire'"
+                      (onCloseClick)="bsModalRef.hide()"></abp-modal-header>
+    <div class="modal-body">
+        <div class="form-group row required">
+            <label class="col-md-3 col-form-label" for="sumaIncasata">
+                Suma incasata
+            </label>
+            <div class="col-md-9">
+                <input id="sumaIncasata" name="sumaIncasata" [(ngModel)]="Reinv.sumaIncasata" #sumaIncasata="ngModel" class="form-control" />
+            </div>
+        </div>
+        <div class="form-group row required">
+            <label class="col-md-3 col-form-label" for="reinvDate">
+                Data reinvestire
+            </label>
+            <div class="col-md-9">
+                <mat-form-field style="width: 100%;">
+                    <input matInput
+                           id="reinvDate"
+                           name="reinvDate"
+                           [matDatepicker]="reinvDatePicker"
+                           [(ngModel)]="Reinv.dataReinvestire"
+                           #operationDate="ngModel" />
+                    <mat-datepicker-toggle matSuffix [for]="reinvDatePicker"></mat-datepicker-toggle>
+                    <mat-datepicker #reinvDatePicker></mat-datepicker>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="form-group row required">
+            <label class="col-md-3 col-form-label" for="currencyId">Moneda</label>
+            <div class="col-md-9">
+                <select id="currencyId" name="currencyId" class="form-control" [(ngModel)]="Reinv.currencyId" #currencyId="ngModel" (ngModelChange)="getCursValutar()">
+                    <option [ngValue]="null">Selecteaza</option>
+                    <option *ngFor="let item of currenciesList?.getCurrency" [ngValue]="item.id">{{ item.currencyName }}</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group row required">
+            <label class="col-md-3 col-form-label" for="cursValutar">Curs valutar</label>
+            <div class="col-md-9">
+                <input id="cursValutar" name="cursValutar" [(ngModel)]="Reinv.cursValutar" #cursValutar="ngModel" class="form-control" />
+            </div>
+        </div>
+        <div class="form-group row required">
+            <label class="col-md-3 col-form-label" for="sumaReinvestita">
+                Suma Reinvestita
+            </label>
+            <div class="col-md-9">
+                <input id="sumaReinvestita" name="sumaReinvestita" [(ngModel)]="Reinv.sumaReinvestita" #sumaReinvestita="ngModel" class="form-control" />
+            </div>
+        </div>
+        <div class="form-group row required">
+            <label class="col-md-3 col-form-label" for="procDobanda">
+                Proc Dobanda
+            </label>
+            <div class="col-md-9">
+                <input id="procDobanda" name="procDobanda" [(ngModel)]="Reinv.procDobanda" #procDobanda="ngModel" class="form-control" />
+            </div>
+        </div>
+    </div>
+    <abp-modal-footer [saveDisabled]="!reinvForm.form.valid"
+                      (onCancelClick)="bsModalRef.hide()"></abp-modal-footer>
+</form>
+
+

@@ -1,0 +1,179 @@
+﻿<div [@routerTransition]>
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <h3>Calcul gestiune </h3>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="content px-2">
+        <div class="container-fluid">
+            <div class="body">
+                <div class="row">
+                     <a [routerLink]="['/app/conta/imoAsset/imoGestCompute']"
+                        *ngIf="isGranted('Administrare.MF.CalculGestiune.Acces')"
+                        class="btn btn-info" >Calcul</a>
+                    &nbsp;
+                    <a [routerLink]="['/app/conta/imoAsset/imoGestDelete']"
+                       *ngIf="isGranted('Administrare.MF.CalculGestiune.Acces')"
+                       class="btn btn-danger">Sterge Calcul</a>
+                </div>
+                <br />
+                <form id="getList" name="gestList">
+                    <div class="row">
+                        <div class="col-lg-2">
+                            <label for="dataStart" class="col-form-label">Data Inceput</label>
+                            <mat-form-field style="width: 100%;">
+                                <input matInput [matDatepicker]="dataStartPicker" id="dataStart"
+                                       name="dataStart" [(ngModel)]="gestList.dataStart" #dataStart="ngModel" />
+                                <mat-datepicker-toggle matSuffix [for]="dataStartPicker"></mat-datepicker-toggle>
+                                <mat-datepicker #dataStartPicker></mat-datepicker>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-lg-2">
+                            <label for="dataEnd" class="col-form-label">Data Sfarsit</label>
+                            <mat-form-field style="width: 100%;">
+                                <input matInput [matDatepicker]="dataEndPicker" id="dataStart"
+                                       name="dataEnd" [(ngModel)]="gestList.dataEnd" #dataEnd="ngModel" />
+                                <mat-datepicker-toggle matSuffix [for]="dataEndPicker"></mat-datepicker-toggle>
+                                <mat-datepicker #dataEndPicker></mat-datepicker>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-lg-2">
+                            <label for="storageId" class="col-form-label">Magazie</label>
+                            <select id="storageId" name="storageId" [(ngModel)]="gestList.storageId" class="form-control">
+                                <option [ngValue]="null">Selecteaza</option>
+                                <option *ngFor="let res of storageList" [ngValue]="res.id">{{res.name}}</option>
+                            </select>
+                        </div>
+                        <div class="col-lg-2">
+                            <label for="assetId" class="col-form-label">Activ</label>
+                            <select id="assetId" name="assetId" [(ngModel)]="gestList.assetId" class="form-control">
+                                <option [ngValue]="null">Selecteaza</option>
+                                <option *ngFor="let res of assetList" [ngValue]="res.id">{{res.name}}</option>
+                            </select>
+                        </div>
+                        <div class="col-lg-1">
+                            <button (click)="searchGest()" class="btn btn-info"><i class="fas fa-search"></i></button>
+                        </div>
+                    </div>
+
+                    <div class="panel-heading" style="position: relative;">
+                        <div class="row">
+                            <h4 class="panel-title col-xs-6">
+                                Operations - <span>{{ getGestListCount() }}</span> &nbsp;
+                            </h4>
+                        </div>
+                    </div>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Data Operatie</th>
+                                <th scope="col">Tip Operatie</th>
+                                <th scope="col" style="max-width:200px">Denumire Activ</th>
+                                <th scope="col">Magazie</th>
+                                <th scope="col">Tranz / Cantitate</th>
+                                <th scope="col">Tranz / Durata</th>
+                                <th scope="col">Tranz / Valoare Inventar</th>
+                                <th scope="col">Tranz / Valoare Fiscala</th>
+                                <th scope="col">Tranz / Amortizare</th>
+                                <th scope="col">Tranz / Amortizare Fiscala</th>
+                            </tr>
+                        </thead>
+                        <tbody *ngFor="let gest of gestList.gestDetail;let i = index;">
+                            <tr>
+                                <td scope="row">{{i + 1}}</td>
+                                <td>{{gest.stockDateStr}}</td>
+                                <td>{{gest.operType}}</td>
+                                <td style="max-width:200px">{{gest.imoAssetItem}}</td>
+                                <td>{{gest.storage}}</td>
+                                <td class="tranz">{{gest.tranzQuantity}}</td>
+                                <td class="tranz">{{gest.tranzDuration}}</td>
+                                <td class="tranz">{{gest.tranzInventoryValue | number}}</td>
+                                <td class="tranz">{{gest.tranzFiscalInventoryValue| number}}</td>
+                                <td class="tranz">{{gest.tranzDeprec| number}}</td>
+                                <td class="tranz">{{gest.tranzFiscalDeprec| number}}</td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td>
+                                    <button *ngIf="!gest.showReserve" (click)="showReserve(i)" class="btn btn-info" title="Afiseaza detalii rezerve"><i class="fas fa-angle-down"></i></button>
+                                    <button *ngIf="gest.showReserve" (click)="hideReserve(i)" class="btn btn-info" title="Ascunde detalii rezerve"><i class="fas fa-angle-up"></i></button>
+                                </td>
+                                <td>
+                                    <button *ngIf="!gest.showModerniz" (click)="showModerniz(i)" class="btn btn-info" title="Afiseaza detalii modernizari"><i class="fas fa-angle-down"></i></button>
+                                    <button *ngIf="gest.showModerniz" (click)="hideModerniz(i)" class="btn btn-info" title="Ascunde detalii modernizari"><i class="fas fa-angle-up"></i></button>
+                                </td>
+                                <td></td>
+                                <td></td>
+                                <td class="font-bold">{{gest.quantity}}</td>
+                                <td class="font-bold">{{gest.duration}}</td>
+                                <td class="font-bold">{{gest.inventoryValue| number}}</td>
+                                <td class="font-bold">{{gest.fiscalInventoryValue| number}}</td>
+                                <td class="font-bold">{{gest.deprec| number}}</td>
+                                <td class="font-bold">{{gest.fiscalDeprec| number}}</td>
+                            </tr>
+                            <tr *ngIf="gest.showReserve">
+                                <td colspan="11">
+                                    <table class="table small-font">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col" class="font-bold">Detalii Rezerve</th>
+                                                <th scope="col">Data Operatie</th>
+                                                <th scope="col">Tranz Amortizare Rezerva</th>
+                                                <th scope="col">Tranz Rezerva</th>
+                                                <th scope="col">Amortizare Rezerva</th>
+                                                <th scope="col">Rezerva</th>
+                                                <th scope="col">Cheltuiala Rezerva</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngFor="let reserve of gest.reserveDetail" class="detailbk">
+                                                <td></td>
+                                                <td>{{reserve.operationDate}}</td>
+                                                <td>{{reserve.tranzDeprecReserve| number}}</td>
+                                                <td>{{reserve.tranzReserve| number}}</td>
+                                                <td>{{reserve.deprecReserve| number}}</td>
+                                                <td>{{reserve.reserve| number}}</td>
+                                                <td>{{reserve.expenseReserve| number}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr *ngIf="gest.showModerniz">
+                                <td colspan="11">
+                                    <table class="table small-font">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col" class="font-bold">Detalii Modernizari</th>
+                                                <th scope="col">Data Operatie</th>
+                                                <th scope="col">Tranz Amortizare Modernizare</th>
+                                                <th scope="col">Tranz Modernizare</th>
+                                                <th scope="col">Amortizare Modernizare</th>
+                                                <th scope="col">Modernizare</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngFor="let moderniz of gest.modernizDetail" class="detailbk">
+                                                <td></td>
+                                                <td>{{moderniz.operationDate}}</td>
+                                                <td>{{moderniz.tranzDeprecModerniz| number}}</td>
+                                                <td>{{moderniz.tranzModerniz| number}}</td>
+                                                <td>{{moderniz.deprecModerniz| number}}</td>
+                                                <td>{{moderniz.moderniz| number}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </form>
+            </div>
+        </div>
+    </section>
+</div>

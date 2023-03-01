@@ -1,0 +1,63 @@
+﻿<div [@routerTransition]>
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <h4>
+                        <a [routerLink]="['/app/conta/nomenclatoare/configRapoarte/rapConfigList']" class="btn btn-info" title="Inapoi"><i class="fas fa-arrow-left"></i></a>
+                        Definire rapoarte  din {{reportForm.repDate | date: 'dd.MM.yyyy'}}
+                    </h4>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="content px-2">
+        <div class="container-fluid">
+            <div class="body">
+                <form id="formList" name="formList">
+
+                    <div class="panel-heading" style="position: relative;">
+                        <div class="row">
+                            <h5 class="col-xs-6">
+                                Rapoarte
+                            </h5>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">
+
+                                    </th>
+                                    <th scope="col">Raport</th>
+                                    <th scope="col">Simbol</th>
+                                    <th scope="col"></th>
+                                </tr>
+                            </thead>
+                            <tbody *ngFor="let detail of reportForm.reportList; let i = index;">
+                                <tr>
+                                    <td scope="row">{{ i + 1 }}</td>
+                                    <td>
+                                        <input id="reportName{{i}}" name="reportName{{i}}" type="text" [(ngModel)]="detail.reportName" #reportName="ngModel" class="form-control" required />
+                                    </td>
+                                    <td>
+                                        <input id="reportSymbol{{i}}" name="reportSymbol{{i}}" type="text" [(ngModel)]="detail.reportSymbol" #reportSymbol="ngModel" class="form-control" required />
+                                    </td>
+                                    <td>
+                                        <button (click)="reportSave(i)" class="btn btn-info" title="Save"><i class="fas fa-save"></i></button>
+                                        &nbsp;
+                                        <a [routerLink]="['/app/conta/nomenclatoare/configRapoarte/repConfigFormula']"
+                                           [queryParams]="{repConfigId: reportForm.repConfigId, reportId: detail.id}" class="btn btn-info" *ngIf="detail.id != 0" title="Configurare formula"><i class="fas fa-server"></i></a>
+                                        &nbsp;
+                                        <button (click)="reportDelete(detail.id)" class="btn btn-danger" title="Sterge" *ngIf="detail.id != 0"><i class="fas fa-trash"></i></button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+</div>

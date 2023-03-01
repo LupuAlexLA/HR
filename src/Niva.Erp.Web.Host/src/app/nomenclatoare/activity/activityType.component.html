@@ -1,0 +1,46 @@
+﻿<div [@routerTransition]>
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <h3>Tip Activitate</h3>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="content px-2">
+        <div class="container-fluid">
+            <div class="panel-heading">
+                <div class="row">
+                    <h4>Tipuri Activitate - <span>{{ activityTypeListCount() }}</span> &nbsp; <a [routerLink]="['/app/nomenclatoare/activity/activityTypeNew']" class="btn btn-info" title="Adauga"><i class="fas fa-plus"></i></a> </h4>
+                </div>
+            </div>
+
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Name</th>
+                        <th>Activitate principala</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of activitiesType; let i = index;">
+                        <td>{{i + 1}}</td>
+                        <td>{{item.name}}</td>
+                        <td>
+                            <input id="mainActivity" name="mainActivity" type="checkbox" [(ngModel)]="item.mainActivity" #mainActivity="ngModel" disabled readonly/>
+                        </td>
+                        <td>
+                            <a [routerLink]="['/app/nomenclatoare/activity/activityTypeNew']"
+                               [queryParams]="{activityTypeId: item.id}" class="btn btn-info"><i class="fas fa-edit"></i></a>
+                        &nbsp;
+                            <button (click)="deleteActivityType(item.id)" class="btn btn-danger" title="Sterge"><i class="fas fa-trash"></i></button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+</div>

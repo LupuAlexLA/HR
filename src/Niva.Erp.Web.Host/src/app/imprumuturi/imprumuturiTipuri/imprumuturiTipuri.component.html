@@ -1,0 +1,66 @@
+﻿<div [@routerTransition]>
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-9 col-lg-offset-3">
+                    <h2>
+                        Tipuri imprumuturi: <span>({{ getTipuriCount() }})</span>&nbsp;
+                        <a [routerLink]="['/app/imprumuturi/imprumuturiTipuriEdit']" class="btn btn-info" title="Adauga"><i class="fas fa-plus">  </i></a>
+                        &nbsp;
+                        <a [routerLink]="['/app/imprumuturi/imprumuturiNomenclatoare']" class="btn btn-info" title="Inapoi"><i class="fas fa-arrow-left">  </i></a>
+                    </h2>
+
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="content px-2">
+        <div class="container-fluid">
+            <div class="body">
+                <div class="row">
+                    <div>
+
+                    </div>
+
+                </div>
+                <div class="row mt-3">
+                    <div class="col-lg-6">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <td scope="col">#</td>
+                                    <td scope="col">Descriere</td>
+                                    <td></td>
+                                </tr>
+                            </thead>
+                            <tbody *ngFor="let tip of imprumuturiTipuriList; let i = index">
+                                <tr>
+                                    <td scope="row">{{ i + 1 }}</td>
+                                    <td>{{ tip.description }}</td>
+                                    <td>
+                                        <a [routerLink]="['/app/imprumuturi/imprumuturiTipuriEdit']"
+                                                [queryParams]="{ imprumuturiTipId: tip.id }"
+                                                class="btn btn-info mr-2"
+                                                title="Modifica">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                        <a [routerLink]="['/app/imprumuturi/imprumuturiTipuri/imprumuturiTipDetaliu/list']"
+                                                [queryParams]="{imprumuturiTipId: tip.id }"
+                                                class="btn btn-info mr-2"
+                                                title="Detalii"><i class="fas fa-list"></i></a>
+                                        <button (click)="delete(tip.id)"
+                                                class="btn btn-danger"
+                                                title="Sterge">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </td>
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

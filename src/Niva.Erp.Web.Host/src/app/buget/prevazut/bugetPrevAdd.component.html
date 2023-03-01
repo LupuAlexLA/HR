@@ -1,0 +1,98 @@
+﻿<div [@routerTransition]>
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row">
+                <h3>Generare buget prevazut</h3>
+            </div>
+        </div>
+    </section>
+    <section class="content px-2">
+        <div class="container-fluid">
+            <div class="body">
+                <form id="#bvcPrevGenerate" #bvcPrevGenerate="ngForm" [busy]="isLoading" (ngSubmit)="generate()">
+
+                    <div class="row">
+                        <div class="col-lg-2">
+                            <label class="col-form-label" id="anBuget">An</label>
+                        </div>
+                        <div class="col-lg-3">
+                            <select id="anBuget" name="anBuget" class="form-control" [(ngModel)]="bugetPrev.formularId" #formularId="ngModel">
+                                <option [ngValue]="null">Selecteaza</option>
+                                <option *ngFor="let an of anBugetList" [ngValue]="an.id">{{an.anBVC}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-lg-2">
+                            <label class="col-form-label" id="dataBuget">Data buget</label>
+                        </div>
+                        <div class="col-lg-3">
+                            <mat-form-field style="width: 100%;">
+                                <input matInput
+                                       id="dataBuget"
+                                       name="dataBuget"
+                                       [matDatepicker]="dataBugetPicker"
+                                       [(ngModel)]="bugetPrev.dataBuget"
+                                       #dataBuget="ngModel">
+                                <mat-datepicker-toggle matSuffix [for]="dataBugetPicker"></mat-datepicker-toggle>
+                                <mat-datepicker #dataBugetPicker></mat-datepicker>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-2">
+                            <label class="col-form-label" id="descriere">Descriere</label>
+                        </div>
+                        <div class="col-lg-3">
+                            <input id="descriere" name="descriere" [(ngModel)]="bugetPrev.descriere" #descriere="ngModel" class="form-control" required />
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-lg-2">
+                            <label class="col-form-label" id="bvcTip"> Tip BVC</label>
+                        </div>
+                        <div class="col-lg-3">
+                            <select id="bvcTip" name="bvcTip" [(ngModel)]="bugetPrev.bvC_Tip" #bvC_Tip="ngModel" class="form-control">
+                                <option [ngValue]="null">Selecteaza</option>
+                                <option *ngFor="let tip of bvcTipList" [ngValue]="tip.id">{{tip.name}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-lg-2">
+                            <label class="col-form-label" id="status"> Stare initiala</label>
+                        </div>
+                        <div class="col-lg-3">
+                            <select id="status" name="status" [(ngModel)]="bugetPrev.status" #status="ngModel" class="form-control">
+                                <option [ngValue]="0">Preliminat</option>
+                                <option [ngValue]="1">Inregistrat</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-lg-2">
+                            <label class="col-form-label" id="monthEnd"> Luna inceput / sfarsit</label>
+                        </div>
+                        <div class="col-lg-1">
+                            <input id="monthStart" name="monthStart" [(ngModel)]="bugetPrev.monthStart" #monthStart="ngModel" class="form-control" />
+                        </div>
+                        <div class="col-lg-1 text-center">
+                            /
+                        </div>
+                        <div class="col-lg-1">
+                            <input id="monthEnd" name="monthEnd" [(ngModel)]="bugetPrev.monthEnd" #monthEnd="ngModel" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-lg-3">
+                            <button class="btn btn-info" title="Inapoi" [routerLink]="['/app/buget/prevazut/bugetPrevList']"><i class="fas fa-arrow-left"></i></button>
+                        </div>
+                        <div class="col-lg-2" style="display: flex; justify-content: flex-end">
+                            <button type="button" class="btn btn-info" [disabled]="!bvcPrevGenerate.valid">Start</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+</div>

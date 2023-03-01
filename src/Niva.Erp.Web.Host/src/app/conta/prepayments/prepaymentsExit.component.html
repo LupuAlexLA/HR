@@ -1,0 +1,81 @@
+﻿<div [@routerTransition]>
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <h3 *ngIf="prepaymentType == 0">
+                        Cheltuieli in avans - iesire din gestiune
+                    </h3>
+                    <h3 *ngIf="prepaymentType == 1">
+                        Venituri in avans - iesire din gestiune
+                    </h3>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="content px-2">
+        <div class="container-fluid">
+            <div class="body">
+                <form id="prepaymentsExit" name="prepaymentsExit" #prepaymentsExit="ngForm" (ngSubmit)="savePrepaymentExit()" [busy]="isLoading">
+                    <div class="row">
+                        <div class="col-lg-1">
+                            <a [routerLink]="['/app/conta/prepayments/prepaymentsList']"
+                               [queryParams]="{prepaymentType: prepaymentType}" class="btn btn-info" title="Inapoi"><i class="fas fa-arrow-left"></i></a>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-12">
+                                <label for="paymentDetails" class="form-label" *ngIf="prepaymentType == 0">Cheltuieli in avans</label>
+                                <label for="paymentDetails" class="form-label" *ngIf="prepaymentType == 1">Venituri in avans</label>
+                                <label for="paymentDetails" class="form-control">
+                                    {{oper.name}} -
+                                    {{oper.thirdPartyName}} - 
+                                    {{oper.primDocumentType}}
+                                    {{oper.primDocumentNr}} / 
+                                    {{oper.primDocumentDate | date: 'dd/MM/yyyy'}} -
+                                    Valoare {{oper.prepaymentValue | number}}
+                                </label>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <div class="input-group">
+                                <label for="endDate" class="form-label"> Data iesire din gestiune</label>
+                                <mat-form-field>
+                                    <input matInput [matDatepicker]="endDatePicker" id="endDate"
+                                           name="endDate" [(ngModel)]="oper.endDate"
+                                           #endDate="ngModel"
+                                           required />
+                                    <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
+                                    <mat-datepicker #endDatePicker></mat-datepicker>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-10">
+                            <div class="input-group">
+                                <span class="input-group-add">
+                                    <i class="fas fa-check-circle" aria-hidden="true" *ngIf="oper"></i>
+                                    <i class="fas fa-exclamation-circle" aria-hidden="true" *ngIf="!oper"></i>
+                                </span>
+                                <button [disabled]="!oper"
+                                        class="btn btn-info"
+                                        title="Salveaza">
+                                    <i class="fas fa-save"></i>
+                                </button>
+                                &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                                <a [routerLink]="['/app/conta/prepayments/prepaymentsList']"
+                                   [queryParams]="{prepaymentType: prepaymentType}"
+                                   class="btn btn-primary">Lista Operatii</a>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+</div>

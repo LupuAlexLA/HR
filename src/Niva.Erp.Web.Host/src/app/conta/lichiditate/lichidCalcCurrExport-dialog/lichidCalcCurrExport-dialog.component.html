@@ -1,0 +1,56 @@
+﻿<form class="form-horizontal"
+      autocomplete="off"
+      #lichidCalcCurrExportForm="ngForm">
+    <abp-modal-header [title]="'Detalii calcul lichiditate'"
+                      (onCloseClick)="bsModalRef.hide()"></abp-modal-header>
+    <div class="modal-body">
+        <div class="container-fluid">
+            <div class="body">
+                <dx-data-grid id="gridContainer"
+                              [dataSource]="lichidCalcCurrList"
+                              [showBorders]="true"
+                              [columnAutoWidth]="true"
+                              [wordWrapEnabled]="true"
+                              (onCellPrepared)="onCellPrepared($event)">
+
+                    <dxo-editing mode="cell"
+                                 [allowUpdating]="true"
+                                 [allowAdding]="false"
+                                 [allowDeleting]="false">
+                    </dxo-editing>
+                    <dxo-group-panel [visible]="true"></dxo-group-panel>
+                    <dxo-grouping [autoExpandAll]="true"></dxo-grouping>
+                    <dxo-selection mode="multiple"></dxo-selection>
+
+                    <dxi-column dataField="descriere" caption="Descriere" [allowEditing]="false"></dxi-column>
+                    <dxi-column dataField="valoareRON" caption="RON" [allowEditing]="false">
+                        <dxo-format type="fixedPoint" [precision]="2"></dxo-format>
+                    </dxi-column>
+                    <dxi-column dataField="valoareUSD" caption="USD" [allowEditing]="false">
+                        <dxo-format type="fixedPoint" [precision]="2"></dxo-format>
+                    </dxi-column>
+                    <dxi-column dataField="valoareEUR" caption="EUR" [allowEditing]="false">
+                        <dxo-format type="fixedPoint" [precision]="2"></dxo-format>
+                    </dxi-column>
+                    <dxi-column dataField="valaoreGBP" caption="GBP" [allowEditing]="false">
+                        <dxo-format type="fixedPoint" [precision]="2"></dxo-format>
+                    </dxi-column>
+                    <dxi-column dataField="valoareAlteMonede" caption="Alte valute" [allowEditing]="false">
+                        <dxo-format type="fixedPoint" [precision]="2"></dxo-format>
+                    </dxi-column>
+                    <dxi-column dataField="totalActualiz" caption="Total actualizat" [allowEditing]="false">
+                        <dxo-format type="fixedPoint" [precision]="2"></dxo-format>
+                    </dxi-column>
+                    <dxi-column dataField="totalInit" caption="Total initial" [allowEditing]="false">
+                        <dxo-format type="fixedPoint" [precision]="2"></dxo-format>
+                    </dxi-column>
+                    <dxo-export [enabled]="true" [allowExportSelectedData]="true"></dxo-export>
+                </dx-data-grid>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="bsModalRef.hide()">Close</button>
+    </div>
+</form>
+

@@ -1,0 +1,63 @@
+﻿<div [@routerTransition]>
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <h3>Obiecte de inventar - Adaugare/Modificare Gestiune</h3>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="content px-2">
+        <div class="container-fluid">
+            <div class="body">
+                <form id="storage" name="storage" #storageForm="ngForm" (ngSubmit)="saveStorage()">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <label for="storageName" class="col-form-label">Gestiune</label>
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <i class="fas fa-check-circle" aria-hidden="true" *ngIf="!storageName.invalid"></i>
+                                    <i class="fas fa-exclamation-circle" aria-hidden="true" *ngIf="storageName.invalid"></i>
+                                </span>
+                                <input id="storageName" name="storageName" type="text" [(ngModel)]="storage.storageName" #storageName="ngModel" class="form-control" required />
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6">
+                            <label for="centralStorage" class="col-form-label">Gestiune Principala</label>
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <i class="fas fa-check-circle" aria-hidden="true" *ngIf="!centralStorage.invalid"></i>
+                                    <i class="fas fa-exclamation-circle" aria-hidden="true" *ngIf="centralStorage.invalid"></i>
+                                </span>
+
+                                <br />
+
+                                <div class="custom-control custom-checkbox " style="display: block;">
+                                    <input id="centralStorage" name="centralStorage" type="checkbox" [(ngModel)]="storage.centralStorage" #centralStorage="ngModel" class="custom-control-input"/>
+                                    <label for="centralStorage" class="custom-control-label mt-2"> Gestiune Principala</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mt-2">
+                        <div class="col-lg-5 col-lg-offset-3">
+                            <a [routerLink]="['/app/conta/invObjects/invObjectNomStorage']" class="btn btn-info" title="Inapoi"><i class="fas fa-arrow-left">  </i></a>
+                        </div>
+                        <div class="col-lg-5 col-lg-offset-4">
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <i class="fas fa-check-circle" aria-hidden="true" *ngIf="storageForm.form.valid"></i>
+                                    <i class="fas fa-exclamation-circle" aria-hidden="true" *ngIf="!storageForm.form.valid"></i>
+                                </span>
+                                <button type="submit" class="btn btn-info" title="Salveaza"><i class="fas fa-save"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+</div>

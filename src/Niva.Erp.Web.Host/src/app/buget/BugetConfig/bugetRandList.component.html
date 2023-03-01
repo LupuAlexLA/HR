@@ -1,0 +1,259 @@
+﻿<section class="content px-2">
+    <div class="container-fluid">
+        <div class="body" [busy]="isLoading">
+            <form id="formList" name="formList">
+                <div class="row">
+                    <div class="panel-heading" style="position: relative">
+                        <div class="row">
+                            <h2>
+                                Configurare randuri
+                            </h2>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-2">
+                                <a [routerLink]="['/app/buget/bugetConfig/bugetConfigList']"
+                                   class="btn btn-info"
+                                   title="Inapoi">
+                                    <i class="fas fa-arrow-left"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="row mt-3" >
+                            <div class="col-lg-12">
+                                <button (click)="showDetails()" class="btn btn-info" *ngIf="!showDetail" [disabled]="form.paapCheltList?.length === 0"> <i class="fas fa-angle-down"></i> </button>
+                                <button (click)="hideDetails()" class="btn btn-info" *ngIf="showDetail"><i class="fas fa-angle-up"></i> </button>
+                                <label class="col-form-label ml-3" *ngIf="form.paapCheltList?.length > 0">Am identificat din PAAP tipuri de cheltuiala care nu corespund celor din configurare</label>
+                                <label class="col-form-label ml-3" *ngIf="form.paapCheltList?.length === 0"> Nu am identificat din PAAP tipuri de cheltuiala care nu corespund celor din configurare</label>
+                            </div>
+
+                          
+                        </div>
+                        <div class="row mt-3 ml-6" *ngIf="showDetail">
+
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Departament</th>
+                                        <th>Descriere</th>
+                                        <th>Tip cheltuiala</th>
+                                        <th>Valoare</th>
+                                    </tr>
+                                </thead>
+                                <tbody *ngFor="let item of form.paapCheltList;let i = index;">
+                                    <tr>
+                                        <td>{{ i + 1 }}</td>
+                                        <td>{{ item.departament }}</td>
+                                        <td>{{ item.descriere }}</td>
+                                        <td>{{ item.tipCheltuiala }}</td>
+                                        <td class="alignSum">{{ item.valoare| number: '1.2' }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="row mt-6">
+                            <div class="col-lg-12">
+                                <label>Formule pentru Calculul din Balanta</label>
+                                &nbsp;&nbsp;
+                                <input id="balantaParametersShow" name="balantaParametersShow" type="checkbox" style="position: relative; left:0px; opacity:100" [(ngModel)]="balantaParametersShow" (click)="showParamsBalanta()" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <table class="table small-font">
+                        <thead>
+                            <tr>
+                                <th scope="col" rowspan="2">Descriere</th>
+                                <th scope="col" rowspan="2">Cod rand</th>
+                                <th scope="col" style="max-width:20px" rowspan="2"></th>
+                                <th scope="col" style="max-width:80px" rowspan="2">Tip Rand</th>
+                                <th scope="col" style="max-width:80px" rowspan="2"></th>
+                                <th scope="col" style="max-width:80px" rowspan="2"></th>
+                                <th scope="col" style="max-width:40px" rowspan="2">Ordine afisare</th>
+                                <th scope="col" style="max-width:40px" rowspan="2">Rand Parinte</th>
+                                <th scope="col" style="max-width:40px" rowspan="2">Nivel Rand</th>
+                                <th scope="col" style="max-width:80px" rowspan="2" *ngIf="!balantaParametersShow">Formula BVC</th>
+                                <th scope="col" style="max-width:80px" rowspan="2" *ngIf="balantaParametersShow">Balanta Formula BVC</th>
+                                <th scope="col" style="max-width:80px" rowspan="2" *ngIf="!balantaParametersShow">Formula CashFlow</th>
+                                <th scope="col" style="max-width:80px" rowspan="2" *ngIf="balantaParametersShow">Balanta Formula CashFlow</th>
+                                <th scope="col" style="max-width:80px" colspan="3" class="text-center">Disponibil</th>
+                                <th rowspan="2"></th>
+                            </tr>
+                            <tr>
+                                <th scope="col" style="max-width:40px">BVC</th>
+                                <th scope="col" style="max-width:40px">CashFlow</th>
+                                <th scope="col" style="max-width:40px">Total</th>
+                            </tr>
+                        </thead>
+                        <tbody *ngFor="let detail of form.randList; let i = index">
+                            <tr class="small-font" *ngIf="detail.delete == false">
+                                <td style="max-width:160px">
+                                    <input id="descriere{{i}}" name="descriere{{i}}" type="text" [(ngModel)]="detail.descriere" #rowName="ngModel" class="form-control" required />
+                                </td>
+
+                                <td>
+                                    {{detail.codRand}}
+                                </td>
+                                <td *ngIf="detail.tipRand == '0' || detail.tipRand == '3' || detail.tipRand == '4' || detail.tipRand == '5'"></td>
+                                <td style="max-width: 120px" *ngIf="detail.tipRand == '1' || detail.tipRand == '2'">
+                                    <button (click)="rowAddCheltuiala(i)" class="btn btn-info " title="Adauga"><i class="fas fa-plus "></i></button>
+                                </td>
+                                <td style="max-width:120px">
+                                    <select id="TipRand{{i}}" name="TipRand{{i}}" [(ngModel)]="detail.tipRand" #tipRandId="ngModel" class="form-control">
+
+                                        <option *ngFor="let item of rowTypes" [ngValue]="item.id"> {{item.name}}</option>
+
+                                    </select>
+                                </td>
+
+                                <td style="max-width: 120px" *ngIf="detail.tipRand == '0'">
+                                    <select id="TipRandVenit{{i}}" name="TipRandVenit{{i}}" [(ngModel)]="detail.tipRandVenit" #TipRandVenit="ngModel" class="form-control">
+                                        <option [ngValue]="null"> Selecteaza</option>
+                                        <option *ngFor="let item of rowTypeIncome" [ngValue]="item.id"> {{item.name}}</option>
+                                    </select>
+                                </td>
+                                <td *ngIf="detail.tipRand == '0'"></td>
+
+                                <td style="max-width: 120px" *ngIf="detail.tipRand == '1' ">
+                                </td>
+                                <td style="max-width: 120px" *ngIf="detail.tipRand == '1'">
+                                </td>
+
+                                <td style="max-width: 120px" *ngIf="detail.tipRand == '2' ">
+                                </td>
+                                <td style="max-width: 120px" *ngIf="detail.tipRand == '2'">
+                                </td>
+
+                                <td style="max-width: 120px" *ngIf="detail.tipRand == '3' || detail.tipRand == '4'"></td>
+                                <td style="max-width: 120px" *ngIf="detail.tipRand == '3' || detail.tipRand == '4'"></td>
+
+                                <td style="max-width: 120px" *ngIf="detail.tipRand == '5'">
+                                    <select id="TipRandSalarizare{{i}}" name="TipRandSalarizare{{i}}" [(ngModel)]="detail.tipRandSalarizare" #TipRandSalarizare="ngModel" class="form-control">
+                                        <option [ngValue]="null"> Selecteaza</option>
+                                        <option *ngFor="let item of rowTypeSalarizare" [ngValue]="item.id"> {{item.name}}</option>
+
+                                    </select>
+                                </td>
+                                <td *ngIf="detail.tipRand == '5'"></td>
+
+                                <td style="max-width:40px">
+                                    <input id="orderView{{i}}" name="orderView{{i}}" type="text" [(ngModel)]="detail.orderView" #orderView="ngModel" class="form-control" required />
+                                </td>
+
+                                <td style="max-width:40px">
+                                    <input id="randParentIdFromUI{{i}}" name="randParentIdFromUI{{i}}" type="text" [(ngModel)]="detail.randParentIdFromUI" #randParentIdFromUI="ngModel" class="form-control" required />
+                                </td>
+
+
+
+                                <td style="max-width:40px">
+                                    <input id="nivelRand{{i}}" name="nivelRand{{i}}" type="text" [(ngModel)]="detail.nivelRand" #nivelRand="ngModel" class="form-control" required />
+                                </td>
+                                <td style="max-width:40px" *ngIf="!balantaParametersShow">
+                                    <input id="formulaBVC{{i}}" name="formulaBVC{{i}}" type="text" [(ngModel)]="detail.formulaBVC" #rowName="ngModel" class="form-control" required />
+                                </td>
+
+
+                                <td style="max-width:40px" *ngIf="balantaParametersShow">
+                                    <input id="formulaBVC{{i}}" name="formulaBVC{{i}}" type="text" [(ngModel)]="detail.balFormulaBVC" #rowName="ngModel" class="form-control" required />
+                                </td>
+
+
+
+                                <td style="max-width:40px" *ngIf="!balantaParametersShow">
+                                    <input id="formulaCashFlow{{i}}" name="formulaCashFlow{{i}}" type="text" [(ngModel)]="detail.formulaCashFlow" #rowName="ngModel" class="form-control" required />
+                                </td>
+
+                                <td style="max-width:40px" *ngIf="balantaParametersShow">
+                                    <input id="formulaCashFlow{{i}}" name="formulaCashFlow{{i}}" type="text" [(ngModel)]="detail.balFormulaCashFlow" #rowName="ngModel" class="form-control" required />
+                                </td>
+
+                                <td style="max-width:40px">
+                                    <input id="availableBVC{{i}}" name="availableBVC{{i}}" type="checkbox" style="position: relative; left:0px; opacity:100" [(ngModel)]="detail.availableBVC" #availableBVC="ngModel" />
+                                </td>
+
+                                <td style="max-width:40px">
+                                    <input id="availableCashFlow{{i}}" name="availableCashFlow{{i}}" type="checkbox" style="position: relative; left:0px; opacity:100" [(ngModel)]="detail.availableCashFlow" #availableCashFlow="ngModel" />
+                                </td>
+
+                                <td style="max-width:40px" *ngIf="!balantaParametersShow">
+                                    <input id="isTotal{{i}}" name="isTotal{{i}}" type="checkbox" style="position: relative; left:0px; opacity:100" [(ngModel)]="detail.isTotal" #isTota;="ngModel" />
+                                </td>
+                                <td style="max-width:40px" *ngIf="balantaParametersShow">
+                                    <input id="isTotal{{i}}" name="isTotal{{i}}" type="checkbox" style="position: relative; left:0px; opacity:100" [(ngModel)]="detail.balIsTotal" #balIsTotal="ngModel" />
+                                </td>
+
+                                <td>
+                                    <button (click)="budgetOrder(i)" class="btn btn-info" title="Insert"><i class="fas fa-redo"></i></button>
+                                    &nbsp;
+                                    <button (click)="bugetDelRow(i)" class="btn btn-danger" title="Sterge" *ngIf="detail.id != 0"><i class="fas fa-trash"></i></button>
+                                </td>
+
+                            </tr>
+
+
+
+
+                            <tr *ngIf="detail.tipRand == '1' || detail.tipRand == '2'">
+
+                                <td colspan="9">
+                                    <table>
+                                        <thead class="thead-light">
+
+                                        </thead>
+                                        <tbody *ngFor="let detalii of form.randList[i].detaliiRand; let j = index">
+                                            <tr class="small-font" *ngIf="detalii.delete == false">
+                                                <td style="width:20px">
+                                                </td>
+                                                <td style="width:300px">
+                                                    <select id="categoryElement{{i}}{{j}}" name="categoryElement{{i}}{{j}}" class="form-control " [(ngModel)]="detalii.categoryId" (ngModelChange)="getInvoiceElementDetailsByCategoryIdOnChange(detalii.categoryId,i,j)">
+                                                        <option [ngValue]="null">Selecteaza</option>
+                                                        <option *ngFor="let item of elementDetailsCategories"
+                                                                [ngValue]="item.id">
+                                                            {{item.categoryElementDetName}}
+                                                        </option>
+                                                    </select>
+                                                </td>
+                                                <td style="width:300px">
+
+                                                    <select id="categorydetail{{i}}{{j}}" name="categorydetail{{i}}{{j}}" class="form-control" [(ngModel)]="detalii.tipRandCheltuialaId">
+                                                        <option [ngValue]="null">Selecteaza</option>
+                                                        <option *ngFor="let item of invoiceElementsDetails[i][j]"
+                                                                [ngValue]="item.id">
+                                                            {{item.description}}
+                                                        </option>
+                                                    </select>
+                                                </td>
+                                                <td>
+                                                    <button (click)="rowDeleteCheltuiala(i,j)" class="btn btn-danger" title="Sterge"><i class="fas fa-trash"></i></button>
+                                                </td>
+                                            </tr>
+
+                                        </tbody>
+                                        <!--<tfoot>
+                                            <tr>
+                                                <td class="text-center" colspan="14">
+                                                    <button (click)="rowAddCheltuiala(i)" class="btn btn-info" title="Adauga"><i class="fas fa-plus"></i></button>
+                                                </td>
+                                            </tr>
+                                        </tfoot>-->
+                                    </table>
+                                </td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td class="text-center" colspan="15">
+                                    <button (click)="bugetAddRow()" class="btn btn-info" title="Adauga rand"><i class="fas fa-plus"></i></button>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <button (click)="bugetSave()" class="btn btn-info btn-circle" title="Salvare structura"><i class="fas fa-save"></i></button>
+
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>

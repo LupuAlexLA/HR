@@ -1,0 +1,124 @@
+﻿<div [@routerTransition]>
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <h3>
+                        <a [routerLink]="['/app/economic/cupiuri/cupiuriList']" class="btn btn-info"><i class="fas fa-arrow-left"></i></a>
+                        Adaugare / Modificare cupiuri
+                    </h3>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="content px-2">
+        <div class="container-fluid">
+            <div class="body">
+                <div class="row">
+                    <div class="col-6">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <label for="operationDate" class="col-form-label"> Data operatiune</label>
+                                <mat-form-field style="width: 100%;">
+                                    <input matInput
+                                           id="operationDate"
+                                           name="operationDate"
+                                           [matDatepicker]="operationDatePicker"
+                                           [(ngModel)]="form.operationDate">
+                                    <mat-datepicker-toggle matSuffix [for]="operationDatePicker"></mat-datepicker-toggle>
+                                    <mat-datepicker #operationDatePicker></mat-datepicker>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <form>
+                    <table class="table small-font">
+                        <thead>
+                            <tr>
+                                <th scope="col">Moneda</th>
+                                <th scope="col"></th>
+                                <th scope="col"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let detail of form.cupiuri; let i=index">
+                                <td>
+                                    <select id="currencyId{{i}}" name="currencyId{{i}}" [(ngModel)]="detail.currencyId" #currencyId="ngModel" class="form-control" (change)="getSoldForCurrency(detail.currencyId, i)">
+                                        <option [ngValue]="null"> Selecteaza</option>
+                                        <option *ngFor="let item of currencies.getCurrency" [ngValue]="item.id">{{ item.currencyName }}</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <table class="table" small-font>
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">Cantitate</th>
+                                                <th scope="col"></th>
+                                                <th scope="col">Bancnota</th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngFor="let cupiuri of detail.cupiuriDetails; let j = index">
+                                                <td>
+                                                    <input id="quantity{{i}}_{{j}}" name="quantity{{i}}_{{j}}" [(ngModel)]="cupiuri.quantity" #quantity="ngModel" class="form-control" (change)="updateTotalValue(i)" />
+                                                </td>
+                                               <td>X</td>
+                                                <td>
+                                                    <input id="value{{i}}_{{j}}" name="value{{i}}_{{j}}" [(ngModel)]="cupiuri.value" #value="ngModel" class="form-control" (change)="updateTotalValue(i)"  />
+                                                </td>
+                                                <td>
+                                                    <button (click)="deleteCupiuriDetRow(i, j)" class="btn btn-danger" title="Sterge" ><i class="fas fa-trash"></i></button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                        <tfoot>
+                                            <tr>
+                                                <td class="text-right" colspan="2">
+                                                    <label for="total" class="col-form-label">Total</label>
+                                                </td>
+                                                <td class="text-center" colspan="1">
+                                                    <input id="total{{i}}_{{j}}" name="total{{i}}_{{j}}" [(ngModel)]="detail.total" class="form-control" disabled />
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-right" colspan="2">
+                                                    <label for="sold" class="col-form-label">Sold</label>
+                                                </td>
+                                                <td class="text-center" colspan="1">
+                                                    <input id="sold{{i}}_{{j}}" name="sold{{i}}_{{j}}" [(ngModel)]="detail.sold" class="form-control" disabled />
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-center" colspan="15">
+                                                    <button (click)="addDetailsRow(i)" class="btn btn-info" title="Adauga rand"><i class="fas fa-plus"></i></button>
+                                                </td>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                </td>
+                                <td>
+                                    <button (click)="deleteCupiuriRow(i)" class="btn btn-danger" title="Sterge"><i class="fas fa-trash"></i></button>
+                                </td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td>
+                                    <a [routerLink]="['/app/economic/cupiuri/cupiuriList']" class="btn btn-info" title="Inapoi"><i class="fas fa-arrow-left"></i></a>
+                                </td>
+                                <td class="text-center" colspan="15">
+                                    <button (click)="addRow()" class="btn btn-info" title="Adauga rand"><i class="fas fa-plus"></i></button>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <button (click)="cupiuriDetailsSave()" class="btn btn-info btn-circle" title="Salvare"><i class="fas fa-save"></i></button>
+
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </form>
+            </div>
+        </div>
+    </section>
+</div>

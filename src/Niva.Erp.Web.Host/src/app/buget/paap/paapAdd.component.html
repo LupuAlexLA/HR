@@ -1,0 +1,381 @@
+﻿<div [@routerTransition]>
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <h3>Adaugare / Modificare achizitie</h3>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="content px-2">
+        <div class="container-fluid">
+            <div class="body">
+                <form id="paapForm" name="invpaapFormObject" #paapForm="ngForm" [busy]="isLoading">
+                    <div class="row">
+                        <div class="col-lg-1">
+                            <a [routerLink]="['/app/buget/paap/paapList']" class="btn btn-info" title="Inapoi"><i class="fas fa-arrow-left"></i></a>
+                        </div>
+                        <div class="col-lg-11">
+                            <h4>Adauga achizitie</h4>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-lg-2 ">
+                            <label for="dataStart" class="col-form-label"> Data inceput</label>
+                        </div>
+                        <div class="col-lg-4">
+                            <mat-form-field style="width: 100%;">
+                                <input matInput
+                                       id="dataStart"
+                                       name="dataStart"
+                                       [matDatepicker]="dataStartPicker"
+                                       [(ngModel)]="paap.dataStart"
+                                       #dataStart="ngModel"
+                                       (ngModelChange)="getInvoiceElementDetailsByCategoryId(paap.invoiceElementsDetailsCategoryId)">
+                                <mat-datepicker-toggle matSuffix [for]="dataStartPicker"></mat-datepicker-toggle>
+                                <mat-datepicker #dataStartPicker></mat-datepicker>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-lg-2">
+                            <label for="dataEnd" class="col-form-label align-right"> Data sfarsit</label>
+                        </div>
+                        <div class="col-lg-4">
+                            <mat-form-field style="width: 100%;">
+                                <input matInput
+                                       id="dataEnd"
+                                       name="dataEnd"
+                                       [matDatepicker]="dataEndPicker"
+                                       [(ngModel)]="paap.dataEnd"
+                                       #dataEnd="ngModel"
+                                       (ngModelChange)="getInvoiceElementDetailsByCategoryId(paap.invoiceElementsDetailsCategoryId);getCotaTvaList();  ">
+                                <mat-datepicker-toggle matSuffix [for]="dataEndPicker"></mat-datepicker-toggle>
+                                <mat-datepicker #dataEndPicker></mat-datepicker>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-2">
+                            <label for="departamentId" class="col-form-label"> Departament</label>
+                        </div>
+                        <div class="col-lg-4">
+                            <select id="departamentId" name="departamentId" [(ngModel)]="paap.departamentId" #departamentId="ngModel" class="form-control" [disabled]="!isGranted('Buget.PAAP.Super')">
+                                <option [ngValue]="null"> Selecteaza</option>
+                                <option *ngFor="let item of departamentList" [ngValue]="item.id">{{ item.name }}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-lg-2">
+                            <label for="obiectTranzactieId" class="col-form-label"> Obiect tranzactie</label>
+                        </div>
+                        <div class="col-lg-4">
+                            <select id="obiectTranzactieId" name="obiectTranzactieId" [(ngModel)]="paap.obiectTranzactieId" #obiectTranzactieId="ngModel" class="form-control">
+                                <option [ngValue]="null">Selecteaza</option>
+                                <option *ngFor="let item of obiectTranzactieList" [ngValue]="item.id">{{ item.name }}</option>
+                            </select>
+                        </div>
+                        <div class="col-lg-2">
+                            <label for="descriere" class="col-form-label"> Descriere</label>
+                        </div>
+                        <div class="col-lg-4">
+                            <input id="descriere" name="descriere" [(ngModel)]="paap.descriere" #descriere="ngModel" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-lg-2">
+                            <label for="invoiceElementsDetailsCategoryId" class="col-form-label"> Categorie cheltuiala</label>
+                        </div>
+                        <div class="col-lg-4">
+                            <select id="invoiceElementsDetailsCategoryId"
+                                    name="invoiceElementsDetailsCategoryId"
+                                    [(ngModel)]="paap.invoiceElementsDetailsCategoryId"
+                                    #invoiceElementsDetailsCategoryId="ngModel"
+                                    class="form-control"
+                                    (ngModelChange)="getInvoiceElementDetailsByCategoryId(paap.invoiceElementsDetailsCategoryId)">
+                                <option [ngValue]="null">Selecteaza</option>
+                                <option *ngFor="let item of categoryElementsList" [ngValue]="item.id">{{ item.categoryElementDetName }}</option>
+                            </select>
+                        </div>
+                        <div class="col-lg-2">
+                            <label for="invoiceElementsDetailsId" class="col-form-label"> Cheltuiala</label>
+                        </div>
+                        <div class="col-lg-4">
+                            <select id="invoiceElementsDetailsId"
+                                    name="invoiceElementsDetailsId"
+                                    [(ngModel)]="paap.invoiceElementsDetailsId"
+                                    #invoiceElementsDetailsId="ngModel"
+                                    class="form-control"
+                                    (change)="getElementDetailsById(paap.invoiceElementsDetailsId)">
+                                <option [ngValue]="null">Selecteaza</option>
+                                <option *ngFor="let item of elementDetailsList" [ngValue]="item.id">{{ item.description }}</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row mt-3">
+                        <div class="col-lg-2" *ngIf="elementDetail.showMF">
+                            <label for="imoAssetClassCodeId" class="col-form-label"> Cod clasificare</label>
+                        </div>
+                        <div class="col-lg-4" *ngIf="elementDetail.invoiceElementsTypeStr === 'Mijloace fixe'">
+                            <select id="imoAssetClassCodeId"
+                                    name="imoAssetClassCodeId"
+                                    [(ngModel)]="paap.imoAssetClassCodeId"
+                                    #imoAssetClassCodeId="ngModel" class="form-control"
+                                    (ngModelChange)="getDurationMin(paap.imoAssetClassCodeId)">
+                                <option [ngValue]="null">Selecteaza</option>
+                                <option *ngFor="let item of imoAssetClassCodeList" [ngValue]="item.id">{{ item.name}}</option>
+                            </select>
+                        </div>
+                        <div class="col-lg-2" *ngIf="elementDetail.showMF || elementDetail.showCA">
+                            <label for="durationInMonths" class="col-form-label"> Durata (luni)</label>
+                        </div>
+                        <div class="col-lg-4" *ngIf="elementDetail.showMF || elementDetail.showCA">
+                            <input id="durationInMonths" name="durationInMonths" [(ngModel)]="paap.durationInMonths" #durationInMonths="ngModel" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-lg-2">
+                            <label for="codCPV" class="col-form-label"> Cod CPV</label>
+                        </div>
+                        <div class="col-lg-4">
+                            <input id="codCPV" name="codCPV" [(ngModel)]="paap.codCPV" #codCPV="ngModel" class="form-control" />
+                        </div>
+                        <div class="col-lg-2">
+                            <label for="sursaFinantareId" class="col-form-label"> Sursa finantare</label>
+                        </div>
+                        <div class="col-lg-4">
+                            <select id="sursaFinantareId" name="sursaFinantareId" [(ngModel)]="paap.sursaFinantareId" #sursaFinantareId="ngModel" class="form-control">
+                                <option [ngValue]="null">Selecteaza</option>
+                                <option *ngFor="let item of sursaFinantareList" [ngValue]="item.id">{{ item.name }}</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row mt-3">
+                        <div class="col-lg-2" *ngIf="paap.currencyId == 1">
+                            <label for="valoareTotala" class="col-form-label"> Valoare Totala </label>
+                        </div>
+                        <div class="col-lg-2" *ngIf="paap.currencyId != 1">
+                            <label for="valoareTotala" class="col-form-label"> Valoare Totala Valuta </label>
+                        </div>
+                        <div class="col-lg-3" *ngIf="paap.currencyId == 1">
+                            <input id="valoareTotalaLei" name="valoareTotalaLei" [(ngModel)]="paap.valoareTotalaLei" (ngModelChange)="ExtractVAT()" #valoareTotalaLei="ngModel" class="form-control" />
+                        </div>
+                        <div class="col-lg-3" *ngIf="paap.currencyId != 1">
+                            <input id="valoareTotalaValuta" name="valoareTotalaValuta" [(ngModel)]="paap.valoareTotalaValuta" (ngModelChange)="ExtractVAT()" #valoareTotalaValuta="ngModel" class="form-control" />
+                        </div>
+                        <div class="col-lg-1 ">
+
+                            <select id="currencyId"
+                                    name="currencyId"
+                                    [(ngModel)]="paap.currencyId"
+                                    (ngModelChange)="ExtractVAT()"
+                                    #currencyId="ngModel"
+                                    class="form-control"
+                                    required>
+                                <option *ngFor="let item of currencyList" [value]="item.id">
+                                    {{item.currencyName}}
+                                </option>
+                            </select>
+
+                        </div>
+                        <div class="col-lg-2">
+                            <label for="cotaTvaId" class="col-form-label"> Cota Tva </label>
+                        </div>
+                        <div class="col-lg-4">
+                            <select id="cotaTva" name="cotaTva" [(ngModel)]="paap.cotaTVA_Id" (ngModelChange)="ExtractVAT()" #cotaTva="ngModel" class="form-control">
+
+
+                                <option [ngValue]="null">Selecteaza</option>
+                                <option *ngFor="let item of cotaTvaList" [ngValue]="item.id">{{ item.vat }}</option>
+
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row mt-3" *ngIf="paap.currencyId != 1">
+                        <div class="col-lg-2">
+                            <label for="valoareTotalaLeiCazValuta" class="col-form-label"> Valoare Totala RON </label>
+                        </div>
+                        <div class="col-lg-3">
+                            <input id="valoareTotalaLeiCazValuta" name="valoareTotalaLeiCazValuta" [(ngModel)]="paap.valoareTotalaLei" #valoareTotalaLeiCazValuta="ngModel" class="form-control" disabled />
+                        </div>
+                        <div class="col-lg-1 ">
+
+                            <select class="form-control">
+                                <option>
+                                    RON
+                                </option>
+                            </select>
+
+                        </div>
+                    </div>
+
+                    <div class="row mt-3">
+                        <div class="col-lg-2">
+                            <label for="valoareEstimataFaraTvaLei" class="col-form-label"> Valoare Estimata Fara Tva</label>
+                        </div>
+                        <div class="col-lg-3">
+                            <input id="valoareEstimataFaraTvaLei" name="valoareEstimataFaraTvaLei" [(ngModel)]="paap.valoareEstimataFaraTvaLei" #valoareEstimataFaraTvaLei="ngModel" class="form-control" />
+                        </div>
+                        <div class="col-lg-1 ">
+
+                            <select class="form-control">
+                                <option>
+                                    RON
+                                </option>
+                            </select>
+
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-2 alignContent">
+                            <label for="frecventa" class="col-form-label"> Frecventa</label>
+                        </div>
+                        <div class="col-lg-4 alignContent">
+                            <input id="choicefr_1" name="groupFr" type="radio" [(ngModel)]="paap.contractsPaymentInstalmentFreqId" #groupFr="ngModel" [value]="0" />
+                            <label for="choicefr_1" style="margin: 0 10px;">Lunar</label>
+
+                            <input id="choicefr_2" name="groupFr" type="radio" [(ngModel)]="paap.contractsPaymentInstalmentFreqId" #groupFr="ngModel" [value]="1" />
+                            <label for="choicefr_2" style="margin: 0 10px;">Semestrial</label>
+
+                            <input id="choicefr_3" name="groupFr" type="radio" [(ngModel)]="paap.contractsPaymentInstalmentFreqId" #groupFr="ngModel" [value]="2" />
+                            <label for="choicefr_3" style="margin: 0 10px;">Trimestrial</label>
+
+                            <input id="choicefr_4" name="groupFr" type="radio" [(ngModel)]="paap.contractsPaymentInstalmentFreqId" #groupFr="ngModel" [value]="3" />
+                            <label for="choicefr_4" style="margin: 0 10px;">Ocazional</label>
+
+                        </div>
+
+                        <div class="col-lg-2 alignContent">
+                            <label for="DataPrimaTransa" class="col-form-label"> Data prima transa</label>
+                        </div>
+                        <div class="col-lg-1 alignContent">
+                            <mat-form-field style="width: 100%;">
+                                <input matInput
+                                       id="dataPrimaTransa"
+                                       name="dataPrimaTransa"
+                                       [matDatepicker]="dataPrimaTransaPicker"
+                                       [(ngModel)]="paap.firstInstalmentDate"
+                                       #dataPrimaTransa="ngModel"
+                                       required />
+                                <mat-datepicker-toggle matSuffix [for]="dataPrimaTransaPicker"></mat-datepicker-toggle>
+                                <mat-datepicker #dataPrimaTransaPicker></mat-datepicker>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-lg-1 alignContent">
+                            <label for="nrTranse" class="col-form-label align-right"> Nr transe</label>
+                        </div>
+                        <div class="col-lg-1 alignContent">
+                            <input id="nrTranse" name="nrTranse" [(ngModel)]="paap.nrTranse" #nrTranse="ngModel" class="form-control" />
+                        </div>
+                        <div class="col-lg-1 alignContent">
+                            <button id="btnGenTranse" class="btn btn-info" title="Genereaza transele" (click)="generateTranse()"><i class="fas fa-filter"></i></button>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <hr />
+                        <div class="col-lg-6 alignContent">
+
+                        </div>
+                        <div class="col-lg-6 alignContent">
+                            <table class="table small-font table-responsive">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Data Transa</th>
+                                        <th scope="col">Valoare Lei</th>
+                                        <th scope="col">Valoare Lei fara TVA</th>
+                                        <th scope="col">
+                                            <button class="btn btn-info mr-2" id="addTransa" name="addTransa" (click)="addTransa()" title="Adauga transa"><i class="fas fa-plus"></i></button>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody *ngFor="let item of paap.transe; let i = index;">
+                                    <tr>
+                                        <td>
+                                            <mat-form-field style="width: 100%;">
+                                                <input matInput
+                                                       id="dataTransa{{i}}"
+                                                       name="dataTransa{{i}}"
+                                                       [matDatepicker]="dataTransaPicker"
+                                                       [(ngModel)]="item.dataTransa"
+                                                       #dataPrimaTransa="ngModel"
+                                                       required />
+                                                <mat-datepicker-toggle matSuffix [for]="dataTransaPicker"></mat-datepicker-toggle>
+                                                <mat-datepicker #dataTransaPicker></mat-datepicker>
+                                            </mat-form-field>
+                                        </td>
+                                        <td>
+                                            <input id="valoareLei{{i}}" name="valoareLei{{i}}" type="text" [(ngModel)]="item.valoareLei" #orderView="ngModel" class="form-control" required (ngModelChange)="calculValoareFaraTVA(i)" />
+                                        </td>
+                                        <td>
+                                            <input id="valoareLeiFaraTVA{{i}}" name="valoareLeiFaraTVA{{i}}" type="text" [(ngModel)]="item.valoareLeiFaraTVA" #orderView="ngModel" class="form-control" required />
+                                        </td>
+
+                                        <td>
+                                            <button class="btn btn-danger mr-2" id="deletePAAP{{i}}" name="deleteTransa{{i}}" (click)="deleteTransa(i)" title="Sterge"><i class="fas fa-trash"></i></button>
+                                            <button id="actualizare" name="actualizare" class="btn btn-info mr-2" title="Copiaza valorile" (click)="aplicaModificarile(i)"><i class="fas fa-arrow-down"></i></button>
+                                            <button id="reglare" name="reglare" class="btn btn-info" title="Reglare transe" (click)="reglareTranse(i)"><i class="fas fa-equals"></i></button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <hr />
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-lg-2">
+                            <label for="modalitateDerulareId" class="col-form-label"> Modalitate derulare</label>
+                        </div>
+                        <div class="col-lg-4">
+                            <select id="modalitateDerulare" name="modalitateDerulareId" [(ngModel)]="paap.modalitateDerulareId" #modalitateDerulareId="ngModel" class="form-control">
+                                <option [ngValue]="null">Selecteaza</option>
+                                <option *ngFor="let item of modalitateDerulareList" [ngValue]="item.id">{{ item.name }}</option>
+                            </select>
+                        </div>
+                        <div class="col-lg-2">
+                            <label for="comentarii" class="col-form-label"> Comentariu</label>
+                        </div>
+                        <div class="col-lg-4">
+                            <input id="comentarii" name="comentarii" [(ngModel)]="paap.comentarii" #comentarii="ngModel" class="form-control" />
+                        </div>
+                    </div>
+
+                    <div class="row mt-3" *ngIf="paap.availableValue !== null">
+                        <div class="col-lg-2">
+                            <label for="availableValue" class="col-form-label"> Valoare disponibila</label>
+                        </div>
+                        <div class="col-lg-3">
+                            <input id="availableValue" name="availableValue" [(ngModel)]="paap.availableValue" #availableValue="ngModel" class="form-control" readonly />
+                        </div>
+                        <div class="col-lg-1 ">
+
+                            <select id="currencyId"
+                                    name="currencyId"
+                                    [(ngModel)]="paap.currencyId"
+                                    #activitateTipId="ngModel"
+                                    class="form-control"
+                                    required>
+                                <option *ngFor="let item of currencyList" [value]="item.id">
+                                    {{item.currencyName}}
+                                </option>
+                            </select>
+
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+
+
+                        <div class="col-lg-5">
+                            <a [routerLink]="['/app/buget/paap/paapList']" class="btn btn-info" title="Inapoi"><i class="fas fa-arrow-left"></i></a>
+                        </div>
+                        <div class="col-lg-7 col-lg-offset-4" *ngIf="isGranted('Buget.PAAP.Modificare')">
+                            <button id="saveBtn" class="btn btn-info" title="Salveaza" [disabled]="paapForm.form.invalid" (click)="save()"><i class="fas fa-save"></i></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+</div>

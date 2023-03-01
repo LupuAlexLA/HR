@@ -1,0 +1,51 @@
+﻿<div [@routerTransition]>
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <h3><span>Erori import documente din FileDoc: {{getCount()}}</span></h3>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="content px-2">
+        <div class="container-fluid">
+            <div class="body">
+                <div class="row">                     
+                    <div class="col-lg-1">
+                        <button class="btn btn-info mr-2" title="Refresh" (click)="getErrors()"><i class="fas fa-search"></i> </button>
+                     </div>
+                </div>
+                <div class="row">
+                    <dx-data-grid id="gridContainer"
+                                  [dataSource]="errors"
+                                  [showBorders]="true"                                   
+                                  [columnAutoWidth]="true"
+                                  [columnResizingMode]="true"
+                                  [wordWrapEnabled]="true">
+                        <dxo-editing mode="cell"
+                                     [allowUpdating]="true"
+                                     [allowAdding]="false"
+                                     [allowDeleting]="false">
+                        </dxo-editing>
+                        <dxo-group-panel [visible]="true"></dxo-group-panel>
+                        <dxo-grouping [autoExpandAll]="true"></dxo-grouping>
+                        <dxo-selection mode="multiple"></dxo-selection>
+                        <dxi-column dataField="lastErrorDate" caption="Data" [format]="'dd/MM/yyyy'" dataType="date" [allowEditing]="false"></dxi-column>
+                        <dxi-column dataField="documentId"
+                                    caption="Nr registratura"
+                                    [allowFiltering]="false"
+                                    [allowSorting]="false"
+                                    [allowEditing]="false"
+                                    cellTemplate="cellTemplate"></dxi-column>
+                        <div *dxTemplate="let data of 'cellTemplate'">
+                            <app-file-doc-attachment [fileId]="data.data.documentId" [regNumber]="data.data.documentNr"></app-file-doc-attachment>
+                        </div>
+                        <dxi-column dataField="mesajEroare" caption="Eroare" [allowEditing]="false"></dxi-column>
+                        <dxo-export [enabled]="true" [allowExportSelectedData]="true"></dxo-export>
+                    </dx-data-grid>                 
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

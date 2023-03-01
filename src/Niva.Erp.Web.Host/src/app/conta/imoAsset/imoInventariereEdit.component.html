@@ -1,0 +1,87 @@
+﻿<div [@routerTransition]>
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <h3>Adaugare / Modificare mijloace fixe pentru inventariere</h3>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="content px-2">
+        <div class="container-fluid">
+            <div class="body">
+                <div class="row" *ngIf="imoInvId === null">
+                    <div class="col-lg-2">
+                        <label for="dataStart" class="col-form-label"> Data inventariere</label>
+                        <mat-form-field style="width: 100%;">
+                            <input matInput
+                                   id="dateStart"
+                                   name="dateStart"
+                                   [matDatepicker]="dataStartPicker"
+                                   [(ngModel)]="imoInventariere.dateStart">
+                            <mat-datepicker-toggle matSuffix [for]="dataStartPicker"></mat-datepicker-toggle>
+                            <mat-datepicker #dataStartPicker></mat-datepicker>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-lg-1">
+                        <button class="btn btn-info" title="Cauta" (click)="search()">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="row">
+                    <h4>Lista de inventar mijloace fixe la data {{ imoInventariere.dateStart | date: 'dd/MM/yyyy' }}</h4>
+                </div>
+                <div class="row">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col"> Nr. inventar</th>
+                                <th scope="col">Denumire bunuri inventariate</th>
+                                <th scope="col">Data Dare in folosinta</th>
+                                <th scope="col">Magazie</th>
+                                <th scope="col">Stoc scriptic</th>
+                                <th scope="col">Stoc faptic</th>
+                                <th scope="col"> Valoare inventar</th>
+                                <th scope="col"> Valoare ramasa</th>
+                            </tr>
+                        </thead>
+                        <tbody *ngFor="let detail of imoInventariere.imoInventariereDetails; let i = index;">
+                            <tr>
+                                <td scope="row">{{ i + 1 }}</td>
+                                <td>{{ detail.inventoryNumber }}</td>
+                                <td>{{ detail.description }}</td>
+                                <td>{{ detail.useStartDate | date: 'dd/MM/yyyy'}}</td>
+                                <td>{{ detail.storageIn }}</td>
+                                <td>{{ detail.stockScriptic | number }}</td>
+                                <td>
+                                    <input id="stockFaptic_{{i}}" name="stockFaptic_{{i}}" type="text" [(ngModel)]="detail.stockFaptic" class="form-control" />
+                                </td>
+                                <td>{{ detail.inventoryValue | number }}</td>
+                                <td>{{ detail.remainingValue | number }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="row">
+                    <div class="col-lg-1">
+                        <button [routerLink]="['/app/conta/imoAsset/imoInventariere']" class="btn btn-info"><i class="fas fa-arrow-left"></i></button>
+                    </div>
+                    <div class="col-lg-10">
+                        <div class="input-group" style="display: flex; justify-content: flex-end">
+
+                            <button class="btn btn-info"
+                                    (click)="save()"
+                                    title="Salveaza">
+                                <i class="fas fa-save"></i>
+
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

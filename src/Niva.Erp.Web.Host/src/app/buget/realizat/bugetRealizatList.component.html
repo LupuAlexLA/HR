@@ -1,0 +1,71 @@
+﻿<div [@routerTransition]>
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row">
+                <h3>Buget realizat</h3>
+            </div>
+        </div>
+    </section>
+    <section class="content px-2">
+        <div class="container-fluid">
+            <div class="body">
+                <div class="row">
+                    <div class="col-lg-1">
+                        <label for="formularId" class="col-form-label">An</label>
+                    </div>
+                    <div class="col-lg-2">
+                        <select id="formularId" name="formularId" class="form-control" [(ngModel)]="formularId" (ngModelChange)="search()" >
+                            <option *ngFor="let an of anBugetList" [ngValue]="an.id">{{ an.anBVC }}</option>
+                        </select>
+                    </div>
+                    <div class="col-lg-1">
+                        <label for="tip_BVCId" class="col-form-label"> Tip </label>
+                    </div>
+                    <div class="col-lg-2">
+                        <select id="tip_BVCId" name="tip_BVCId" class="form-control" [(ngModel)]="tip_BVCId" (ngModelChange)="search()"> 
+                            <option *ngFor="let tip of tipBvcList" [ngValue]="tip.id">{{ tip.name }}</option>
+                        </select>
+                    </div>
+                    <div class="col-lg-6">
+                        <button id="searchBVC_Prev" class="btn btn-info" title="Cauta" (click)="search()"><i class="fas fa-search"></i></button>
+                    </div>
+                </div>
+                <div class="panel-heading" style="position:relative">
+                    <div class="row mt-3">
+                        <h4 class="panel-title col-xs-6 ">
+                            Buget realizat - <span> {{ getCountBugetRealizat() }} </span>
+                            &nbsp;
+                            <a [routerLink]="['/app/buget/realizat/bugetRealizatAdd']" class="btn btn-info" title="Genereaza" *ngIf="isGranted('Buget.BVC.Realizat.Modificare')"><i class="fas fa-plus"></i></a>
+                        </h4>
+                    </div>
+                </div>
+                <div class="row">
+                    <table class="table table-responsive">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Data balanta</th>
+                                <th>Descriere</th>
+                                <th>Tip</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of bugetRealizatList;let i = index">
+                                <td>{{ i + 1 }}</td>
+                                <td>{{ item.savedBalanceDate| date: 'dd/MM/yyyy' }}</td>
+                                <td>{{ item.savedBalanceDescription }}</td>
+                                <td>{{ item.bvC_TipStr }}</td>
+                                <td>
+                                    <a class="btn btn-info" [routerLink]="['/app/buget/realizat/bugetRealizatRandList']" [queryParams]="{ realizatId: item.id}" title="Detalii randuri"><i class="fas fa-list"></i></a>
+                                    <a class="btn btn-info  ml-3" (click)="getBalRealizatDetails(item.bvC_BalRealizatId)" title="Detalii randuri buget realizat balanta" *ngIf="tip_BVCId === 0"><i class="fas fa-list"></i></a>
+                                    <button class="btn btn-danger ml-3" title="Sterge" (click)="delete(item.id, item.bvC_BalRealizatId)" *ngIf="isGranted('Buget.BVC.Realizat.Modificare')"><i class="fas fa-trash"></i></button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

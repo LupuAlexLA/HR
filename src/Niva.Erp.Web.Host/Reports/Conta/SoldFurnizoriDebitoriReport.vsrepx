@@ -1,0 +1,225 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<XtraReportsLayoutSerializer SerializerVersion="20.2.5.0" Ref="1" ControlType="DevExpress.XtraReports.UI.XtraReport, DevExpress.XtraReports.v20.2, Version=20.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" Name="SoldFurnizoriDebitoriReport" SnapGridSize="25" ReportUnit="TenthsOfAMillimeter" Margins="100, 100, 454, 100" PaperKind="A4" PageWidth="2100" PageHeight="2970" Version="20.2" DataSource="#Ref-0" Dpi="254" Font="Arial, 9.75pt">
+  <Extensions>
+    <Item1 Ref="2" Key="VSReportExtInfo" Value=".vsrepx" />
+  </Extensions>
+  <Parameters>
+    <Item1 Ref="4" Visible="false" ValueInfo="0" Name="thirdPartyId" Type="#Ref-3" />
+    <Item2 Ref="6" Visible="false" ValueInfo="1753-01-01" Name="startDate" Type="#Ref-5" />
+  </Parameters>
+  <Bands>
+    <Item1 Ref="7" ControlType="TopMarginBand" Name="TopMargin" HeightF="454.416718" Dpi="254">
+      <Controls>
+        <Item1 Ref="8" ControlType="XRLabel" Name="label8" Multiline="true" Text="Unitatea: [ThirdPartyName]" SizeF="741.9337,58.42" LocationFloat="1158.06653,202.35321" Dpi="254" Font="Georgia, 9pt, style=Bold, charSet=0" Padding="5,5,0,0,254">
+          <StylePriority Ref="9" UseFont="false" />
+        </Item1>
+        <Item2 Ref="10" ControlType="XRLabel" Name="label9" Multiline="true" Text="Adresa: [ThirdPartyAddress]" SizeF="741.9337,58.4199829" LocationFloat="1158.06628,260.773224" Dpi="254" Font="Georgia, 9pt, charSet=0" Padding="5,5,0,0,254">
+          <StylePriority Ref="11" UseFont="false" />
+        </Item2>
+        <Item3 Ref="12" ControlType="XRLabel" Name="label10" Multiline="true" Text="Cod fiscal: [ThirdPartyId1]" SizeF="741.9335,58.4199829" LocationFloat="1158.06628,319.193237" Dpi="254" Font="Georgia, 9pt, charSet=0" Padding="5,5,0,0,254">
+          <StylePriority Ref="13" UseFont="false" />
+        </Item3>
+        <Item4 Ref="14" ControlType="XRLabel" Name="label12" Multiline="true" Text="Tel/fax/mail:" SizeF="741.9337,58.4199829" LocationFloat="1158.06628,377.61322" Dpi="254" Font="Georgia, 9pt, charSet=0" Padding="5,5,0,0,254">
+          <StylePriority Ref="15" UseFont="false" />
+        </Item4>
+        <Item5 Ref="16" ControlType="XRLabel" Name="label7" Multiline="true" Text="Catre:" SizeF="119.299927,56.3266754" LocationFloat="1038.7666,202.353287" Dpi="254" Font="Georgia, 9pt, style=Bold, charSet=0" Padding="5,5,0,0,254">
+          <StylePriority Ref="17" UseFont="false" />
+        </Item5>
+        <Item6 Ref="18" ControlType="XRLabel" Name="label6" Multiline="true" Text="Tel/fax/mail:" SizeF="800.100037,58.42" LocationFloat="25.0000248,258.68" Dpi="254" Font="Georgia, 9pt, charSet=0" Padding="5,5,0,0,254">
+          <StylePriority Ref="19" UseFont="false" />
+        </Item6>
+        <Item7 Ref="20" ControlType="XRLabel" Name="label5" Multiline="true" Text="Nr. Reg. Com.: [AppClientId2]" SizeF="800.100037,58.42" LocationFloat="25.0000248,200.259979" Dpi="254" Font="Georgia, 9pt, charSet=0" Padding="5,5,0,0,254">
+          <StylePriority Ref="21" UseFont="false" />
+        </Item7>
+        <Item8 Ref="22" ControlType="XRLabel" Name="label4" Multiline="true" Text="Cod fiscal: [AppClientId1]" SizeF="800.100037,58.42" LocationFloat="25.0000248,141.839981" Dpi="254" Font="Georgia, 9pt, charSet=0" Padding="5,5,0,0,254">
+          <StylePriority Ref="23" UseFont="false" />
+        </Item8>
+        <Item9 Ref="24" ControlType="XRLabel" Name="label3" Multiline="true" Text="Adresa: [AppClientAddress]" SizeF="800.100037,58.42" LocationFloat="25.0000248,83.41998" Dpi="254" Font="Georgia, 9pt, charSet=0" Padding="5,5,0,0,254">
+          <StylePriority Ref="25" UseFont="false" />
+        </Item9>
+        <Item10 Ref="26" ControlType="XRLabel" Name="label2" Multiline="true" Text="Nr. de inregistrare: .../..../......" SizeF="476.25,58.42" LocationFloat="1201.74988,24.9999924" Dpi="254" Font="Georgia, 9pt, style=Bold, charSet=0" Padding="5,5,0,0,254">
+          <StylePriority Ref="27" UseFont="false" />
+        </Item10>
+        <Item11 Ref="28" ControlType="XRLabel" Name="label1" Multiline="true" Text="Unitatea: [AppClientName]" SizeF="800.100037,58.42" LocationFloat="25.0000248,24.9999924" Dpi="254" Font="Georgia, 9pt, style=Bold, charSet=0" Padding="5,5,0,0,254">
+          <StylePriority Ref="29" UseFont="false" />
+        </Item11>
+      </Controls>
+    </Item1>
+    <Item2 Ref="30" ControlType="BottomMarginBand" Name="BottomMargin" Dpi="254">
+      <Controls>
+        <Item1 Ref="31" ControlType="XRPageInfo" Name="pageInfo1" PageInfo="DateTime" TextFormatString="{0:d.MM.yyyy H:mm}" SizeF="949.9999,58.42" LocationFloat="0,0" Dpi="254" Font="Georgia, 8pt, style=Bold">
+          <StylePriority Ref="32" UseFont="false" />
+        </Item1>
+        <Item2 Ref="33" ControlType="XRPageInfo" Name="pageInfo2" TextFormatString="{0}/{1}" TextAlignment="TopRight" SizeF="944.4158,58.42" LocationFloat="949.9999,0" Dpi="254" Font="Georgia, 8pt, style=Bold">
+          <StylePriority Ref="34" UseFont="false" />
+        </Item2>
+      </Controls>
+    </Item2>
+    <Item3 Ref="35" ControlType="DetailBand" Name="Detail" HeightF="63.5" Dpi="254" Borders="All">
+      <HierarchyPrintOptions Ref="36" Indent="50.8" />
+      <Controls>
+        <Item1 Ref="37" ControlType="XRTable" Name="table1" SizeF="1899.99976,63.5" LocationFloat="0,0" Dpi="254" Padding="2,2,0,0,96">
+          <Rows>
+            <Item1 Ref="38" ControlType="XRTableRow" Name="tableRow1" Weight="1" Dpi="254">
+              <Cells>
+                <Item1 Ref="39" ControlType="XRTableCell" Name="tableCell1" Weight="1.8700784998615896" Multiline="true" Text="Documentul (felul, nr, si data)" TextAlignment="MiddleCenter" Dpi="254" Font="Georgia, 7.8pt, style=Bold, charSet=0">
+                  <StylePriority Ref="40" UseFont="false" UseTextAlignment="false" />
+                </Item1>
+                <Item2 Ref="41" ControlType="XRTableCell" Name="tableCell2" Weight="1.8700784998615896" Multiline="true" Text="Explicatii" TextAlignment="MiddleCenter" Dpi="254" Font="Georgia, 7.8pt, style=Bold, charSet=0">
+                  <StylePriority Ref="42" UseFont="false" UseTextAlignment="false" />
+                </Item2>
+                <Item3 Ref="43" ControlType="XRTableCell" Name="tableCell3" Weight="1.8700784998615896" Multiline="true" Text="Suma" TextAlignment="MiddleCenter" Dpi="254" Font="Georgia, 7.8pt, style=Bold, charSet=0">
+                  <StylePriority Ref="44" UseFont="false" UseTextAlignment="false" />
+                </Item3>
+                <Item4 Ref="45" ControlType="XRTableCell" Name="tableCell4" Weight="1.8700784998615896" Multiline="true" Text="Rest de plata" TextAlignment="MiddleCenter" Dpi="254" Font="Georgia, 7.8pt, style=Bold, charSet=0">
+                  <StylePriority Ref="46" UseFont="false" UseTextAlignment="false" />
+                </Item4>
+              </Cells>
+            </Item1>
+          </Rows>
+        </Item1>
+      </Controls>
+      <StylePriority Ref="47" UseBorders="false" />
+    </Item3>
+    <Item4 Ref="48" ControlType="ReportHeaderBand" Name="ReportHeader" HeightF="254" Dpi="254">
+      <Controls>
+        <Item1 Ref="49" ControlType="XRLabel" Name="label14" Multiline="true" Text="Conform dispozițiilor legale în vigoare, vă instiințăm că, în evidențele noastre contabile la data de : [OperationDate!dd/MM/yyyy], unitatea dvs figurează cu următoarele sume:" SizeF="1850,105.566673" LocationFloat="25.0000248,123.4333" Dpi="254" Font="Georgia, 9pt, charSet=0" Padding="5,5,0,0,254">
+          <StylePriority Ref="50" UseFont="false" />
+        </Item1>
+        <Item2 Ref="51" ControlType="XRLabel" Name="label13" Multiline="true" Text="Extras de cont" TextAlignment="MiddleCenter" SizeF="283.633362,58.42" LocationFloat="793.2332,13.7899847" Dpi="254" Font="Georgia, 10.2pt, style=Bold, charSet=0" Padding="5,5,0,0,254">
+          <StylePriority Ref="52" UseFont="false" UseTextAlignment="false" />
+        </Item2>
+      </Controls>
+    </Item4>
+    <Item5 Ref="53" ControlType="DetailReportBand" Name="DetailReport" Level="0" DataMember="Details" DataSource="#Ref-0" Dpi="254">
+      <Bands>
+        <Item1 Ref="54" ControlType="DetailBand" Name="Detail1" HeightF="63.5" Dpi="254">
+          <HierarchyPrintOptions Ref="55" Indent="50.8" />
+          <Controls>
+            <Item1 Ref="56" ControlType="XRTable" Name="table2" SizeF="1899.99976,63.5" LocationFloat="0,0" Dpi="254" Padding="2,2,0,0,96" Borders="All">
+              <Rows>
+                <Item1 Ref="57" ControlType="XRTableRow" Name="tableRow2" Weight="1" Dpi="254">
+                  <Cells>
+                    <Item1 Ref="58" ControlType="XRTableCell" Name="tableCell5" Weight="1.8700784998615896" Multiline="true" TextAlignment="MiddleLeft" Dpi="254" Font="Georgia, 7.8pt, charSet=0">
+                      <ExpressionBindings>
+                        <Item1 Ref="59" EventName="BeforePrint" PropertyName="Text" Expression="FormatString('{0} {1} / {2:dd/MM/yyyy} ', [DocumentType],[DocumentNumber], [DocumentDate])  " />
+                      </ExpressionBindings>
+                      <StylePriority Ref="60" UseFont="false" UseTextAlignment="false" />
+                    </Item1>
+                    <Item2 Ref="61" ControlType="XRTableCell" Name="tableCell6" Weight="1.8700784998615896" Multiline="true" TextAlignment="MiddleLeft" Dpi="254" Font="Georgia, 7.8pt, charSet=0">
+                      <StylePriority Ref="62" UseFont="false" UseTextAlignment="false" />
+                    </Item2>
+                    <Item3 Ref="63" ControlType="XRTableCell" Name="tableCell7" Weight="1.8700784998615896" TextFormatString="{0:n2}" Multiline="true" TextAlignment="MiddleRight" Dpi="254" Font="Georgia, 7.8pt, charSet=0">
+                      <ExpressionBindings>
+                        <Item1 Ref="64" EventName="BeforePrint" PropertyName="Text" Expression="[Value]" />
+                      </ExpressionBindings>
+                      <StylePriority Ref="65" UseFont="false" UseTextAlignment="false" />
+                    </Item3>
+                    <Item4 Ref="66" ControlType="XRTableCell" Name="tableCell8" Weight="1.8700784998615896" TextFormatString="{0:n2}" Multiline="true" TextAlignment="MiddleRight" Dpi="254" Font="Georgia, 7.8pt, charSet=0">
+                      <ExpressionBindings>
+                        <Item1 Ref="67" EventName="BeforePrint" PropertyName="Text" Expression="[RestPlata]" />
+                      </ExpressionBindings>
+                      <StylePriority Ref="68" UseFont="false" UseTextAlignment="false" />
+                    </Item4>
+                  </Cells>
+                </Item1>
+              </Rows>
+              <StylePriority Ref="69" UseBorders="false" />
+            </Item1>
+          </Controls>
+        </Item1>
+        <Item2 Ref="70" ControlType="GroupFooterBand" Name="GroupFooter1" HeightF="63.5" Dpi="254">
+          <Controls>
+            <Item1 Ref="71" ControlType="XRTable" Name="table3" SizeF="1900.00024,63.5" LocationFloat="0,0" Dpi="254" Font="Georgia, 9pt, style=Bold, charSet=0" Padding="2,2,0,0,96" Borders="All">
+              <Rows>
+                <Item1 Ref="72" ControlType="XRTableRow" Name="tableRow3" Weight="1" Dpi="254">
+                  <Cells>
+                    <Item1 Ref="73" ControlType="XRTableCell" Name="tableCell9" Weight="2.8051169688309403" Multiline="true" Text="Total" TextAlignment="MiddleLeft" Dpi="254" Font="Georgia, 7.8pt, style=Bold, charSet=0">
+                      <StylePriority Ref="74" UseFont="false" UseTextAlignment="false" />
+                    </Item1>
+                    <Item2 Ref="75" ControlType="XRTableCell" Name="tableCell11" Weight="1.4025586346003633" TextFormatString="{0:n2}" Multiline="true" TextAlignment="MiddleRight" Dpi="254" Font="Georgia, 7.8pt, style=Bold, charSet=0">
+                      <ExpressionBindings>
+                        <Item1 Ref="76" EventName="BeforePrint" PropertyName="Text" Expression="Sum([Value])" />
+                      </ExpressionBindings>
+                      <StylePriority Ref="77" UseFont="false" UseTextAlignment="false" />
+                    </Item2>
+                    <Item3 Ref="78" ControlType="XRTableCell" Name="tableCell12" Weight="1.4025598961534653" TextFormatString="{0:n2}" Multiline="true" TextAlignment="MiddleRight" Dpi="254" Font="Georgia, 7.8pt, style=Bold, charSet=0">
+                      <ExpressionBindings>
+                        <Item1 Ref="79" EventName="BeforePrint" PropertyName="Text" Expression="Sum([RestPlata])" />
+                      </ExpressionBindings>
+                      <StylePriority Ref="80" UseFont="false" UseTextAlignment="false" />
+                    </Item3>
+                  </Cells>
+                </Item1>
+              </Rows>
+              <StylePriority Ref="81" UseFont="false" UseBorders="false" />
+            </Item1>
+          </Controls>
+        </Item2>
+      </Bands>
+    </Item5>
+    <Item6 Ref="82" ControlType="ReportFooterBand" Name="ReportFooter" HeightF="393.606476" Dpi="254" Borders="Top">
+      <SubBands>
+        <Item1 Ref="83" ControlType="SubBand" Name="SubBand1" HeightF="562.256653" Dpi="254">
+          <Controls>
+            <Item1 Ref="84" ControlType="XRLabel" Name="label27" Multiline="true" Text="Conducatorul unitatii" SizeF="463.55,58.4200134" LocationFloat="25.0000248,411.393219" Dpi="254" Font="Georgia, 9pt, charSet=0" Padding="5,5,0,0,254" Borders="None">
+              <StylePriority Ref="85" UseFont="false" UseBorders="false" />
+            </Item1>
+            <Item2 Ref="86" ControlType="XRLabel" Name="label28" Multiline="true" Text="Conducatorul departamentului financiar-contabil" SizeF="493.18335,88.05328" LocationFloat="1201.74988,411.393219" Dpi="254" Font="Georgia, 9pt, charSet=0" Padding="5,5,0,0,254" Borders="None">
+              <StylePriority Ref="87" UseFont="false" UseBorders="false" />
+            </Item2>
+            <Item3 Ref="88" ControlType="XRLabel" Name="label26" Multiline="true" Text="Obiecţiile noastre privind sumele din prezentul extras de cont sunt cuprinse în nota explicativă anexată." SizeF="1850,58.4200134" LocationFloat="25.0000248,323.339935" Dpi="254" Font="Georgia, 9pt, charSet=0" Padding="5,5,0,0,254" Borders="None">
+              <StylePriority Ref="89" UseFont="false" UseBorders="false" />
+            </Item3>
+            <Item4 Ref="90" ControlType="XRLabel" Name="label25" Multiline="true" Text="b) urmează să efectuăm plata într-un termen de ..............." SizeF="1850,58.4200134" LocationFloat="25.0000248,264.92" Dpi="254" Font="Georgia, 9pt, charSet=0" Padding="5,5,0,0,254" Borders="None">
+              <StylePriority Ref="91" UseFont="false" UseBorders="false" />
+            </Item4>
+            <Item5 Ref="92" ControlType="XRLabel" Name="label24" Multiline="true" Text="a) am depus la (bancă, oficiul poştal etc.) .........documentul (ordin de plată, mandat etc.) nr. ........ din data de ............." SizeF="1850,58.4199677" LocationFloat="25.0000248,206.500046" Dpi="254" Font="Georgia, 9pt, charSet=0" Padding="5,5,0,0,254" Borders="None">
+              <StylePriority Ref="93" UseFont="false" UseBorders="false" />
+            </Item5>
+            <Item6 Ref="94" ControlType="XRLabel" Name="label23" Multiline="true" Text="Confirmăm prezentul extras de cont pentru suma de .......................... lei, pentru achitarea căreia " SizeF="1818.36682,58.42" LocationFloat="56.6332359,148.080109" Dpi="254" Font="Georgia, 9pt, charSet=0" Padding="5,5,0,0,254" Borders="None">
+              <StylePriority Ref="95" UseFont="false" UseBorders="false" />
+            </Item6>
+            <Item7 Ref="96" ControlType="XRLabel" Name="label21" Multiline="true" Text="Catre:" SizeF="119.299927,56.3266754" LocationFloat="474.999939,58.42" Dpi="254" Font="Georgia, 9pt, style=Bold, charSet=0" Padding="5,5,0,0,254" Borders="None">
+              <StylePriority Ref="97" UseFont="false" UseBorders="false" />
+            </Item7>
+            <Item8 Ref="98" ControlType="XRLabel" Name="label22" Multiline="true" Text="Unitatea: [ThirdPartyName]" SizeF="741.9337,58.42" LocationFloat="594.2996,58.42" Dpi="254" Padding="5,5,0,0,254" Borders="None">
+              <StylePriority Ref="99" UseBorders="false" />
+            </Item8>
+            <Item9 Ref="100" ControlType="XRLabel" Name="label19" Multiline="true" Text="Unitatea: [AppClientName]" SizeF="800.100037,58.42" LocationFloat="25.0000248,0" Dpi="254" Font="Georgia, 9pt, style=Bold, charSet=0" Padding="5,5,0,0,254" Borders="None">
+              <StylePriority Ref="101" UseFont="false" UseBorders="false" />
+            </Item9>
+            <Item10 Ref="102" ControlType="XRLabel" Name="label20" Multiline="true" Text="Nr. de inregistrare: .../..../......" SizeF="520.7001,58.42" LocationFloat="1201.74988,0" Dpi="254" Font="Georgia, 9pt, style=Bold, charSet=0" Padding="5,5,0,0,254" Borders="None">
+              <StylePriority Ref="103" UseFont="false" UseBorders="false" />
+            </Item10>
+          </Controls>
+        </Item1>
+      </SubBands>
+      <Controls>
+        <Item1 Ref="104" ControlType="XRLabel" Name="label15" Multiline="true" Text="În termen de 5 zile de la primire urmează să ne restituiti acest extras confirmat pentru suma acceptată, iar în cazul constatării de diferente sa anexati nota explicativă continând obiectiile dvs." SizeF="1894.41565,90.16995" LocationFloat="0,25.0000248" Dpi="254" Font="Georgia, 9pt, charSet=0" Padding="5,5,0,0,254" Borders="None">
+          <StylePriority Ref="105" UseFont="false" UseBorders="false" />
+        </Item1>
+        <Item2 Ref="106" ControlType="XRLabel" Name="label16" Multiline="true" Text="Prezentul extras de cont tine loc de conciliere conform procedurii arbitrale." SizeF="1899.99976,58.41999" LocationFloat="0,115.169975" Dpi="254" Font="Georgia, 9pt, charSet=0" Padding="5,5,0,0,254" Borders="None">
+          <StylePriority Ref="107" UseFont="false" UseBorders="false" />
+        </Item2>
+        <Item3 Ref="108" ControlType="XRLabel" Name="label17" Multiline="true" Text="Conducatorul unitatii" SizeF="463.55,58.4200134" LocationFloat="25.0000248,207.033356" Dpi="254" Font="Georgia, 9pt, charSet=0" Padding="5,5,0,0,254" Borders="None">
+          <StylePriority Ref="109" UseFont="false" UseBorders="false" />
+        </Item3>
+        <Item4 Ref="110" ControlType="XRLabel" Name="label18" Multiline="true" Text="Conducatorul departamentului financiar-contabil" SizeF="493.18335,88.05328" LocationFloat="1201.74988,207.033356" Dpi="254" Font="Georgia, 9pt, charSet=0" Padding="5,5,0,0,254" Borders="None">
+          <StylePriority Ref="111" UseFont="false" UseBorders="false" />
+        </Item4>
+        <Item5 Ref="112" ControlType="XRLine" Name="line1" SizeF="1899.99976,32.23651" LocationFloat="0,361.369965" Dpi="254" Borders="None">
+          <StylePriority Ref="113" UseBorders="false" />
+        </Item5>
+      </Controls>
+      <StylePriority Ref="114" UseBorders="false" />
+    </Item6>
+  </Bands>
+  <ComponentStorage>
+    <Item1 Ref="0" ObjectType="DevExpress.DataAccess.ObjectBinding.ObjectDataSource,DevExpress.DataAccess.v20.2" Name="objectDataSource1" Base64="PE9iamVjdERhdGFTb3VyY2UgTmFtZT0ib2JqZWN0RGF0YVNvdXJjZTEiPjxEYXRhTWVtYmVyPkdldFNvbGRGdXJuaXpvcmlSZXBvcnQ8L0RhdGFNZW1iZXI+PFBhcmFtZXRlcnM+PFBhcmFtZXRlciBOYW1lPSJ0aGlyZFBhcnR5SWQiIFR5cGU9IkRldkV4cHJlc3MuRGF0YUFjY2Vzcy5FeHByZXNzaW9uIj4oU3lzdGVtLkludDMyKSg/dGhpcmRQYXJ0eUlkKTwvUGFyYW1ldGVyPjxQYXJhbWV0ZXIgTmFtZT0ic3RhcnREYXRlIiBUeXBlPSJEZXZFeHByZXNzLkRhdGFBY2Nlc3MuRXhwcmVzc2lvbiI+KFN5c3RlbS5EYXRlVGltZSkoP3N0YXJ0RGF0ZSk8L1BhcmFtZXRlcj48L1BhcmFtZXRlcnM+PC9PYmplY3REYXRhU291cmNlPg==" />
+  </ComponentStorage>
+  <ObjectStorage>
+    <Item1 ObjectType="DevExpress.XtraReports.Serialization.ObjectStorageInfo, DevExpress.XtraReports.v20.2" Ref="3" Content="System.Int32" Type="System.Type" />
+    <Item2 ObjectType="DevExpress.XtraReports.Serialization.ObjectStorageInfo, DevExpress.XtraReports.v20.2" Ref="5" Content="System.DateTime" Type="System.Type" />
+  </ObjectStorage>
+</XtraReportsLayoutSerializer>

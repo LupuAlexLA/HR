@@ -1,0 +1,51 @@
+﻿<div [@routerTransition]>
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <h3>Obiecte de inventar - Categorii</h3>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="content px-2">
+        <div class="container-fluid">
+            <div class="body">
+                <div class="panel-heading" style="position: relative;">
+                    <div class="row">
+                        <h4 class="panel-title col-xs-6">
+                            Categorii - <span>{{ getInvObjectCategoryListCount() }}</span> &nbsp;
+                            <a [routerLink]="['/app/conta/invObjects/invObjectNomCategoryEdit']"
+                               class="btn btn-info"><i class="fas fa-plus"></i></a>
+                            &nbsp;
+                            <a [routerLink]="['/app/conta/invObjects/invObjectNomenclatoare']" class="btn btn-info"><i class="fas fa-arrow-left"></i></a>
+                        </h4>
+                    </div>
+                </div>
+
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Denumire</th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let category of categoryList?.getCategoryList; let i = index">
+                            <td>{{ i + 1 }}</td>
+                            <td>{{ category.categoryName }}</td>
+                            <td>
+                                <a [routerLink]="['/app/conta/invObjects/invObjectNomCategoryEdit']"
+                                   [queryParams]="{categoryId: category.id}"
+                                   class="btn btn-info"><i class="fas fa-edit"></i></a>
+                            </td>
+                            <td> <button (click)="deleteCategory(category.id)" class="btn btn-danger"><i class="fas fa-trash"></i>    </button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+</div>

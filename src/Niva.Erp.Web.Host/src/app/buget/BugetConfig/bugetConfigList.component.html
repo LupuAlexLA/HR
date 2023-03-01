@@ -1,0 +1,73 @@
+﻿<div [@routerTransition]>
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-9 col-lg-offset-3">
+                    <h2>
+                        Lista Buget : <span>({{ getBugetCount() }})</span>&nbsp;
+                        <a [routerLink]="['/app/buget/bugetConfig/bugetConfigEdit']" class="btn btn-info" title="Adauga"><i class="fas fa-plus">  </i></a>
+                        
+                    </h2>
+
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="content px-2">
+        <div class="container-fluid">
+            <div class="body">
+                <div class="row">
+                    <div>
+
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="col-lg-3">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">An</th>
+
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody *ngFor="let buget of bugetConfigList; let i = index">
+                                <tr>
+                                    <td scope="row">{{ i + 1 }}</td>
+                                    <td>{{ buget.anBVC }}</td>
+                                    <td>
+                                        <button [routerLink]="['/app/buget/bugetConfig/bugetConfigEdit']"
+                                                [queryParams]="{ bugetId: buget.id }"
+                                                class="btn btn-info"
+                                                title="Modifica">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                    </td>
+                                    <td>
+                                        <a [routerLink]="['/app/buget/bugetConfig/bugetRandList']"
+                                           [queryParams]="{formularId: buget.id}" class="btn btn-info" title="Rapoarte"><i class="fas fa-list"></i></a>
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-info ml-3" title="Duplicare" (click)="duplicate(buget.id)"><i class="fas fa-copy"></i></button>
+                                    </td>
+                                    <td>
+                                        <button (click)="delete(buget.id)"
+                                                class="btn btn-danger"
+                                                title="Sterge">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

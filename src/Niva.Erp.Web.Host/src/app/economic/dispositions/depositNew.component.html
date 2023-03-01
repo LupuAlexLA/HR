@@ -1,0 +1,127 @@
+﻿<div [@routerTransition]>
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <h3>Formular retragere/depunere numerar - banca</h3>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="content px-2">
+        <div class="container-fluid">
+            <div class="body">
+                <form #depositForm="ngForm" (ngSubmit)="saveDeposit()">
+                    <div class="row">
+                        <div class="col-lg-2">
+                            <label for="bankName" class="col-form-label">Banca</label>
+                        </div>
+                        <div class="col-lg-4">
+                            <select id="bankName" name="bankName" [(ngModel)]="deposit.bankId" #bankId="ngModel" class="form-control" (ngModelChange)="getBankAccountsList(deposit.bankId)">
+                                <option value="0">Selecteaza</option>
+                                <option *ngFor="let bank of banks.getBank" [ngValue]="bank.issuerId">{{bank.bankName}}</option>
+                            </select>
+                        </div>
+                        <div class="col-lg-2">
+                            <label for="bankAccountId" class="col-form-label">Cont</label>
+                        </div>
+                        <div class="col-lg-4">
+                            <select id="bankAccountId" name="bankAccountId" [(ngModel)]="deposit.bankAccountId" #bankAccountId="ngModel" class="form-control" (ngModelChange)="getAccountCurrency(deposit.bankAccountId)">
+                                <option value="0">Selecteaza</option>
+                                <option *ngFor="let account of bankAccounts" [ngValue]="account.id">{{account.iban}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-lg-2">
+                            <label for="dispositionType" class="col-form-label"> Tip </label>
+                        </div>
+                        <div class="col-lg-4">
+                            <select id="dispositionType" name="dispositionType" [(ngModel)]="deposit.operationType" #operationType="ngModel" class="form-control">
+                                <option value="null">Selecteaza</option>
+                                <option value="2">Depunere</option>
+                                <option value="3">Retragere</option>
+                            </select>
+                        </div>
+                        <div class="col-lg-2">
+                            <label for="operationDate" class="col-form-label"> Data operatiune</label>
+                        </div>
+                        <div class="col-lg-4">
+                            <mat-form-field style="width: 100%;">
+                                <input matInput
+                                       id="operationDate"
+                                       name="operationDate"
+                                       [matDatepicker]="operationDatePicker"
+                                       [(ngModel)]="deposit.dispositionDate">
+                                <mat-datepicker-toggle matSuffix [for]="operationDatePicker"></mat-datepicker-toggle>
+                                <mat-datepicker #operationDatePicker></mat-datepicker>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-2">
+                            <label for="documentNumber" class="col-form-label">Nr document</label>
+                        </div>
+                        <div class="col-lg-4">
+                            <input id="documentNumber" name="documentNumber" [(ngModel)]="deposit.documentNumber" #documentNumber="ngModel" class="form-control" />
+                        </div>
+                        <div class="col-lg-2">
+                            <label for="documentDate" class="col-form-label"> Data document</label>
+                        </div>
+                        <div class="col-lg-4">
+                            <mat-form-field style="width: 100%;">
+                                <input matInput
+                                       id="documentDate"
+                                       name="documentDate"
+                                       [matDatepicker]="documentDatePicker"
+                                       [(ngModel)]="deposit.documentDate">
+                                <mat-datepicker-toggle matSuffix [for]="documentDatePicker"></mat-datepicker-toggle>
+                                <mat-datepicker #documentDatePicker></mat-datepicker>
+                            </mat-form-field>
+                        </div>
+                    </div>
+
+                    <div class="row mt-3">
+                        <div class="col-lg-2">
+                            <label for="value" class="col-form-label">Suma</label>
+                        </div>
+                        <div class="col-lg-4">
+                            <input id="value" name="value" [(ngModel)]="deposit.value" #value="ngModel" class="form-control" />
+                        </div>
+                        <div class="col-lg-2">
+                            <label for="currency" class="col-form-label">Moneda</label>
+                        </div>
+                        <div class="col-lg-4">
+                            <select id="currency" name="currency" [(ngModel)]="deposit.currencyId" #currencyId="ngModel" class="form-control" disabled>
+                                <option value="0">Selecteaza</option>
+                                <option *ngFor="let currency of currencies" [ngValue]="currency.id">{{currency.name}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-lg-2">
+                            <label for="description" class="col-form-label"> Motiv</label>
+                        </div>
+                        <div class="col-lg-10">
+                            <input id="description" name="description" class="form-control" [(ngModel)]="deposit.description" #description="ngModel" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <button (click)="backToList()" class="btn btn-info"><i class="fas fa-arrow-left"></i></button>
+                        </div>
+                        <div class="col-lg-2" style = "display: flex; justify-content: flex-end">
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <span class="fas fa-check-circle" *ngIf="depositForm.form.valid"></span>
+                                    <span class="fas fa-exclamation-circle" *ngIf="!depositForm.form.valid"></span>
+                                </span>
+                                <button [disabled]="!depositForm.form.valid" type="submit" class="btn btn-info" title="Save"><i class="fas fa-save"></i> </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+</div>

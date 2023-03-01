@@ -1,0 +1,186 @@
+﻿<div [@routerTransition]>
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row">
+                <h3>
+                    <a class="btn btn-info" title="Inapoi" [routerLink]="['/app/buget/prevazut/bugetPrevList']"><i class="fas fa-arrow-left"></i></a>
+                    Detalii buget prevazut
+                </h3>
+            </div>
+        </div>
+    </section>
+    <section class="content px-2">
+        <div class="container-fluid">
+            <div class="body" [busy]="isLoading">
+                <div class="row">
+                    <div class="col-lg-1">
+                        <label for="departamentId" class="col-form-label">Departament</label>
+                    </div>
+                    <div class="col-lg-2">
+                        <select id="departamentId" name="departamentId" class="form-control" [(ngModel)]="departamentId" (change)="search()" [disabled]="!isGranted('Buget.BVC.Prevazut.Modificare')">
+                            <option [ngValue]="0">Toate</option>
+                            <option *ngFor="let department of departamentList" [ngValue]="department.id">{{department.name}}</option>
+                        </select>
+                    </div>
+                    <div class="col-lg-1">
+                        <label for="month" class="col-form-label">Luna</label>
+                    </div>
+                    <div class="col-lg-2">
+                        <select id="month" name="month" class="form-control" [(ngModel)]="month" (change)="search()">
+                            <!--<option [ngValue]="0">Total</option>
+                            <option [ngValue]="1">Ianuarie</option>
+                            <option [ngValue]="2">Februarie</option>
+                            <option [ngValue]="3">Martie</option>
+                            <option [ngValue]="4">Aprilie</option>
+                            <option [ngValue]="5">Mai</option>
+                            <option [ngValue]="6">Iunie</option>
+                            <option [ngValue]="7">Iulie</option>
+                            <option [ngValue]="8">August</option>
+                            <option [ngValue]="9">Septembrie</option>
+                            <option [ngValue]="10">Octombrie</option>
+                            <option [ngValue]="11">Noiembrie</option>
+                            <option [ngValue]="12">Decembrie</option>-->
+                            <option *ngFor="let monthItem of monthList" [ngValue]="monthItem.month">{{monthItem.monthDisplay}}</option>
+                        </select>
+                    </div>
+                    <div class="col-lg-2">
+                        <div class="custom-control custom-checkbox " style="display: block;">
+                            <input id="values0" name="values0" type="checkbox" class="custom-control-input" [(ngModel)]="values0" />
+                            <label for="values0" class="custom-control-label mt-2"> Includ valori 0</label>
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <button id="searchBVC_PrevDepartment" class="btn btn-info" title="Cauta" (click)="search()"><i class="fas fa-search"></i></button>
+                        <button id="downloadReport" class="btn btn-info ml-3" title="Descarca raport fara tip de activitate" (click)="showReport(false)"><i class="fas fa-download"></i></button>
+                        <button id="downloadReport" class="btn btn-info ml-3" title="Descarca raport cu tip de activitate" (click)="showReport(true)"><i class="fas fa-download"></i></button>
+                        <button id="validate"
+                                name="validateAll"
+                                title="{{departamentId==0 ? 'Valideaza toate departamentele' : 'Valideaza departament' }}"
+                                class="btn btn-info ml-3"
+                                *ngIf="!bugetPrevDetailList.isValidated && isGranted('Buget.BVC.Prevazut.Validare')"
+                                (click)="validate()">
+                            Validare
+                        </button>
+                        <button id="cancel"
+                                name="cancel"
+                                class="btn btn-danger ml-3"
+                                title="{{departamentId==0 ? 'Anuleaza validarile pentru toate departamentele' : 'Anuleaza validarile pentru departament' }}"
+                                *ngIf="bugetPrevDetailList.isValidated && (bugetPrevDetailList.status === 'Preliminat' || bugetPrevDetailList.status === 'Inregistrat')  && isGranted('Buget.BVC.Prevazut.Validare')"
+                                (click)="cancel()">
+                            Anulare validare
+                        </button>
+                    </div>
+                </div>
+                <div class="row mt-3" *ngIf="departamentId !== 0 && departamentId != null">
+                    <table class="table table-responsive">
+                        <thead>
+                            <tr>
+                                <th>Descriere</th>
+                                <th>Valoare</th>
+                                <th>Validat</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr style="background-color: rgb(255, 218, 185)" *ngIf="departamentName !== null">
+                                <td colspan="11" style="text-align: left;"> {{ departamentName }}</td>
+                            </tr>
+                            <tr *ngFor="let buget of bugetPrevDetailList.bugetPrevByDepartmentList?.details; let j = index;">
+                                <td>{{ buget.descriere}}</td>
+                                <td class="alignSum">{{ buget.valoare | number: '1.2'}}</td>
+                                <td>
+                                    <input type="checkbox" readonly [(ngModel)]="buget.validat" #validat="ngModel" id="bugetValidat_{{j}}" name="bugetValidat_{{j}}" disabled />
+                                </td>
+                                <td>
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th>Luna</th>
+                                                <th>Descriere</th>
+                                                <th>Tip activitate</th>
+                                                <th>Valoare</th>
+                                                <th>Data operatiune</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody *ngFor="let det of buget.randValueDetails; let j = index;">
+                                            <tr>
+                                                <td>{{ det.dataLuna | date:'dd/MM/yyyy' }}</td>
+                                                <td>
+                                                    <input id="descriere_{{j}}" name="descriere_{{j}}" [(ngModel)]="det.descriere" #descriere="ngModel" class="form-control" disabled="{{buget.isTotal || det.valueType !== 0}}" />
+                                                </td>
+                                                <td>{{det.activityTypeName}}</td>
+                                                <td class="alignSum">
+                                                    <input id="valoare_{{j}}" name="valoare_{{j}}" [(ngModel)]="det.valoare" #valoare="ngModel" class="form-control" disabled="{{buget.isTotal}}" />
+                                                </td>
+
+                                                <td>
+                                                    <mat-form-field style="width: 100%;">
+                                                        <input matInput
+                                                               disabled="{{buget.isTotal  || det.valueType !== 0}}"
+                                                               id="dataOper"
+                                                               name="dataOper"
+                                                               [matDatepicker]="dataOperPicker"
+                                                               [(ngModel)]="det.dataOper"
+                                                               #dataOper="ngModel">
+                                                        <mat-datepicker-toggle matSuffix [for]="dataOperPicker"></mat-datepicker-toggle>
+                                                        <mat-datepicker #dataOperPicker></mat-datepicker>
+                                                    </mat-form-field>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="row mt-3" *ngIf="departamentId === 0">
+                    <div class="col-lg-6">
+                        <table class="table table-responsive">
+                            <thead>
+                                <tr>
+                                    <th>Descriere</th>
+                                    <th>Valoare</th>
+                                    <th>Validat</th>
+                                </tr>
+                            </thead>
+                            <tbody *ngFor="let item of bugetPrevDetailList.bugetPrevAllDepartmentsList; let i = index;">
+                                <tr>
+                                    <td>{{ item.descriere }}</td>
+                                    <td class="alignSum">{{ item.valoare | number: '1.2' }}</td>
+                                    <td>
+                                        <input type="checkbox" readonly [(ngModel)]="bugetPrevDetailList.bugetPrevAllDepartmentsList[i].validat" id="bugetValidat_{{i}}" name="bugetValidat_{{i}}" disabled />
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-lg-6">
+                        <table class="table table-responsive">
+                            <thead>
+                                <tr>
+                                    <th colspan="2">Valori preluate din alte module</th>
+                                </tr>
+                                <!--<tr>
+                                    <th>Modul</th>
+                                    <th>Mesaj</th>
+                                </tr>-->
+                            </thead>
+                            <tbody *ngFor="let item of bugetPrevStatCalculList; let i = index;">
+                                <tr>
+                                    <td>{{ item.elemCalcStr }}</td>
+                                    <td>{{ item.message  }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="row" *ngIf="departamentId !== 0 && departamentId != null && isGranted('Buget.BVC.Prevazut.Modificare')">
+                    <div class="col-lg-2">
+                        <button class="btn btn-info" title="Salveaza" (click)="save()" *ngIf="(bugetPrevDetailList.status === 'Preliminat' || bugetPrevDetailList.status === 'Inregistrat') && !bugetPrevDetailList.isValidated"><i class="fas fa-save"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

@@ -1,0 +1,57 @@
+﻿<div [@routerTransition]>
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <h3>Configurare lichiditate</h3>
+                    <a href="{{appBaseUrl}}/assets/pdf/Conta - Lichiditate - Manual utilizare.pdf" title="Manual de utilizare" class="btn btn-info ml-2" target="_blank"><i class="fas fa-question"></i></a>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="content px-2">
+        <div class="container-fluid">
+            <div class="body">
+                <div class="row">
+                    <dx-data-grid id="gridContainer"
+                                  [dataSource]="lichidConfigList"
+                                  [showBorders]="true"
+                                  [allowColumnResizing]="true"
+                                  [wordWrapEnabled]="true"
+                                  (onCellPrepared)="onCellPrepared($event)"
+                                  (onEditorPreparing)="editRowFormula($event)">
+                        <dxo-paging [enabled]="false"></dxo-paging>
+                        <dxo-editing mode="cell"
+                                     [allowUpdating]="true"
+                                     [allowAdding]="false"
+                                     [allowDeleting]="false">
+                        </dxo-editing>
+                        <dxo-group-panel [visible]="true"></dxo-group-panel>
+                        <dxo-grouping [autoExpandAll]="true"></dxo-grouping>
+                        <dxo-selection mode="multiple"></dxo-selection>
+
+                        <dxi-column dataField="denumireRand" caption="Denumire rand" [allowEditing]="false"></dxi-column>
+                        <dxi-column dataField="codRand" caption="Cod rand" [allowEditing]="false"></dxi-column>
+                        <dxi-column dataField="eDinConta" caption="E din conta" [allowEditing]="false"></dxi-column>
+                        <dxi-column dataField="formulaConta" caption="Formula conta"></dxi-column>
+                        <dxi-column dataField="formulaTotal" caption="Formula total" [allowEditing]="false"></dxi-column>
+                        <dxi-column dataField="lichidBenziId" caption="Banda implicita">
+                            <dxo-lookup [dataSource]="lichidBenziList"
+                                        valueExpr="id"
+                                        displayExpr="descriere">
+                            </dxo-lookup>
+                        </dxi-column>
+                        <dxi-column dataField="tipInstrument" caption="Tip instrument" [allowEditing]="false"></dxi-column>
+                        <dxo-export [enabled]="true" [allowExportSelectedData]="true"></dxo-export>
+
+                    </dx-data-grid>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-lg-6 col-lg-offset-5 alignContent">
+                        <button class="btn btn-info" style="float: right" title="Salveaza" (click)="save()"><i class="fas fa-save"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

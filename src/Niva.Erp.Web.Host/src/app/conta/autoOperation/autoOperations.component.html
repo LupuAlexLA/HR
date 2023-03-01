@@ -1,0 +1,193 @@
+﻿<div [@routerTransition]>
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <h3>Contare automata - mijloace fixe, obiecte de inventar, cheltuieli/venituri in avans</h3>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="content px-2">
+        <div class="container-fluid">
+            <div class="body">
+                <form id="initForm" name="initForm" *ngIf="form.showSearchForm">
+                    <div class="row">
+                        <div class="col-lg-2">
+                            <label for="autoOperType" class="col-form-label">Tip operatie</label>
+                            <select id="autoOperType" name="autoOperType" [(ngModel)]="form.autoOperType" class="form-control">
+                                <option [ngValue]="null">Select</option>
+                                <option *ngFor="let res of autoOperType" [ngValue]="res.id">{{res.name}}</option>
+                            </select>
+                        </div>
+                        <div class="col-lg-2">
+                            <label for="startDate" class="col-form-label">Data inceput</label>
+                            <mat-form-field style="width: 100%">
+                                <input matInput [matDatepicker]="startDatePicker" id="startDate"
+                                       name="startDate" [(ngModel)]="form.startDate" #startDate="ngModel" />
+                                <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
+                                <mat-datepicker #startDatePicker></mat-datepicker>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-lg-2">
+                            <label for="endDate" class="col-form-label">Data sfarsit</label>
+                            <mat-form-field style="width: 100%">
+                                <input matInput [matDatepicker]="endDatePicker" id="endDate"
+                                       name="endDate" [(ngModel)]="form.endDate" #endDate="ngModel" />
+                                <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
+                                <mat-datepicker #endDatePicker></mat-datepicker>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-lg-1">
+                            <button (click)="searchAutoOper()" class="btn btn-info"><i class="fas fa-search"></i></button>
+                        </div>
+                        <div class="col-lg-1">
+                            <button (click)="prepareAddHeader()" class="btn btn-info"><i class="fas fa-plus"></i></button>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="panel-heading" style="position: relative;">
+                            <div class="row">
+                                <h4 class="panel-title col-xs-6">Operatii procesate</h4>
+                            </div>
+                        </div>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col"></th>
+                                    <th scope="col">Data operatiei</th>
+                                    <th scope="col">Tip operatie</th>
+                                    <th scope="col">Tip document</th>
+                                    <th scope="col">Nr document</th>
+                                    <th scope="col">Data document</th>
+                                    <th></th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody  *ngFor="let detail of form.summary;let i = index">
+                                <tr class="small-font">
+                                    <td scope="row">{{ i + 1 }}</td>
+                                    <td>{{ detail.operationDate | date: 'dd.MM.yyyy' }}</td>
+                                    <td>{{ detail.operationType }}</td>
+                                    <td>{{ detail.documentType }}</td>
+                                    <td>{{ detail.documentNumber }}</td>
+                                    <td>{{ detail.documentDate | date: 'dd.MM.yyyy' }}</td>
+                                    <td>
+                                        <button (click)="showDetail(i)" class="btn btn-info" title="Detalii"><i class="fas fa-search"></i></button>
+                                    </td>
+                                    <td>
+                                        <button (click)="deleteOperations(detail.id)" class="btn btn-danger" title="Sterge"><i class="fas fa-trash"></i></button>
+                                    </td>
+                                </tr>
+                                <tr *ngIf="detail.showDetail">
+                                    <td colspan="1">
+                                        <button *ngIf="detail.showDetail" (click)="hideDetail(i)" class="btn btn-info"><i class="fas fa-angle-up"></i></button>
+                                    </td>
+                                    <td colspan="9">
+                                        <table class="table detailbk">
+                                            <thead class="thead-light">
+                                                <tr class="detailbk">
+                                                    <th scope="col" colspan="7" class="font-bold">Detalii contare automata</th>
+                                                </tr>
+                                                <tr class="detailbk">
+                                                    <th scope="col">Activ</th>
+                                                    <th scope="col">Debit</th>
+                                                    <th scope="col">Credit</th>
+                                                    <th scope="col" class="align-right">Valoare</th>
+                                                    <th scope="col">Explicatii</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr *ngFor="let item of detail.summaryDetail" class="detailbk">
+                                                    <td>{{ item.assetName }}</td>
+                                                    <td>{{ item.debitAccount }}</td>
+                                                    <td>{{ item.creditAccount }}</td>
+                                                    <td class="align-right">{{ item.value | number}}</td>
+                                                    <td>{{ item.details }}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </form>
+
+                <form id="prepareCompute" name="preparecompute" *ngIf="form.showCompute">
+                    <div class="row">
+                        <div class="col-lg-2">
+                            <label for="addStartDate" class="col-form-label">Data inceput</label>
+                            <mat-form-field style="width: 100%">
+                                <input matInput [matDatepicker]="addStartDatePicker" id="addStartDate"
+                                       name="addStartDate" [(ngModel)]="form.addStartDate" #addStartDate="ngModel" />
+                                <mat-datepicker-toggle matSuffix [for]="addStartDatePicker"></mat-datepicker-toggle>
+                                <mat-datepicker #addStartDatePicker></mat-datepicker>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-lg-2">
+                            <label for="addEndDate" class="col-form-label">Data sfarsit</label>
+                            <mat-form-field style="width: 100%">
+                                <input matInput [matDatepicker]="addEndDatePicker" id="addEndDate"
+                                       name="addEndDate" [(ngModel)]="form.addEndDate" #addEndDate="ngModel" />
+                                <mat-datepicker-toggle matSuffix [for]="addEndDatePicker"></mat-datepicker-toggle>
+                                <mat-datepicker #addEndDatePicker></mat-datepicker>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-lg-8">
+                            <button class="btn btn-info" (click)="prepareAdd()"><i class="fas fa-search"></i></button>
+                            &nbsp;
+                            <button class="btn btn-info" (click)="showSearch()"><i class="fas fa-arrow-left"></i></button>
+                        </div>
+                    </div>
+                    <div class="row" *ngIf="form.showComputeDetails">
+                        <div class="panel-heading" style="position: relative;">
+                            <div class="row">
+                                <h4 class="panel-title col-xs-6">
+                                    Operatii neprocesate - &nbsp;
+                                    <button (click)="operationsAdd()" class="btn btn-info"><i class="fas fa-save"></i></button>
+                                </h4>
+                            </div>
+                        </div>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col"></th>
+                                    <th scope="col" style="max-width:200px">Denumire active</th>
+                                    <th scope="col">Tip operatie</th>
+                                    <th scope="col">Data operatiei</th>
+                                    <th scope="col">Tip Document</th>
+                                    <th scope="col">Nr Document</th>
+                                    <th scope="col">Data Document</th>
+                                    <th scope="col">Magazie - iesire</th>
+                                    <th scope="col">Magazie - intrare</th>
+                                    <th scope="col">Valoare Inventar</th>
+                                    <th scope="col">Amortizare</th>
+                                    <th scope="col">Valoare TVA</th>
+                                    <th scope="col">Amortizare TVA</th>
+                                </tr>
+                            </thead>
+                            <tbody *ngFor="let detail of form.prepareCompute;let i = index">
+                                <tr class="small-font">
+                                    <td scope="row">{{ i + 1}}</td>
+                                    <td>  {{detail.itemName}}</td>
+                                    <td> {{detail.operationType}}</td>
+                                    <td>{{detail.operationDate | date : 'dd/MM/yyyy'}}</td>
+                                    <td>{{detail.documentType}}</td>
+                                    <td>{{detail.documentNr}}</td>
+                                    <td>{{detail.documentDate | date : 'dd/MM/yyyy'}}</td>
+                                    <td>{{detail.storageOut}}</td>
+                                    <td>{{detail.storageIn}}</td>
+                                    <td style="text-align:right"> {{detail.inventoryValue| number}}</td>
+                                    <td style="text-align:right">{{detail.depreciationValue| number}}</td>
+                                    <td style="text-align:right">{{detail.vatValue| number}}</td>
+                                    <td style="text-align:right"> {{detail.depreciationVAT| number}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+</div>

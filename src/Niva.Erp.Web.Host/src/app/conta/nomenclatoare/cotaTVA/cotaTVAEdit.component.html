@@ -1,0 +1,71 @@
+﻿<div [@routerTransition]>
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <h3>Adaugare / Modificare cota TVA</h3>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="content px-2">
+        <div class="container-fluid">
+            <div class="body">
+                <form id="coteTVAForm" name="coteTVAForm" #coteTVAForm="ngForm" (ngSubmit)="save()">
+                    <div class="row mt-3">
+                        <div class="col-lg-2">
+                            <label for="vat" class="col-form-label"> Cota TVA</label>
+                        </div>
+                        <div class="col-lg-3">
+                            <input id="vat" name="vat" [(ngModel)]="cotaTVA.vat" #vat="ngModel" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-lg-2">
+                            <label for="startDate" class="col-form-label"> Data inceput</label>
+                        </div>
+                        <div class="col-lg-3">
+                            <mat-form-field style="width: 100%;">
+                                <input matInput
+                                       id="startDate"
+                                       name="startDate"
+                                       [matDatepicker]="startDatePicker"
+                                       [(ngModel)]="cotaTVA.startDate"
+                                       #startDate="ngModel"
+                                       />
+                                <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
+                                <mat-datepicker #startDatePicker></mat-datepicker>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-lg-2">
+                            <label for="endDate" class="col-form-label"> Data sfarsit</label>
+                        </div>
+                        <div class="col-lg-3">
+                            <mat-form-field style="width: 100%;">
+                                <input matInput
+                                       id="endDate"
+                                       name="endDate"
+                                       [matDatepicker]="endDatePicker"
+                                       [(ngModel)]="cotaTVA.endDate"
+                                       #endDate="ngModel" />
+                                <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
+                                <mat-datepicker #endDatePicker></mat-datepicker>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    
+                    <div class="row mt-2">
+                        <div class="col-lg-3">
+                            <a [routerLink]="['/app/conta/nomenclatoare/cotaTVA/cotaTVAList']" class="btn btn-info" title="Inapoi"><i class="fas fa-arrow-left"></i></a>
+                        </div>
+                        <div class="col-lg-2" style = "display: flex; justify-content: flex-end">
+                            <button id="saveBtn" class="btn btn-info" title="Salveaza"><i class="fas fa-save"></i></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+</div>

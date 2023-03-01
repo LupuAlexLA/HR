@@ -1,0 +1,125 @@
+﻿<section [@routerTransition]>
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row">
+                <h2>
+                    Detalii facturi
+                    <button class="btn btn-danger" title="Inchide fereastra" (click)="closeTab()"><i class="fas fa-times"></i></button>
+                </h2>
+            </div>
+        </div>
+    </section>
+    <section class="content px-2">
+        <div class="container-fluid" [busy]="isLoading">
+            <div class="body">
+                <form id="init" name="init"
+                      [busy]="isLoading">
+                    <div class="row">
+                        <div class="col-lg-2">
+                            <label for="startDate" class="col-form-label">Data inceput</label>
+                            <mat-form-field style="width: 100%">
+                                <input matInput
+                                       id="startDate"
+                                       name="startDate"
+                                       [matDatepicker]="searchStartDatePicker"
+                                       [(ngModel)]="invoiceDetails.startDate"
+                                       #startDate="ngModel">
+                                <mat-datepicker-toggle matSuffix [for]="searchStartDatePicker"></mat-datepicker-toggle>
+                                <mat-datepicker #searchStartDatePicker></mat-datepicker>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-lg-2">
+                            <label for="endDate" class="col-form-label">Data sfarsit</label>
+                            <mat-form-field style="width: 100%">
+                                <input matInput
+                                       id="endDate"
+                                       name="endDate"
+                                       [matDatepicker]="searchEndDatePicker"
+                                       [(ngModel)]="invoiceDetails.endDate"
+                                       #endDate="ngModel">
+                                <mat-datepicker-toggle matSuffix [for]="searchEndDatePicker"></mat-datepicker-toggle>
+                                <mat-datepicker #searchEndDatePicker></mat-datepicker>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-lg-2">
+                            <label for="endDate" class="col-form-label">Cont cheltuiala</label>
+                            <mat-form-field style="width: 100%;">
+                                <input type="text" matInput id="contCheltuialaId"
+                                       name="contCheltuialaId"
+                                       [(ngModel)]="invoiceDetails.contCheltuialaId"
+                                       (input)="getAccountList($event)"
+                                       required [matAutocomplete]="auto">
+                                <mat-autocomplete #auto="matAutocomplete" [displayWith]="getAccountName.bind(this)">
+                                    <mat-select *ngFor="let item of accountList">
+                                        <mat-option (click)="selectedInput(item.name, item.id)" [ngValue]="item.id">
+                                            {{ item.name }}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-autocomplete>
+                            </mat-form-field>
+
+                        </div>
+                        <div class="col-lg-2">
+                            <label class="col-form-label">Categorie element</label>
+                            <select id="invoiceElementsDetailsCategoryId" name="invoiceElementsDetailsCategoryId" [(ngModel)]="invoiceDetails.invoiceElementsDetailsCategoryId" #invoiceElementsDetailsCategoryId="ngModel" class="form-control" (change)="getInvoiceElementDetailsByCategoryId(invoiceDetails.invoiceElementsDetailsCategoryId)" >
+                                <option [ngValue]="null">Toate</option>
+                                <option *ngFor="let item of invoiceElementsDetailsCategoryList" [ngValue]="item.id">
+                                    {{ item.categoryElementDetName }}
+                                </option>
+                            </select>
+                        </div>
+                        <div class="col-lg-2">
+                            <label class="col-form-label">Element</label>
+                            <select id="invoiceElementsDetailsId" name="invoiceElementsDetailsId" class="form-control" [(ngModel)]="invoiceDetails.invoiceElementsDetailsId" #invoiceElementsDetailsId="ngModel" >
+                                <option value="">Selecteaza</option>
+                                <option *ngFor="let item of invoiceElementsDetails" [ngValue]="item.id">{{item.description}}</option>
+                            </select>
+                        </div>
+                        <div class="col-lg-2">
+                            <button id="search" name="search" class="btn btn-info" title="Cauta" (click)="search()"><i class="fas fa-search"></i></button>
+                        </div>
+                    </div>
+                </form>
+                <hr />
+                <div class="row">
+                    <dx-data-grid id="gridContainerInvoiceDetailsReport"
+                                  [dataSource]="invoiceDetails.details"
+                                  [showBorders]="true"
+                                  [allowColumnResizing]="true"
+                                  [wordWrapEnabled]="true"
+                                  [remoteOperations]="false"
+                                  (onCellPrepared)="onCellPrepared($event)">
+                        <dxo-editing model="cell"
+                                     [allowUpdating]="false"
+                                     [allowAdding]="false"
+                                     [allowDeleting]="false">
+                        </dxo-editing>
+                        <dxo-group-panel [visible]="true"></dxo-group-panel>
+                        <dxo-grouping [autoExpandAll]="true"></dxo-grouping>
+                        <dxo-selection mode="multiple"></dxo-selection>
+                        <dxo-scrolling mode="infinite"></dxo-scrolling>
+
+                        <dxi-column dataField="invoiceDate" dataType="date" caption="Data Factura" [format]="'dd/MM/yyyy'" [allowEditing]="false"></dxi-column>
+                        <dxi-column dataField="contCheltuiala" caption="Cont cheltuiala"></dxi-column>
+                        <dxi-column dataField="thirdPartyName" caption="Denumire tert"></dxi-column>
+                        <dxi-column dataField="documentTypeName" caption="Tip document"></dxi-column>
+                        <dxi-column dataField="documentNumber" caption="Nr document"></dxi-column>
+                        <dxi-column dataField="value" caption="Valoare factura">
+                            <dxo-format type="fixedPoint" [precision]="2"></dxo-format>
+                        </dxi-column>
+                        <dxi-column dataField="currencyName" caption="Moneda"></dxi-column>
+                        <dxi-column dataField="valoareValuta" caption="Valoare RON">
+                            <dxo-format type="fixedPoint" [precision]="2"></dxo-format>
+                        </dxi-column>
+                        <dxi-column dataField="explicatii" caption="Explicatii"></dxi-column>
+                        <dxi-column dataField="invoiceElementsDetailsCategory" caption="Categorie element"></dxi-column>
+                        <dxi-column dataField="invoiceElementsDetails" caption="Element"></dxi-column>
+
+                        <dxo-export [enabled]="true" [allowExportSelectedData]="true"></dxo-export>
+
+                    </dx-data-grid>
+                </div>
+            </div>
+        </div>
+    </section>
+</section>

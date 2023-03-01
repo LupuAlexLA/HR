@@ -1,0 +1,58 @@
+﻿<div [@routerTransition]>
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <h3>Mijloace fixe - Documente pentru operatii</h3>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="content px-2">
+        <div class="container-fluid">
+            <div class="body">
+                <div class="panel-heading" style="position: relative;">
+                    <div class="row">
+                        <h4 class="panel-title col-xs-6">
+                            Document - <span>{{ getOperDocTypeListCount() }}</span> &nbsp;
+                                       <a [routerLink]="['/app/conta/imoAsset/imoAssetOperDocTypeEdit']" class="btn btn-info"><i class="fas fa-plus"></i></a>
+                            &nbsp;
+                                       <a [routerLink]="['/app/conta/imoAsset/imoNomenclatoare']" class="btn btn-info"><i class="fas fa-arrow-left"></i></a>
+                        </h4>
+                    </div>
+                </div>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Document</th>
+                            <th scope="col">Operatie</th>
+                            <th scope="col">Operatie Disponibila</th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let operDocType of operDocTypeList?.getImoAssetOperDocType; let i = index;">
+                            <td scope="row">{{ i + 1 }}</td>
+                            <td>{{ operDocType.documentType }}</td>
+                            <td>{{ operDocType.operType }}</td>
+                            <td>
+                                <input id="appOperation" name="appOperation" type="checkbox" style="position: relative; left:0px; opacity:100" [(ngModel)]="operDocType.appOperation" disabled />
+                            </td>
+                            <td>
+                                <a [routerLink]="['/app/conta/imoAsset/imoAssetOperDocTypeEdit']"
+                                   [queryParams]="{ operDocTypeId: operDocType.id}"
+                                   class="btn btn-info"><i class="fas fa-edit"></i></a>
+                            </td>
+                            <td>
+                                <button (click)="deleteOperDocType(operDocType.id)"
+                                        class="btn btn-danger"><i class="fas fa-trash"></i></button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+</div>

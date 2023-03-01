@@ -1,0 +1,76 @@
+﻿<div [@routerTransition]>
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-9 col-lg-offset-3">
+                    <h3>
+                        <a [routerLink]="['/app/buget/paap/paapList']" class="btn btn-info mr-2" title="Inapoi"><i class="fas fa-arrow-left">  </i></a>
+                        Cursuri Valutare Estimate: <span>({{ getExchangeRateCount() }})</span>&nbsp;
+                    </h3>
+                </div>
+            </div>
+            <div class="row">
+                <div class=" alignContent">
+                    <label for="year" class="col-form-label"> AN: </label>
+                </div>
+                <div class="col-sm-2 alignContent">
+                    <select id="year"
+                            name="year"
+                            [(ngModel)]="year"
+                            (ngModelChange)="changeYear()"
+                            class="form-control">
+                        <option *ngFor="let item of years" [value]="item">
+                            {{item}}
+                        </option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="content px-2">
+        <div class="container-fluid">
+            <div class="body">
+                <div class="row">
+                    <a [routerLink]="['/app/buget/paap/exchangeRateForecastAdd']" [queryParams]="{year: year}" class="btn btn-info" title="Adauga" *ngIf="isGranted('Buget.CursValutarEstimat.Modificare')"><i class="fas fa-plus">  </i></a>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-lg-6">
+                        <table class="table table-responsive">
+                            <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Moneda</th>
+                                    <th scope="col">Valoare Estimata (lei)</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody *ngFor="let exchange of exchangeRateList; let i = index">
+                                <tr>
+                                    <td scope="row">{{ i + 1 }}</td>
+                                    <td>{{ exchange.currency }}</td>
+                                    <td class="alignSum">{{ exchange.valoareEstimata | number: '1.4' }} </td>
+                                    <td>
+                                        <button [routerLink]="['/app/buget/paap/exchangeRateForecastAdd']"
+                                                [queryParams]="{ exchangeRateForecastId: exchange.id }"
+                                                class="btn btn-info mr-2"
+                                                title="Modifica"
+                                                *ngIf="isGranted('Buget.CursValutarEstimat.Modificare')">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+
+                                        <button (click)="delete(exchange.id)"
+                                                class="btn btn-danger"
+                                                title="Sterge"
+                                                *ngIf="isGranted('Buget.CursValutarEstimat.Modificare')">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

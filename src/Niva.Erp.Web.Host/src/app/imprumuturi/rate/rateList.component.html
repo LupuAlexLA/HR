@@ -1,0 +1,449 @@
+﻿<div [@routerTransition]>
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <h2>Imprumut Selectat</h2>
+                </div>
+                <div class="col-lg-5">
+                    <a [routerLink]="['/app/imprumuturi/imprumuturiList']"
+                       class="btn btn-info"
+                       title="Inapoi">
+                        <i class="fas fa-arrow-left"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="content px-3">
+        <div class="container-fluid">
+            <div class="body">
+
+                <div class="row mt-3">
+                    <div class="col-lg-6">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <td scope="col"><b>#</b></td>
+                                    <td scope="col"><b>Tip Document</b></td>
+                                    <td scope="col"><b>Numar Document</b></td>
+                                    <td scope="col"><b>Data document</b></td>
+                                    <td scope="col"><b>Tip imprumut</b></td>
+                                    <!--<td scope="col"><b>Cont imprumut</b></td>
+                                    <td scope="col"><b>Cont plata</b></td>-->
+                                    
+                                    <td scope="col"><div *ngIf="imprumut.tipCreditare == 'Credit'"><b>Data inceput/Data sfarsit</b></div></td>
+                                    <td scope="col"><div *ngIf="imprumut.tipCreditare == 'Credit'"><b>Durata</b></div></td>
+                                    <td scope="col"><div *ngIf="imprumut.tipCreditare == 'Credit'"><b>Tip imprumut durata</b> </div></td>
+                                    <td scope="col"><div *ngIf="imprumut.tipCreditare == 'Credit'"><b>Termen imprumut</b> </div></td>
+                                    <td scope="col"><b>Suma</b></td>
+
+                                    <td scope="col" *ngIf="imprumut.tipDobanda == 'Fixa'"><b>Procent Dobanda</b></td>
+
+                                    <td scope="col" *ngIf="imprumut.tipDobanda == 'Variabila'"><b>Marja Fixa</b></td>
+
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td> </td>
+                                    <td>{{ imprumut.documentType }}</td>
+                                    <td>{{ imprumut.documentNr }}</td>
+                                    <td>{{ imprumut.documentDate | date: 'dd/MM/yyyy' }}</td>
+                                    <td>{{ imprumut.imprumuturiTipuri}}</td>
+                                    <!--<td>{{ imprumut.loanAccount}}</td>
+                                    <td>{{ imprumut.paymentAccount}}</td>-->
+                                    
+                                    <td><div *ngIf="imprumut.tipCreditare == 'Credit'">{{ imprumut.startDate | date: 'dd/MM/yyyy'}} - {{imprumut.endDate | date: 'dd/MM/yyyy'}}</div></td>
+                                    <td><div *ngIf="imprumut.tipCreditare == 'Credit'">{{ imprumut.durata}}</div></td>
+                                    <td><div *ngIf="imprumut.tipCreditare == 'Credit'">{{ imprumut.imprumuturiTipDurata}}</div></td>
+                                    <td><div *ngIf="imprumut.tipCreditare == 'Credit'">{{ imprumut.imprumuturiTermen}}</div></td>
+                                    <td>{{ imprumut.suma}}</td>
+
+                                    <td *ngIf="imprumut.tipDobanda == 'Fixa'">{{ imprumut.procentDobanda}}%</td>
+
+
+                                    <td *ngIf="imprumut.tipDobanda == 'Variabila'">{{ imprumut.marjaFixa}} %</td>
+
+
+                                </tr>
+                            </tbody>
+
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="row" *ngIf="imprumut.tipCreditare == 'Credit'">
+                <div class="col-lg-9 col-lg-offset-3">
+                    <h2>
+                        Rate <span>({{ getRateCount() - 1 }})</span>&nbsp;
+                        <!--<a [routerLink]="['/app/imprumuturi/imprumuturiGarantiiEdit']" [queryParams]="{ imprumutId: imprumut.id }" class="btn btn-info" title="Adauga"><i class="fas fa-plus">  </i></a>-->
+                        &nbsp;
+
+                    </h2>
+
+                </div>
+            </div>
+
+            <div class="row mt-3" *ngIf="imprumut.tipCreditare == 'Credit'">
+                <div class="col-lg-6">
+                    <table class="table">
+
+                        <thead>
+                            <tr>
+                                <td scope="col"><b>#</b></td>
+                                <td scope="col"><b>Data</b></td>
+                                <td scope="col"><b>Principal</b></td>
+                                <td scope="col"><b>Dobanda</b></td>
+                                <td scope="col"><b>Total Rata</b></td>
+                                <td scope="col"><b>Sold</b></td>
+                                <td scope="col" *ngIf="imprumut.tipDobanda == 'Variabila'"><b>Dobanda Variabila</b></td>
+
+
+                                <td><b>Editare</b></td>
+                                <td><b>Validare</b></td>
+                                <td><b>Regenerare</b></td>
+
+                            </tr>
+                        </thead>
+
+
+
+                        <tbody *ngFor="let element of rate; let i = index">
+                            <tr>
+                                <td scope="row">{{ i }}</td>
+                                <td>
+                                    <mat-form-field style="width: 100%;">
+                                        <input matInput
+                                               name="dataPlataRata"
+                                               [matDatepicker]="dataPlataRataPicker"
+                                               [(ngModel)]="element.dataPlataRata"
+                                               #dataDocument="ngModel"
+                                               [disabled]="element.isValid"
+                                               required />
+                                        <mat-datepicker-toggle matSuffix [for]="dataPlataRataPicker"></mat-datepicker-toggle>
+                                        <mat-datepicker #dataPlataRataPicker></mat-datepicker>
+                                    </mat-form-field>
+                                </td>
+
+                                <td><input name="sumaPrincipal" class="form-control-sm" [(ngModel)]="element.sumaPrincipal" #name="ngModel" [disabled]="element.isValid" /></td>
+
+
+                                <td><input name="sumaDobanda" class="form-control-sm" [(ngModel)]="element.sumaDobanda" #name="ngModel" [disabled]="element.isValid" /></td>
+
+
+                                <td><input name="sumaPlatita" class="form-control-sm" [(ngModel)]="element.sumaPlatita" #name="ngModel" [disabled]="element.isValid" /></td>
+
+
+                                <td><input name="sold" class="form-control-sm" [(ngModel)]="element.sold" #name="ngModel" [disabled]="element.isValid" /></td>
+
+
+                                <td *ngIf="imprumut.tipDobanda == 'Variabila'"><input name="procentDobanda" class="form-control-sm" [(ngModel)]="element.procentDobanda" #name="ngModel" [disabled]="element.isValid" /></td>
+
+
+
+                                <td>
+                                    <button (click)="saveRata(element)"
+                                            class="btn btn-info"
+                                            title="Sterge">
+                                        <i class="fas fa-save"></i>
+                                    </button>
+                                </td>
+                                <td>
+                                    <button (click)="validateRata(element)"
+                                            class="btn btn-info"
+                                            title="Sterge">
+                                        <i class="fas fa-save"></i>
+                                    </button>
+                                </td>
+                                <td>
+                                    <button (click)="regenerare(element)"
+                                            class="btn btn-info"
+                                            title="Sterge">
+                                        <i class="fas fa-save"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+
+
+                    </table>
+                </div>
+
+                <!--<div class="row" *ngIf="imprumut.tipCreditare == 'Credit'">
+                    <div class="col-lg-9 col-lg-offset-3">
+                        <h2>
+                            Rate <span>({{ getRateCount() - 1 }})</span>&nbsp;-->
+                            <!--<a [routerLink]="['/app/imprumuturi/imprumuturiGarantiiEdit']" [queryParams]="{ imprumutId: imprumut.id }" class="btn btn-info" title="Adauga"><i class="fas fa-plus">  </i></a>-->
+                            <!--&nbsp;
+
+                        </h2>
+
+                    </div>
+                </div>
+
+                <div class="row mt-3" *ngIf="imprumut.tipCreditare == 'Credit'">
+                    <div class="col-lg-6">
+                        <table class="table">
+
+                            <thead>
+                                <tr>
+                                    <td scope="col"><b>#</b></td>
+                                    <td scope="col"><b>Data</b></td>
+                                    <td scope="col"><b>Principal</b></td>
+                                    <td scope="col"><b>Dobanda</b></td>
+                                    <td scope="col"><b>Total Rata</b></td>
+                                    <td scope="col"><b>Sold</b></td>
+                                    <td scope="col" *ngIf="imprumut.tipDobanda == 'Variabila'"><b>Dobanda Variabila</b></td>
+
+
+                                    <td><b>Editare</b></td>
+                                    <td><b>Validare</b></td>
+                                    <td><b>Regenerare</b></td>
+
+                                </tr>
+                            </thead>
+
+
+
+                            <tbody *ngFor="let element of rate; let i = index">
+                                <tr>
+                                    <td scope="row">{{ i }}</td>
+                                    <td>
+                                        <mat-form-field style="width: 100%;">
+                                            <input matInput
+                                                   name="dataPlataRata"
+                                                   [matDatepicker]="dataPlataRataPicker"
+                                                   [(ngModel)]="element.dataPlataRata"
+                                                   #dataDocument="ngModel"
+                                                   [disabled]="element.isValid"
+                                                   required />
+                                            <mat-datepicker-toggle matSuffix [for]="dataPlataRataPicker"></mat-datepicker-toggle>
+                                            <mat-datepicker #dataPlataRataPicker></mat-datepicker>
+                                        </mat-form-field>
+                                    </td>
+
+                                    <td><input name="sumaPrincipal" class="form-control-sm" [(ngModel)]="element.sumaPrincipal" #name="ngModel" [disabled]="element.isValid" /></td>
+
+
+                                    <td><input name="sumaDobanda" class="form-control-sm" [(ngModel)]="element.sumaDobanda" #name="ngModel" [disabled]="element.isValid" /></td>
+
+
+                                    <td><input name="sumaPlatita" class="form-control-sm" [(ngModel)]="element.sumaPlatita" #name="ngModel" [disabled]="element.isValid" /></td>
+
+
+                                    <td><input name="sold" class="form-control-sm" [(ngModel)]="element.sold" #name="ngModel" [disabled]="element.isValid" /></td>
+
+
+                                    <td *ngIf="imprumut.tipDobanda == 'Variabila'"><input name="procentDobanda" class="form-control-sm" [(ngModel)]="element.procentDobanda" #name="ngModel" [disabled]="element.isValid" /></td>
+
+
+
+                                    <td>
+                                        <button (click)="saveRata(element)"
+                                                class="btn btn-info"
+                                                title="Sterge">
+                                            <i class="fas fa-save"></i>
+                                        </button>
+                                    </td>
+                                    <td>
+                                        <button (click)="validateRata(element)"
+                                                class="btn btn-info"
+                                                title="Sterge">
+                                            <i class="fas fa-save"></i>
+                                        </button>
+                                    </td>
+                                    <td>
+                                        <button (click)="regenerare(element)"
+                                                class="btn btn-info"
+                                                title="Sterge">
+                                            <i class="fas fa-save"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+
+
+                        </table>
+                    </div>
+                </div>-->
+            </div>
+
+            <div class="row" *ngIf="imprumut.tipCreditare == 'LinieDeCredit'">
+                <div class="col-lg-9 col-lg-offset-3">
+                    <h2>
+                        Operatiuni <span>({{getTrageriCount()}})</span>&nbsp;
+                        <!--<a [routerLink]="['/app/imprumuturi/imprumuturiGarantiiEdit']" [queryParams]="{ imprumutId: imprumut.id }" class="btn btn-info" title="Adauga"><i class="fas fa-plus">  </i></a>-->
+                        &nbsp;
+
+                    </h2>
+
+                </div>
+            </div>
+
+            <div class="row mt-3" *ngIf="imprumut.tipCreditare == 'LinieDeCredit'">
+                <div class="col-lg-6">
+                    <table class="table">
+
+                        <thead>
+                            <tr>
+                                <td scope="col"><b>#</b></td>
+                                <td scope="col"><b>Tip Operatiune</b></td>
+                                <td scope="col"><b>Data</b></td>
+                                <td scope="col"><b>Suma Disponibila</b></td>
+                                <td scope="col"><b>Suma Trasa</b></td>
+                                <td scope="col"><b>Suma Imprumutata</b></td>
+                                <td scope="col"><b>Dobanda</b></td>
+                                <td scope="col"><b>Comision</b></td>
+
+                                <!--<td scope="col" *ngIf="imprumut.tipDobanda == 'Variabila'"><b>Dobanda Variabila</b></td>-->
+
+                                <td><b>Delete</b></td>
+                                <td><b>Editare</b></td>
+                                <!--<td><b>Stergere</b></td>-->
+
+                            </tr>
+                        </thead>
+
+
+
+                        <tbody >
+                            <tr *ngFor="let element of trageri; let i = index">
+                                <td scope="row">{{ i + 1 }}</td>
+                                <td>
+                                    <select class="form-control"
+                                            name="tipTragere"
+                                            [(ngModel)]="element.tipTragere"
+                                            (ngModelChange)="calculateDobanda2()"
+                                            [disabled]="element.isValid"
+                                            #tipTragere="ngModel"
+                                            style="width: 150px;">
+                                        <option *ngFor="let value of tipTragereList" [ngValue]="value.id">{{value.name}}</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <mat-form-field style="width: 150px;">
+                                        <input matInput
+                                               name="dataTragere"
+                                               [matDatepicker]="DataTragerePicker"
+                                               [(ngModel)]="element.dataTragere"
+                                               #dataTragere="ngModel"
+                                               [disabled]="element.isValid"
+                                               required />
+                                        <mat-datepicker-toggle matSuffix [for]="DataTragerePicker"></mat-datepicker-toggle>
+                                        <mat-datepicker #DataTragerePicker></mat-datepicker>
+                                    </mat-form-field>
+                                </td>
+
+                                <td><input name="sumaDisponibila" class="form-control-sm" [(ngModel)]="element.sumaDisponibila" #sumaDisponibila="ngModel" [disabled]="true" /></td>
+
+                                <td><input name="elementSumaTrasa" class="form-control-sm" [(ngModel)]="element.sumaTrasa" #elementSumaTrasa="ngModel" [disabled]="true" (ngModelChange)="sumaTrasaOnChangeElement()" /></td>
+
+                                <td><input name="elementtragereSumaImprumutata" class="form-control-sm" [(ngModel)]="element.sumaImprumutata" #elementtragereSumaImprumutata="ngModel" [disabled]="true" /></td>
+
+                                <td><input name="dobanda" class="form-control-sm" [(ngModel)]="element.dobanda" #dobanda="ngModel" [disabled]="element.isValid" /></td>
+                                <td>
+                                    <input name="comision" class="form-control-sm" [(ngModel)]="element.comisionSum" #comision="ngModel" [disabled]="true" />
+                                    <button class="btn btn-info"
+                                            title="VizualizareComision"
+                                            (click)="comisionDialog(element)">
+                                        <i class="fas fa-search"></i>
+                                    </button>
+                                </td>
+
+
+
+                                <!--<td *ngIf="imprumut.tipDobanda == 'Variabila'"><input name="procentDobanda" class="form-control-sm" [(ngModel)]="element.procentDobanda" #name="ngModel" [disabled]="element.isValid" /></td>-->
+
+
+                                <td>
+                                    <button class="btn btn-danger"
+                                            title="Delete"
+                                            *ngIf="!element.isValid"
+                                            (click)="deleteTragere()">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </td>
+
+                                <td>
+                                    <button class="btn btn-info"
+                                            title="Editare"
+                                            *ngIf="!element.isValid"
+                                            (click)="editareTragere()">
+                                        <i class="fas fa-save"></i>
+                                    </button>
+                                </td>
+                                <!--<td>
+        <button class="btn btn-danger"
+                title="Sterge"
+                *ngIf="false">
+            <i class="fas fa-trash"></i>
+        </button>
+    </td>-->
+                            </tr>
+                            <tr>
+                                <td scope="row"></td>
+                                <td>
+                                    <select class="form-control"
+                                            name="tipTragere"
+                                            [(ngModel)]="tragere.tipTragere"
+                                            (ngModelChange)="onChangeType()"
+                                            style="width: 150px;"
+                                            #tipTragere="ngModel">
+                                        <option *ngFor="let value of tipTragereList" [ngValue]="value.id">{{value.name}}</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <mat-form-field style="width: 150px;">
+                                        <input matInput
+                                               name="tragereDataTragere"
+                                               [matDatepicker]="tragereDataTragerePicker"
+                                               [(ngModel)]="tragere.dataTragere"
+                                               (ngModelChange)="simulateDobandaAndComision(tragere.dataTragere)"
+                                               #DataTragere="ngModel"
+                                               required />
+                                        <mat-datepicker-toggle matSuffix [for]="tragereDataTragerePicker"></mat-datepicker-toggle>
+                                        <mat-datepicker #tragereDataTragerePicker></mat-datepicker>
+                                    </mat-form-field>
+                                </td>
+
+                                <td><input name="tragereSumaDisponibila" class="form-control-sm" [(ngModel)]="tragere.sumaDisponibila" #tragereSumaDisponibila="ngModel" [disabled]="true" /></td>
+
+                                <td><input name="tragereSumaTrasa" class="form-control-sm" [(ngModel)]="tragere.sumaTrasa" #tragereSumaTrasa="ngModel" (ngModelChange)="sumaTrasaOnChange()" [disabled]="tragere.tipTragere == 2" /></td>
+
+                                <td><input name="tragereSumaImprumutata" class="form-control-sm" [(ngModel)]="tragere.sumaImprumutata" #tragereSumaImprumutata="ngModel" [disabled]="true" /></td>
+
+                                <td><input name="tragereDobanda" class="form-control-sm" [(ngModel)]="tragere.dobanda" #tragereDobanda="ngModel" /></td>
+
+                                <td><input name="tragereComision" class="form-control-sm" [(ngModel)]="tragere.comisionSum" #comisionSum="ngModel" [disabled]="true" /></td>
+
+                                <td>
+                                    <button class="btn btn-info" (click)="saveTragere(tragere)"
+                                            title="Adauga">
+                                        <i class="fas fa-plus"></i>
+                                    </button>
+                                </td>
+
+                                <td>
+                                </td>
+                            </tr>
+                        </tbody>
+
+
+                    </table>
+                </div>
+            </div>
+
+            
+            
+
+        </div>
+                    
+
+
+
+    </section>
+</div>

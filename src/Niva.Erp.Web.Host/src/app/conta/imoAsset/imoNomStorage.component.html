@@ -1,0 +1,57 @@
+﻿<div [@routerTransition]>
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <h3>Mijloace fixe - Gestiuni</h3>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="content px-2">
+        <div class="container-fluid">
+            <div class="body">
+                <div class="panel-heading" style="position: relative;">
+                    <div class="row">
+                        <h4 class="panel-title col-xs-6">
+                            Gestiuni - <span>{{ getImoAssetStorageListCount() }}</span> &nbsp;
+                                       <a [routerLink]="['/app/conta/imoAsset/imoNomStorageEdit']"
+                                          class="btn btn-info"><i class="fas fa-plus"></i></a>
+                            &nbsp;
+                            <a [routerLink]="['/app/conta/imoAsset/imoNomenclatoare']" class="btn btn-info"><i class="fas fa-arrow-left"></i></a>
+                        </h4>
+                    </div>
+                </div>
+
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Gestiune</th>
+                            <th scope="col">Gestiune Principala</th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let asset of storageList?.getImoAssetStorage; let i = index;">
+                            <td scope="row">{{ i + 1 }}</td>
+                            <td>{{ asset.storageName }}</td>
+                            <td>
+                                <input id="centralStorage" name="centralStorage" type="checkbox" style="position: relative; left:0px; opacity:100" [(ngModel)]="asset.centralStorage" disabled />
+                            </td>
+                            <td>
+                                <a [routerLink]="['/app/conta/imoAsset/imoNomStorageEdit']"
+                                   [queryParams]="{storageId: asset.id}"
+                                   class="btn btn-info"><i class="fas fa-edit"></i></a>
+                            </td>
+                            <td>
+                                <button (click)="deleteStorage(asset.id)" class="btn btn-danger"><i class="fas fa-trash"></i>    </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+</div>

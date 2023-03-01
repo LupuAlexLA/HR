@@ -1,0 +1,56 @@
+﻿<div [@routerTransition]>
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="content px-2">
+        <div class="container-fluid">
+            <div class="body">
+                <div class="row">
+                    <h4 class="panel-title col-xs-6 alignContent">
+                      
+                    </h4>
+                </div>
+                <div class="row">
+                    <table class="table small-font table-responsive">
+                        <thead class="thead-light">
+                            <tr>
+                                <th scope="col">Furnizor</th>
+                                <th scope="col">Serie Nr / data factura</th>
+                                <th scope="col">Valoare totala</th>
+                                <th scope="col">Moneda</th>
+                                <th scope="col">Valoare detaliu factura</th>
+                                <th scope="col">Valoare detaliu factura RON</th>
+                                <th scope="col">Detaliu factura</th>
+                                <th>PAAP</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let factura of facturiList; let i = index;">
+                                <td> {{ factura.thirdPartyAccount }}</td>
+                                <td> {{ factura.invoiceSeries }} {{ factura.invoiceNumber }} / {{ factura.invoiceDate | date: 'dd/MM/yyyy' }}</td>
+                                <td class="alignSum"> {{ factura.value | number: '1.2' }} </td>
+                                <td> {{ factura.currencyName }}</td>
+                                <td class="alignSum"> {{ factura.detailValue  | number: '1.2' }} </td>
+                                <td class="alignSum"> {{ factura.detailValueLocalCurr  | number: '1.2' }}</td>
+                                <td> {{ factura.detailDescription }}</td>
+                                <td>
+                                    <select id="paap{i}" name="paap{i}" class="form-control" (change)="approveInvoices(factura.id,$event.target.value)">
+                                        <option [value]="null">Selecteaza</option>
+                                        <option *ngFor="let item of factura.possiblePaap" [value]="item.bvC_PAAP_Id">{{ item.descriere }} {{item.dataEnd | date: 'dd/MM/yyyy'  }} Rest: {{item.rest  | number: '1.2' }} </option>
+                                    </select>
+                                </td>
+                            </tr>
+                            
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

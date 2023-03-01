@@ -1,0 +1,108 @@
+﻿<div [@routerTransition]>
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <h3>Adaugare / modificare element factura</h3>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="content px-2">
+        <div class="container-fluid">
+            <div class="body">
+                <form #newInvoiceForm="ngForm" (ngSubmit)="saveElement()" [busy]="isLoading">
+                    <div class="row mt-3">
+                        <div class="col-lg-2">
+                            <label for="categoryElement" class="col-form-label">Categorie</label>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="input-group">
+                                <select name="categoryElement" id="categoryElement"
+                                        [(ngModel)]="element.invoiceElementsDetailsCategoryId"
+                                        #invoiceElementsDetailsCategoryId="ngModel"
+                                        class="form-control">
+                                    <option *ngFor="let item of elementDetailsCategoryList" [ngValue]="item.id">{{item.categoryElementDetName}}</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-lg-2">
+                            <label for="serie" class="col-form-label"> Descriere</label>
+                        </div>
+                        <div class="col-lg-3">
+                            <input id="serie" name="serie" type="text" [(ngModel)]="element.description" #serie="ngModel" class="form-control" required />
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-lg-2">
+                            <label for="tipElement" class="col-form-label">Tip Element</label>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="input-group">
+                                <select name="tipElement" id="tipElement"
+                                        [(ngModel)]="element.invoiceElementsType"
+                                        #tipElement="ngModel"
+                                        class="form-control">
+                                    <option *ngFor="let item of elementTypes" [ngValue]="item.id">{{item.name}}</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-lg-2">
+                            <label for="thirdParty" class="form-label"> Cont tert</label>
+                        </div>
+                        <div class="col-lg-3">
+                            <input id="thirdParty" name="thirdParty" type="text" [(ngModel)]="element.thirdPartyAccount" #thirdParty="ngModel" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-lg-2">
+                            <label for="correspondentAccount" class="form-label">Cont corespondent</label>
+                        </div>
+                        <div class="col-lg-3">
+                            <input id="correspondentAccount" name="correspondentAccount" type="text" [(ngModel)]="element.correspondentAccount" #correspondentAccount="ngModel" class="form-control" />
+                        </div>
+                    </div>
+
+                    <div class="row mt-3">
+                        <div class="col-lg-2">
+                            <label for="contAmortizare" class="form-label">Cont amortizare</label>
+                        </div>
+                        <div class="col-lg-3">
+                            <input id="contAmortizare" name="contAmortizare" type="text" [(ngModel)]="element.amortizationAccount" #amortizationAccount="ngModel" class="form-control" />
+                        </div>
+                    </div>
+
+                    <div class="row mt-3">
+                        <div class="col-lg-2">
+                            <label for="expenseAmortizAccount" class="form-label">Cont cheltuiala cu amortizarea / cheltuiala directa</label>
+                        </div>
+                        <div class="col-lg-3">
+                            <input id="expenseAmortizAccount" name="expenseAmortizAccount" type="text" [(ngModel)]="element.expenseAmortizAccount" #amortizationAccount="ngModel" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-lg-3">
+                            <a [routerLink]="['/app/conta/nomenclatoare/categoryElements/detailElementsList']"
+                               class="btn btn-info"
+                               title="Inapoi"><i class="fas fa-arrow-left"></i></a>
+                        </div>
+                        <div class="col-lg-2" style="display: flex; justify-content: flex-end">
+                            <button id="btnSave"
+                                    [disabled]="!newInvoiceForm.form.valid"
+                                    type="submit"
+                                    class="btn btn-info"
+                                    title="Save">
+                                <i class="fas  fa-save"></i>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        </section>
+</div>
+

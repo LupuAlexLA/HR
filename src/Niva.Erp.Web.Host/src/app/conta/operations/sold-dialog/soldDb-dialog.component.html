@@ -1,0 +1,13 @@
+﻿<form class="form-horizontal"
+      autocomplete="off"
+      #soldInitForm="ngForm">
+    <abp-modal-header [title]="'Sold initial'"
+                      (onCloseClick)="bsModalRef.hide()"></abp-modal-header>
+    <div class="modal-body">
+        
+        <div class="row">
+            <p>Sold initial la data {{ soldOperation.currentDate | date: 'dd/MM/yyyy' }} este {{ soldOperation.soldInitial| number: '1.2' }} {{ soldOperation.soldInitialType}}</p>
+        </div>
+    </div>
+</form>
+

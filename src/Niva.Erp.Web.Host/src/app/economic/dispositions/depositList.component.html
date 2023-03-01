@@ -1,0 +1,102 @@
+﻿<div [@routerTransition]>
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <h3>Retragere/depunere numerar - banca - (<span>{{getCount()}}</span>)</h3>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="content px-2">
+        <div class="container-fluid">
+            <div class="body">
+                <div class="row">
+                    <div class="col-lg-2">
+                        <label for="dataStart" class="col-form-label"> Data Inceput</label>
+                        <mat-form-field style="width: 100%;">
+                            <input matInput
+                                   id="dataStart"
+                                   name="dataStart"
+                                   [matDatepicker]="dataStartPicker"
+                                   [(ngModel)]="dataStart">
+                            <mat-datepicker-toggle matSuffix [for]="dataStartPicker"></mat-datepicker-toggle>
+                            <mat-datepicker #dataStartPicker></mat-datepicker>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-lg-2">
+                        <label for="dataEnd" class="col-form-label"> Data Sfarsit</label>
+                        <mat-form-field style="width: 100%;">
+                            <input matInput
+                                   id="dataEnd"
+                                   name="dataEnd"
+                                   [matDatepicker]="dataEndPicker"
+                                   [(ngModel)]="dataEnd">
+                            <mat-datepicker-toggle matSuffix [for]="dataEndPicker"></mat-datepicker-toggle>
+                            <mat-datepicker #dataEndPicker></mat-datepicker>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-lg-2">
+                        <label for="operationState" class="col-form-label">Stare</label>
+                        <select id="operationState" name="operationState" class="form-control" [(ngModel)]="operationState" >
+                            <option value="null">Selecteaza</option>
+                            <option value="2">Depunere</option>
+                            <option value="3">Retragere</option>
+                        </select>
+                    </div>
+                    <div class="col-lg-1">
+                        <button class="btn btn-info" title="Cauta" (click)="getDepositList()">
+                            <i class="fas fa-search"></i>
+                        </button>
+                        <a href="{{appBaseUrl}}/assets/pdf/Conta - Casierie - Manual utilizare.pdf" title="Manual de utilizare" class="btn btn-info ml-2" target="_blank"><i class="fas fa-question"></i></a>
+                    </div>
+                    <div class="col-lg-1">
+                        <a [routerLink]="['/app/economic/dispositions/depositNew']" *ngIf="isGranted('Casierie.Numerar.DepunRetrag.Modificare')" class="btn btn-info" title="Adauga"><i class="fas fa-plus"></i></a>
+                    </div>
+                </div>
+                <div>
+                    <div class="panel-heading" style="position: relative;">
+                        <hr />
+                        <table class="table small-font">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Banca</th>
+                                    <th scope="col">Cont</th>
+                                    <th scope="col">Tip operatiune</th>
+                                    <th scope="col">Data operatiune</th>
+                                    <th scope="col">Numar document</th>
+                                    <th scope="col">Data document</th>
+                                    <th scope="col">Suma</th>
+                                    <th scope="col">Moneda</th>
+                                    <th scope="col">Motiv</th>
+                                    <th scope="col"></th>
+                                    <th scope="col"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let item of depositList; let i = index">
+                                    <td>{{item.bankName}}</td>
+                                    <td>{{item.bankAcount}}</td>
+                                    <td>{{item.operationType}}</td>
+                                    <td>{{item.dispositionDate | date: 'dd.MM.yyyy'}}</td>
+                                    <td>{{item.documentNumber}}</td>
+                                    <td>{{item.documentDate |date: 'dd.MM.yyyy' }}</td>
+                                    <td>{{item.value | number: '1.2-2'}}</td>
+                                    <td>{{item.currencyName}}</td>
+                                    <td>{{item.description}}</td>
+                                    <td>
+                                        <a [routerLink]="['/app/economic/dispositions/depositNew']"
+                                           [queryParams]="{depositId: item.id}"
+                                           *ngIf="isGranted('Casierie.Numerar.DepunRetrag.Modificare')"
+                                           class="btn btn-info" title="Editare"><i class="fas fa-edit"></i></a>
+                                    </td>
+                                    <td><button type="button" class="btn btn-danger" title="Sterge" (click)="delete(item.id)" *ngIf="isGranted('Casierie.Numerar.DepunRetrag.Modificare')"><i class="fas fa-trash"></i></button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

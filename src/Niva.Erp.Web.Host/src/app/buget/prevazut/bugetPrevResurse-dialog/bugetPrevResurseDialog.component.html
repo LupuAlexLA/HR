@@ -1,0 +1,27 @@
+﻿<form class="form-horizontal"
+      autocomplete="off"
+      #computeBugetPrevResurseForm="ngForm"
+      (ngSubmit)="save()">
+    <abp-modal-header [title]="'Calculeaza resurse'"
+                      (onCloseClick)="bsModalRef.hide()"></abp-modal-header>
+    <div class="modal-body">
+        <div class="form-group row required">
+            <label class="col-md-3 col-form-label" id="cashFlow">CashFlow</label>
+
+            <div class="col-md-9">
+                <select id="bugetPrevCashFlow"
+                        name="bugetPrevCashFlow"
+                        [(ngModel)]="bugetPrevCashFlowId"
+                        #bugetPrevCashFlow="ngModel"
+                        class="form-control">
+
+                    <option [ngValue]="undefined">Selecteaza</option>
+                    <option *ngFor="let item of bugetPrevCashFlowList" [ngValue]="item.id">{{ item.descriere }}</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <abp-modal-footer [saveDisabled]="!computeBugetPrevResurseForm.form.valid"
+                      (onCancelClick)="bsModalRef.hide()"></abp-modal-footer>
+</form>
+

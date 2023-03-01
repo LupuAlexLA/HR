@@ -1,0 +1,48 @@
+﻿<div [@routerTransition]>
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <h2>Modificare An Buget</h2>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="content px-2">
+        <div class="container-fluid">
+            <div class="body">
+                <form #bugetConfigForm="ngForm" (ngSubmit)="saveBuget()">
+                    <div class="row">
+                        <div class="col-lg-2">
+                            <label for="anBVC" class="col-form-label"> An </label>
+                        </div>
+                        <div class="col-lg-3">
+                            <input id="anBVC" name="anBVC" class="form-control" [(ngModel)]="bugetConfig.anBVC" #name="ngModel" />
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-5">
+                            <a [routerLink]="['/app/buget/bugetConfig/bugetConfigList']"
+                               class="btn btn-info"
+                               title="Inapoi">
+                                <i class="fas fa-arrow-left"></i>
+                            </a>
+                        </div>
+                        <div class="col-lg-7">
+                            <div class="form-group">
+                                <button type="submit"
+                                        class="btn btn-info"
+                                        title="Save"
+                                        [disabled]="bugetConfigForm.form.invalid">
+                                    <i class="fas fa-save"></i>
+                                </button>
+
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+</div>

@@ -1,0 +1,170 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<XtraReportsLayoutSerializer SerializerVersion="20.2.5.0" Ref="1" ControlType="DevExpress.XtraReports.UI.XtraReport, DevExpress.XtraReports.v20.2, Version=20.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" Name="PrevazutBVC" Landscape="true" Margins="19, 15, 142, 100" PaperKind="A4Extra" PageWidth="1268" PageHeight="929" Version="20.2" DataSource="#Ref-0" Font="Arial, 9.75pt">
+  <Extensions>
+    <Item1 Ref="2" Key="VSReportExtInfo" Value=".vsrepx" />
+  </Extensions>
+  <Parameters>
+    <Item1 Ref="4" Visible="false" ValueInfo="0" Name="tipRaport" Type="#Ref-3" />
+    <Item2 Ref="5" Visible="false" ValueInfo="0" Name="anBuget" Type="#Ref-3" />
+    <Item3 Ref="7" Visible="false" Name="tip" />
+    <Item4 Ref="8" Visible="false" ValueInfo="0" Name="variantaBugetId" Type="#Ref-3" />
+    <Item5 Ref="9" Visible="false" ValueInfo="0" Name="nivelRand" Type="#Ref-3" />
+    <Item6 Ref="10" Visible="false" Name="tipRand" />
+    <Item7 Ref="11" Visible="false" AllowNull="true" Name="frecventa" />
+    <Item8 Ref="12" Visible="false" ValueInfo="0" AllowNull="true" Name="tipActivitate" Type="#Ref-3" />
+  </Parameters>
+  <Bands>
+    <Item1 Ref="13" ControlType="TopMarginBand" Name="TopMargin" HeightF="141.666672">
+      <Controls>
+        <Item1 Ref="14" ControlType="XRLabel" Name="label4" Multiline="true" Text="label4" TextAlignment="BottomLeft" SizeF="1234,22.9999924" LocationFloat="0,89.1666641" Font="Georgia, 10.2pt, charSet=0" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="15" EventName="BeforePrint" PropertyName="Text" Expression="[Parameters]" />
+          </ExpressionBindings>
+          <StylePriority Ref="16" UseFont="false" UseTextAlignment="false" />
+        </Item1>
+        <Item2 Ref="17" ControlType="XRLabel" Name="label3" Multiline="true" Text="label3" TextAlignment="MiddleCenter" SizeF="1234,23" LocationFloat="0,66.1666641" Font="Georgia, 10.2pt, charSet=0" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="18" EventName="BeforePrint" PropertyName="Text" Expression="[AnBuget]" />
+          </ExpressionBindings>
+          <StylePriority Ref="19" UseFont="false" UseTextAlignment="false" />
+        </Item2>
+        <Item3 Ref="20" ControlType="XRLabel" Name="label2" Multiline="true" Text="label2" TextAlignment="MiddleLeft" SizeF="1234,23" LocationFloat="0,20.1666641" Font="Georgia, 10.2pt, style=Bold, charSet=0" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="21" EventName="BeforePrint" PropertyName="Text" Expression="[AppClientName]" />
+          </ExpressionBindings>
+          <StylePriority Ref="22" UseFont="false" UseTextAlignment="false" />
+        </Item3>
+        <Item4 Ref="23" ControlType="XRLabel" Name="label1" Multiline="true" Text="label1" TextAlignment="MiddleCenter" SizeF="1234,23" LocationFloat="0,43.1666641" Font="Georgia, 10.2pt, charSet=0" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="24" EventName="BeforePrint" PropertyName="Text" Expression="[Titlu]" />
+          </ExpressionBindings>
+          <StylePriority Ref="25" UseFont="false" UseTextAlignment="false" />
+        </Item4>
+      </Controls>
+    </Item1>
+    <Item2 Ref="26" ControlType="BottomMarginBand" Name="BottomMargin">
+      <Controls>
+        <Item1 Ref="27" ControlType="XRPageInfo" Name="pageInfo2" TextFormatString="{0}/{1}" TextAlignment="TopRight" SizeF="886.5,23" LocationFloat="347.5,0" Font="Georgia, 10.2pt, charSet=0" Padding="0,6,0,0,100">
+          <StylePriority Ref="28" UseFont="false" UsePadding="false" />
+        </Item1>
+        <Item2 Ref="29" ControlType="XRPageInfo" Name="pageInfo1" PageInfo="DateTime" TextFormatString="{0:d.MM.yyyy H:mm}" SizeF="347.5,23" LocationFloat="0,0" Font="Georgia, 10.2pt, charSet=0" Padding="6,0,0,0,100">
+          <StylePriority Ref="30" UseFont="false" UsePadding="false" />
+        </Item2>
+      </Controls>
+    </Item2>
+    <Item3 Ref="31" ControlType="DetailBand" Name="Detail" HeightF="129.166672">
+      <Controls>
+        <Item1 Ref="32" ControlType="XRCrossTab" Name="crossTab2" GeneralStyleName="crossTabGeneralStyle2" DataAreaStyleName="crossTabDataStyle2" HeaderAreaStyleName="crossTabHeaderStyle2" TotalAreaStyleName="crossTabTotalStyle2" DataSource="#Ref-0" DataMember="BugetDetails" SizeF="403.182861,100" LocationFloat="0,0">
+          <RowFields>
+            <Item1 Ref="33" FieldName="OrderView" />
+            <Item2 Ref="34" FieldName="DenumireRand" />
+          </RowFields>
+          <ColumnFields>
+            <Item1 Ref="35" FieldName="DataLuna" />
+          </ColumnFields>
+          <DataFields>
+            <Item1 Ref="36" FieldName="Valoare" />
+          </DataFields>
+          <ColumnDefinitions>
+            <Item1 Ref="37" Width="39.43278" Visible="false" />
+            <Item2 Ref="38" Width="216.149689" />
+            <Item3 Ref="39" Width="73.80019" AutoWidthMode="GrowOnly" />
+            <Item4 Ref="40" Width="73.80019" Visible="false" />
+          </ColumnDefinitions>
+          <RowDefinitions>
+            <Item1 Ref="41" Height="25" />
+            <Item2 Ref="42" Height="25" AutoHeightMode="ShrinkAndGrow" />
+            <Item3 Ref="43" Height="25" Visible="false" />
+            <Item4 Ref="44" Height="25" Visible="false" />
+          </RowDefinitions>
+          <Cells>
+            <Item1 Ref="45" ControlType="XRCrossTabCell" Name="crossTabHeaderCell9" ColumnIndex="1" RowIndex="0" Text="Denumire Rand" Font="Georgia, 10.2pt, charSet=0" />
+            <Item2 Ref="46" ControlType="XRCrossTabCell" Name="crossTabDataCell2" TextFormatString="{0:N2}" ColumnIndex="2" RowIndex="1" Font="Arial Narrow, 10.2pt, charSet=0" />
+            <Item3 Ref="47" ControlType="XRCrossTabCell" Name="crossTabHeaderCell10" TextFormatString="{0:dd/MM/yyyy}" ColumnIndex="2" RowIndex="0" TextAlignment="MiddleCenter" Font="Georgia, 10.2pt, charSet=0" />
+            <Item4 Ref="48" ControlType="XRCrossTabCell" Name="crossTabHeaderCell11" ColumnIndex="1" RowIndex="1" Font="Georgia, 9pt, charSet=0" />
+            <Item5 Ref="49" ControlType="XRCrossTabCell" Name="crossTabHeaderCell12" ColumnIndex="3" RowIndex="0" Text="Grand Total" />
+            <Item6 Ref="50" ControlType="XRCrossTabCell" Name="crossTabTotalCell6" ColumnIndex="3" RowIndex="1" />
+            <Item7 Ref="51" ControlType="XRCrossTabCell" Name="crossTabHeaderCell13" ColumnIndex="0" RowIndex="3" ColumnSpan="2" Text="Grand Total" />
+            <Item8 Ref="52" ControlType="XRCrossTabCell" Name="crossTabTotalCell7" ColumnIndex="2" RowIndex="3" />
+            <Item9 Ref="53" ControlType="XRCrossTabCell" Name="crossTabTotalCell8" ColumnIndex="3" RowIndex="3" />
+            <Item10 Ref="54" ControlType="XRCrossTabCell" Name="crossTabHeaderCell14" ColumnIndex="0" RowIndex="0" Text="Order View" />
+            <Item11 Ref="55" ControlType="XRCrossTabCell" Name="crossTabHeaderCell15" ColumnIndex="0" RowIndex="1" />
+            <Item12 Ref="56" ControlType="XRCrossTabCell" Name="crossTabHeaderCell16" TextFormatString="Total {0}" ColumnIndex="0" RowIndex="2" ColumnSpan="2" />
+            <Item13 Ref="57" ControlType="XRCrossTabCell" Name="crossTabTotalCell9" ColumnIndex="2" RowIndex="2" />
+            <Item14 Ref="58" ControlType="XRCrossTabCell" Name="crossTabTotalCell10" ColumnIndex="3" RowIndex="2" />
+          </Cells>
+        </Item1>
+      </Controls>
+      <ExpressionBindings>
+        <Item1 Ref="59" EventName="BeforePrint" PropertyName="Visible" Expression="Contains([Frecventa], '1') || Contains([Frecventa], '2') " />
+      </ExpressionBindings>
+    </Item3>
+    <Item4 Ref="60" ControlType="DetailReportBand" Name="DetailReport" Level="0">
+      <Bands>
+        <Item1 Ref="61" ControlType="DetailBand" Name="Detail1" HeightF="110">
+          <Controls>
+            <Item1 Ref="62" ControlType="XRCrossTab" Name="crossTab1" GeneralStyleName="crossTabGeneralStyle1" DataAreaStyleName="crossTabDataStyle1" HeaderAreaStyleName="crossTabHeaderStyle1" TotalAreaStyleName="crossTabTotalStyle1" DataSource="#Ref-0" DataMember="BugetDetails" SizeF="450.632629,100" LocationFloat="0,0">
+              <RowFields>
+                <Item1 Ref="63" FieldName="OrderView" />
+                <Item2 Ref="64" FieldName="DenumireRand" />
+              </RowFields>
+              <ColumnFields>
+                <Item1 Ref="65" FieldName="An" />
+              </ColumnFields>
+              <DataFields>
+                <Item1 Ref="66" FieldName="Valoare" />
+              </DataFields>
+              <ColumnDefinitions>
+                <Item1 Ref="67" Width="39.43278" Visible="false" />
+                <Item2 Ref="68" Width="216.149658" />
+                <Item3 Ref="69" Width="73.80017" />
+                <Item4 Ref="70" Width="121.250023" Visible="false" />
+              </ColumnDefinitions>
+              <RowDefinitions>
+                <Item1 Ref="71" Height="25" />
+                <Item2 Ref="72" Height="25" />
+                <Item3 Ref="73" Height="25" Visible="false" />
+                <Item4 Ref="74" Height="25" Visible="false" />
+              </RowDefinitions>
+              <Cells>
+                <Item1 Ref="75" ControlType="XRCrossTabCell" Name="crossTabHeaderCell1" ColumnIndex="1" RowIndex="0" Text="Denumire Rand" Font="Georgia, 10.2pt, charSet=0" />
+                <Item2 Ref="76" ControlType="XRCrossTabCell" Name="crossTabDataCell1" TextFormatString="{0:N2}" ColumnIndex="2" RowIndex="1" Font="Arial Narrow, 10.2pt, charSet=0" />
+                <Item3 Ref="77" ControlType="XRCrossTabCell" Name="crossTabHeaderCell2" ColumnIndex="2" RowIndex="0" TextAlignment="MiddleCenter" Font="Georgia, 10.2pt, charSet=0" />
+                <Item4 Ref="78" ControlType="XRCrossTabCell" Name="crossTabHeaderCell3" ColumnIndex="1" RowIndex="1" Font="Georgia, 9pt, charSet=0" />
+                <Item5 Ref="79" ControlType="XRCrossTabCell" Name="crossTabHeaderCell4" ColumnIndex="3" RowIndex="0" Text="Grand Total" />
+                <Item6 Ref="80" ControlType="XRCrossTabCell" Name="crossTabTotalCell1" ColumnIndex="3" RowIndex="1" />
+                <Item7 Ref="81" ControlType="XRCrossTabCell" Name="crossTabHeaderCell5" ColumnIndex="0" RowIndex="3" ColumnSpan="2" Text="Grand Total" />
+                <Item8 Ref="82" ControlType="XRCrossTabCell" Name="crossTabTotalCell2" ColumnIndex="2" RowIndex="3" />
+                <Item9 Ref="83" ControlType="XRCrossTabCell" Name="crossTabTotalCell3" ColumnIndex="3" RowIndex="3" />
+                <Item10 Ref="84" ControlType="XRCrossTabCell" Name="crossTabHeaderCell6" ColumnIndex="0" RowIndex="0" Text="Order View" />
+                <Item11 Ref="85" ControlType="XRCrossTabCell" Name="crossTabHeaderCell7" ColumnIndex="0" RowIndex="1" />
+                <Item12 Ref="86" ControlType="XRCrossTabCell" Name="crossTabHeaderCell8" TextFormatString="Total {0}" ColumnIndex="0" RowIndex="2" ColumnSpan="2" />
+                <Item13 Ref="87" ControlType="XRCrossTabCell" Name="crossTabTotalCell4" ColumnIndex="2" RowIndex="2" />
+                <Item14 Ref="88" ControlType="XRCrossTabCell" Name="crossTabTotalCell5" ColumnIndex="3" RowIndex="2" />
+              </Cells>
+            </Item1>
+          </Controls>
+        </Item1>
+      </Bands>
+      <ExpressionBindings>
+        <Item1 Ref="89" EventName="BeforePrint" PropertyName="Visible" Expression="Contains([Frecventa], '0')" />
+      </ExpressionBindings>
+    </Item4>
+  </Bands>
+  <StyleSheet>
+    <Item1 Ref="90" Name="crossTabGeneralStyle2" BorderStyle="Inset" Padding="2,2,0,0,100" Font="Arial, 9.75pt" ForeColor="Black" BackColor="White" BorderColor="255,160,160,160" Sides="All" StringFormat="Near;Near;0;None;Character;Default" />
+    <Item2 Ref="91" Name="crossTabHeaderStyle2" BorderStyle="Inset" BackColor="255,240,240,240" StringFormat="Near;Center;0;None;Character;Default" TextAlignment="MiddleLeft" />
+    <Item3 Ref="92" Name="crossTabDataStyle2" BorderStyle="Inset" StringFormat="Far;Center;0;None;Character;Default" TextAlignment="MiddleRight" />
+    <Item4 Ref="93" Name="crossTabTotalStyle2" BorderStyle="Inset" StringFormat="Far;Center;0;None;Character;Default" TextAlignment="MiddleRight" />
+    <Item5 Ref="94" Name="crossTabGeneralStyle1" BorderStyle="Inset" Padding="2,2,0,0,100" Font="Arial, 9.75pt" ForeColor="Black" BackColor="White" BorderColor="255,160,160,160" Sides="All" StringFormat="Near;Near;0;None;Character;Default" />
+    <Item6 Ref="95" Name="crossTabHeaderStyle1" BorderStyle="Inset" BackColor="255,240,240,240" StringFormat="Near;Center;0;None;Character;Default" TextAlignment="MiddleLeft" />
+    <Item7 Ref="96" Name="crossTabDataStyle1" BorderStyle="Inset" StringFormat="Far;Center;0;None;Character;Default" TextAlignment="MiddleRight" />
+    <Item8 Ref="97" Name="crossTabTotalStyle1" BorderStyle="Inset" StringFormat="Far;Center;0;None;Character;Default" TextAlignment="MiddleRight" />
+  </StyleSheet>
+  <ComponentStorage>
+    <Item1 Ref="0" ObjectType="DevExpress.DataAccess.ObjectBinding.ObjectDataSource,DevExpress.DataAccess.v20.2" Name="objectDataSource1" Base64="PE9iamVjdERhdGFTb3VyY2UgTmFtZT0ib2JqZWN0RGF0YVNvdXJjZTEiPjxEYXRhTWVtYmVyPkdldEJWQ19SZXBvcnQ8L0RhdGFNZW1iZXI+PFBhcmFtZXRlcnM+PFBhcmFtZXRlciBOYW1lPSJ2YXJpYW50YUJ1Z2V0SWQiIFR5cGU9IkRldkV4cHJlc3MuRGF0YUFjY2Vzcy5FeHByZXNzaW9uIj4oU3lzdGVtLkludDMyKSg/dmFyaWFudGFCdWdldElkKTwvUGFyYW1ldGVyPjxQYXJhbWV0ZXIgTmFtZT0idGlwUmFuZCIgVHlwZT0iRGV2RXhwcmVzcy5EYXRhQWNjZXNzLkV4cHJlc3Npb24iPihTeXN0ZW0uU3RyaW5nKSg/dGlwUmFuZCk8L1BhcmFtZXRlcj48UGFyYW1ldGVyIE5hbWU9Im5pdmVsUmFuZCIgVHlwZT0iRGV2RXhwcmVzcy5EYXRhQWNjZXNzLkV4cHJlc3Npb24iPihTeXN0ZW0uSW50MzIpKD9uaXZlbFJhbmQpPC9QYXJhbWV0ZXI+PFBhcmFtZXRlciBOYW1lPSJhbkJ1Z2V0IiBUeXBlPSJEZXZFeHByZXNzLkRhdGFBY2Nlc3MuRXhwcmVzc2lvbiI+KFN5c3RlbS5JbnQzMikoP2FuQnVnZXQpPC9QYXJhbWV0ZXI+PFBhcmFtZXRlciBOYW1lPSJ0aXAiIFR5cGU9IkRldkV4cHJlc3MuRGF0YUFjY2Vzcy5FeHByZXNzaW9uIj4oU3lzdGVtLkludDMyKSg/dGlwKTwvUGFyYW1ldGVyPjxQYXJhbWV0ZXIgTmFtZT0iZnJlY3ZlbnRhIiBUeXBlPSJEZXZFeHByZXNzLkRhdGFBY2Nlc3MuRXhwcmVzc2lvbiI+KFN5c3RlbS5TdHJpbmcpKD9mcmVjdmVudGEpPC9QYXJhbWV0ZXI+PFBhcmFtZXRlciBOYW1lPSJ0aXBBY3Rpdml0YXRlIiBUeXBlPSJEZXZFeHByZXNzLkRhdGFBY2Nlc3MuRXhwcmVzc2lvbiI+KFN5c3RlbS5TdHJpbmcpKD90aXBBY3Rpdml0YXRlKTwvUGFyYW1ldGVyPjxQYXJhbWV0ZXIgTmFtZT0idGlwUmFwb3J0IiBUeXBlPSJEZXZFeHByZXNzLkRhdGFBY2Nlc3MuRXhwcmVzc2lvbiI+KFN5c3RlbS5JbnQzMikoP3RpcFJhcG9ydCk8L1BhcmFtZXRlcj48L1BhcmFtZXRlcnM+PC9PYmplY3REYXRhU291cmNlPg==" />
+  </ComponentStorage>
+  <ObjectStorage>
+    <Item1 ObjectType="DevExpress.XtraReports.Serialization.ObjectStorageInfo, DevExpress.XtraReports.v20.2" Ref="3" Content="System.Int32" Type="System.Type" />
+  </ObjectStorage>
+</XtraReportsLayoutSerializer>

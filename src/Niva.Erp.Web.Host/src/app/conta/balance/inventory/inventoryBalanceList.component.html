@@ -1,0 +1,88 @@
+﻿<div [@routerTransition]>
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <h3>Registru inventar</h3>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="content px-2">
+        <div class="container-fluid">
+            <div class="body">
+                <div class="row">
+                    <div class="col-lg-2">
+                        <label for="dataStart" class="col-form-label"> Data Start</label>
+                        <!--<mat-form-field style="width: 100%;">
+                            <input matInput
+                                   id="dateStart"
+                                   name="dateStart"
+                                   [matDatepicker]="dataStartPicker"
+                                   [(ngModel)]="invObject.dateStart">
+                            <mat-datepicker-toggle matSuffix [for]="dataStartPicker"></mat-datepicker-toggle>
+                            <mat-datepicker #dataStartPicker></mat-datepicker>
+                        </mat-form-field>-->
+                    </div>
+
+                    <div class="col-lg-1">
+                        <button class="btn btn-info" title="Cauta" (click)="search()">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="panel-heading" style="position: relative;">
+                    <div class="row">
+                        <h4 class="panel-title col-xs-6">
+                            <!--Inventar - <span>{{ getInvObjectInventariereCount() }}</span> &nbsp;
+                            <a [routerLink]="['/app/conta/invObjects/invObjectInventariereEdit']" class="btn btn-info" title="Adauga"><i class="fas fa-plus"></i></a>-->
+                        </h4>
+                    </div>
+                </div>
+                <div class="row">
+                    <table class="table small-font">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Data inventar</th>
+                                <th scope="col"></th>
+                                <th scope="col"></th>
+                                <th scope="col"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!--<tr *ngFor="let item of invObject.invObjectInventariereList;let i = index">
+                                <td scope="row">{{ i + 1 }}</td>
+                                <td>{{ item.dataInventariere | date: 'dd.MM.yyyy' }}</td>
+                                <td>
+                                    <button [routerLink]="['/app/conta/invObjects/invObjectInventariereEdit']"
+                                            [queryParams]="{invObjectId: item.id}"
+                                            title="Modifica"
+                                            class="btn btn-info">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                </td>
+                                <td>
+                                    <button (click)="delete(item.id)"
+                                            type="button"
+                                            class="btn btn-danger"
+                                            title="Sterge">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </td>
+                                <td>
+                                    <button (click)="showReport(item.id)"
+                                            type="button"
+                                            class="btn btn-info"
+                                            title="Genereaza raport">
+                                        Genereaza raport
+                                    </button>
+                                </td>
+                            </tr>-->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

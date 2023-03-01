@@ -1,0 +1,440 @@
+﻿<section>
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row">
+                <h3>Rapoarte</h3>
+                <a href="{{appBaseUrl}}/assets/pdf/Conta - Rapoarte - Manual utilizare.pdf" title="Manual de utilizare" class="btn btn-info ml-2" target="_blank"><i class="fas fa-question"></i></a>
+            </div>
+        </div>
+    </section>
+    <section class="content px-2">
+        <div class="container-fluid">
+            <div class="body" [busy]="isLoading">
+                <div class="row">
+                    <div class="col-lg-2">
+                        <label for="reportName">Selectati Raport</label>
+                    </div>
+                    <div class="col-lg-2">
+                        <select [(ngModel)]="selectedReport" class="form-control" (change)="showDateRange()">
+                            <option value="0" selected="selected" *ngIf="isGranted('Conta.Rapoarte.Rapoarte.Balanta')">Balanta</option>
+                            <option value="1" *ngIf="isGranted('Conta.Rapoarte.Rapoarte.BalantaValuta')">Balanta in valuta</option>
+                            <option value="2" *ngIf="isGranted('Conta.Rapoarte.Rapoarte.FisaCont')">Fisa cont</option>
+                            <option value="3" *ngIf="isGranted('Conta.Rapoarte.Rapoarte.RegistruJurnal')">Registru Jurnal</option>
+                            <option value="4" *ngIf="isGranted('Conta.Rapoarte.Rapoarte.RegistruInventar')">Registru inventar</option>
+                            <option value="5" *ngIf="isGranted('Conta.Rapoarte.Rapoarte.SolduriConturiCurente')">Solduri conturi curente </option>
+                            <option value="6" *ngIf="isGranted('Conta.Rapoarte.Rapoarte.SoldFurnizoriDebitori')">Sold furnizori debitori</option>
+                            <option value="7" *ngIf="isGranted('Conta.Rapoarte.Rapoarte.CursValutarBNR')">Curs Valutar BNR</option>
+                            <option value="8" *ngIf="isGranted('Conta.Rapoarte.Rapoarte.DepoziteBancare')">Depozite bancare</option>
+                            <option value="9" *ngIf="isGranted('Conta.Rapoarte.Rapoarte.Facturi')">Facturi</option>
+                            <option value="10">Sold cont</option>
+                        </select>
+                    </div>
+
+                    <div class="col-lg-2" *ngIf="selectedReport == 4">
+                        <a id="btnExceptii"
+                           name="btnExceptii"
+                           class="btn btn-info"
+                           [routerLink]="['/app/conta/registruInventar/exceptii/exceptionList']">Lista exceptii</a>
+
+                    </div>
+                </div>
+                <div *ngIf="selectedReport == 0 || selectedReport == 1">
+                    <div class="mt-3">
+                        <div class="row">
+                            <div class="col-lg-2">
+                                <label for="currency"> Moneda</label>
+                            </div>
+                            <div class="col-lg-2" *ngIf="selectedReport == 0">
+                                <select class="form-control" [(ngModel)]="balanceParams.currencyType">
+                                    <option value="0" selected>Ron si echivalent Ron</option>
+                                    <option value="1">Ron</option>
+                                </select>
+                            </div>
+
+                            <div class="col-lg-2" *ngIf="selectedReport == 1">
+                                <select class="form-control" [(ngModel)]="balanceParams.currencyType">
+                                    <option value="0">Valuta echivalent Ron</option>
+                                    <option value="1">Valuta</option>
+                                </select>
+                            </div>
+                            <div class="col-lg-2" *ngIf="selectedReport == 5">
+                                <select id="currencyId" name="currencyId" [(ngModel)]="soldCurentPArams.currencyId">
+                                    <option [ngValue]="null">Toate</option>
+                                    <option *ngFor="let item of currencyList" [ngValue]="item.id">{{ item.currencyName }}</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-lg-2">
+                            <label for="balanta" class="col-form-label"> Balanta</label>
+                        </div>
+                        <div class="col-lg-2">
+                            <select id="balanta" name="balanta" class="form-control" [(ngModel)]="balanceParams.balanceDate">
+                                <option *ngFor="let item of balanceList" [ngValue]="item.id">{{item.balanceDate}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-lg-2">
+                            <label for="startAccount"> Conturi de la</label>
+                        </div>
+                        <div class="col-lg-2">
+                            <input id="startAccount" name="startAccount" [(ngModel)]="balanceParams.startAccount" class="form-control" />
+                        </div>
+                        <div class="col-lg-1">
+                            <label for="endAccount"> pana la</label>
+                        </div>
+                        <div class="col-lg-2">
+                            <input id="endAccount" name="endAccount" [(ngModel)]="balanceParams.endAccount" class="form-control" />
+                        </div>
+
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-lg-2">
+                            <label for="nivelRand"> Nivel rand</label>
+                        </div>
+                        <div class="col-lg-2">
+                            <input id="nivelRand" name="nivelRand" [(ngModel)]="nivelRandMax" class="form-control" />
+                        </div>
+                    </div>
+
+                    <div class="row mt-3">
+                        <div class="col-lg-2">
+                            <label for="balanta"> Tip balanta</label>
+                        </div>
+                        <div class="col-lg-21">
+                            <input id="balanceStruct1" name="balanceStruct1" type="radio" [(ngModel)]="balanceStruct" [value]="5" />
+                            <label for="balanceStruct1">5 egalitati</label>
+                            &nbsp;
+                            <input id="balanceStruct2" name="balanceStruct2" type="radio" [(ngModel)]="balanceStruct" [value]="6" />
+                            <label for="balanceStruct2">6 egalitati</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" *ngIf="selectedReport == 2">
+                    <!--<a class="btn btn-info" [routerLink]="[/app/reporting/repAccountSheet]" target="_blank">Raport</a>-->
+                    <button class="btn btn-info" (click)="showFisaCont()">Raport</button>
+                </div>
+                <div class="row" *ngIf="selectedReport == 9">
+                    <button class="btn btn-info" (click)="showDetaliiFacturi()">Raport</button>
+                </div>
+                <div *ngIf="selectedReport == 3">
+                    <div class="row mt-3">
+                        <div class="col-lg-2">
+                            <label for="startDate" class="col-form-label">Perioada</label>
+                        </div>
+                        <div class="col-lg-2">
+                            <mat-form-field style="width: 100%">
+                                <input matInput
+                                       id="startDate"
+                                       name="startDate"
+                                       [matDatepicker]="searchStartDatePicker"
+                                       [(ngModel)]="dataStart">
+                                <mat-datepicker-toggle matSuffix [for]="searchStartDatePicker"></mat-datepicker-toggle>
+                                <mat-datepicker #searchStartDatePicker></mat-datepicker>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-lg-2">
+                            <mat-form-field style="width: 100%">
+                                <input matInput
+                                       id="endDate"
+                                       name="endDate"
+                                       [matDatepicker]="searchEndDatePicker"
+                                       [(ngModel)]="dataEnd">
+                                <mat-datepicker-toggle matSuffix [for]="searchEndDatePicker"></mat-datepicker-toggle>
+                                <mat-datepicker #searchEndDatePicker></mat-datepicker>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-lg-2">
+                            <label for="currencyId" class="col-form-label">Moneda</label>
+                        </div>
+                        <div class="col-lg-2">
+                            <select id="currencyId" name="currencyId" [(ngModel)]="registruJurnalParams.currencyId" class="form-control">
+                                <option value="null">Toate</option>
+                                <option *ngFor="let item of currencyList" [ngValue]="item.id">{{item.name}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-lg-2">
+                            <label for="searchAccount1" class="col-form-label">Cont1</label>
+                        </div>
+                        <div class="col-lg-2">
+                            <input id="searchAccount1" name="searchAccount1" type="text" [(ngModel)]="registruJurnalParams.searchAccount1" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-lg-2">
+                            <label for="searchAccount2" class="col-form-label">Cont2</label>
+                        </div>
+                        <div class="col-lg-2">
+                            <input id="searchAccount2" name="searchAccount2" type="text" [(ngModel)]="registruJurnalParams.searchAccount2" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-lg-2">
+                            <label for="docTypeId" class="col-form-label">Tip document</label>
+                        </div>
+                        <div class="col-lg-2">
+                            <select id="docTypeId" name="docTypeId" [(ngModel)]="registruJurnalParams.docTypeId" class="form-control">
+                                <option value="null">Toate</option>
+                                <option *ngFor="let item of documentTypeList.getDocumentType" [ngValue]="item.id">{{item.typeName}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-lg-2">
+                            <label for="raportExtins" class="col-form-label">Raport extins</label>
+                        </div>
+                        <div class="col-lg-2 custom-control custom-checkbox">
+                            <input id="raportExtins" name="raportExtins" type="checkbox" [(ngModel)]="registruJurnalParams.raportExtins" />
+                        </div>
+                    </div>
+
+                    <div *ngIf="registruJurnalParams.raportExtins == true">
+                        <div class="row mt-3">
+                            <div class="col-lg-2">
+                                <label for="dataCursValutar" class="col-form-label">Data curs valutar</label>
+                            </div>
+                            <div class="col-lg-2">
+                                <mat-form-field style="width: 100%">
+                                    <input matInput
+                                           id="dataCursValutar"
+                                           name="dataCursValutar"
+                                           [matDatepicker]="searchDataCursValutar"
+                                           [(ngModel)]="dataCursValutar">
+                                    <mat-datepicker-toggle matSuffix [for]="searchDataCursValutar"></mat-datepicker-toggle>
+                                    <mat-datepicker #searchDataCursValutar></mat-datepicker>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div *ngIf="selectedReport == 4">
+                    <div class="row mt-3">
+                        <div class="col-lg-2">
+                            <label for="startDate" class="col-form-label">Data</label>
+                        </div>
+                        <div class="col-lg-2">
+                            <mat-form-field style="width: 100%">
+                                <input matInput
+                                       id="startDate"
+                                       name="startDate"
+                                       [matDatepicker]="searchStartDatePicker"
+                                       [(ngModel)]="dataStart"
+                                       dataStart="ngModel">
+                                <mat-datepicker-toggle matSuffix [for]="searchStartDatePicker"></mat-datepicker-toggle>
+                                <mat-datepicker #searchStartDatePicker></mat-datepicker>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-lg-2" *ngIf="selectedReport == 4">
+                            <button id="reloadCalcul" name="reloadCalcul" class="btn btn-info" (click)="regInvRecalcul()" title="Recalcul raport">Recalcul raport</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-3" *ngIf="selectedReport == 5">
+                    <div class="col-lg-2">
+                        <label for="currencyId"> Moneda</label>
+                    </div>
+                    <div class="col-lg-2">
+                        <select id="currencyId" name="currencyId" [(ngModel)]="soldCurentParams.currencyId" class="form-control">
+                            <option [ngValue]="null">Toate</option>
+                            <option *ngFor="let item of currencyList" [ngValue]="item.id">{{ item.name }}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row" *ngIf="selectedReport == 5">
+                    <div class="col-lg-2">
+                        <label for="accountId" class="col-form-label"> Cont</label>
+                    </div>
+                    <div class="col-lg-2">
+                        <mat-form-field style="width: 100%;">
+                            <input type="text" matInput id="accountId"
+                                   name="accountId"
+                                   [(ngModel)]="soldCurentParams.accountId"
+                                   (input)="searchAccountByInput($event)"
+                                   required
+                                   [matAutocomplete]="auto"
+                                   #accountId="ngModel" />
+                            <mat-autocomplete #auto="matAutocomplete" [displayWith]="getAccountName.bind(this)">
+                                <mat-select *ngFor="let item of accountList">
+                                    <mat-option (click)="selectedAccount(item.id)" [ngValue]="item.id">
+                                        {{ item.name }}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-autocomplete>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="row" *ngIf="selectedReport == 5">
+                    <div class="col-lg-2">
+                        <label for="perioada" class="col-form-label">Solduri in perioada</label>
+                    </div>
+                    <div class="col-lg-2 custom-control custom-checkbox">
+                        <input id="perioada" name="perioada" type="checkbox" [(ngModel)]="isDateRange" (ngModelChange)="showDateRange()" />
+                    </div>
+                </div>
+                <div class="row" *ngIf="selectedReport == 5 && isDateRange === false">
+                    <div class="col-lg-2">
+                        <label for="dataEnd" class="col-form-label">Data</label>
+                    </div>
+                    <div class="col-lg-2">
+                        <mat-form-field style="width: 100%">
+                            <input matInput
+                                   id="dataEnd"
+                                   name="dataEnd"
+                                   [matDatepicker]="searchEndDatePicker"
+                                   [(ngModel)]="dataEnd">
+                            <mat-datepicker-toggle matSuffix [for]="searchEndDatePicker"></mat-datepicker-toggle>
+                            <mat-datepicker #searchEndDatePicker></mat-datepicker>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="row" *ngIf="selectedReport == 5 && isDateRange === true">
+                    <div class="col-lg-2">
+                        <label for="dataRange" class="col-form-label">Perioada</label>
+                    </div>
+                    <div class="col-lg-2">
+                        <mat-form-field style="width: 100%">
+                            <input matInput
+                                   id="dataStart"
+                                   name="dataStart"
+                                   [matDatepicker]="dataStartPicker"
+                                   [(ngModel)]="dataStart">
+                            <mat-datepicker-toggle matSuffix [for]="dataStartPicker"></mat-datepicker-toggle>
+                            <mat-datepicker #dataStartPicker></mat-datepicker>
+                        </mat-form-field>
+                    </div>
+                    <span>-</span>
+                    <div class="col-lg-2">
+                        <mat-form-field style="width: 100%">
+                            <input matInput
+                                   id="dataEnd"
+                                   name="dataEnd"
+                                   [matDatepicker]="searchEndDatePicker"
+                                   [(ngModel)]="dataEnd">
+                            <mat-datepicker-toggle matSuffix [for]="searchEndDatePicker"></mat-datepicker-toggle>
+                            <mat-datepicker #searchEndDatePicker></mat-datepicker>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="row" *ngIf="selectedReport == 5 && isDateRange === true">
+                    <div class="col-lg-2">
+                        <label class="col-form-label" for="periodTypeId">Tip</label>
+                    </div>
+                    <div class="col-lg-2">
+                        <select id="typeId" name="periodTypeId" [(ngModel)]="soldCurentParams.periodTypeId" #periodTypeId="ngModel" class="form-control">
+                            <option *ngFor="let item of tipPerioadaSoldList" [ngValue]="item.id">{{ item.name }}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row mt-3" *ngIf="selectedReport == 6">
+                    <div class="col-lg-2">
+                        <label for="thirdPartyId" class="col-form-label"> Furnizor</label>
+                    </div>
+                    <div class="col-lg-2">
+                        <mat-form-field style="width: 100%;">
+                            <input type="text" matInput id="thirdPartyId"
+                                   name="thirdPartyId"
+                                   [(ngModel)]="thirdPartyId"
+                                   (input)="searchThirdPartyByInput($event)"
+                                   required
+                                   [matAutocomplete]="auto" />
+                            <mat-autocomplete #auto="matAutocomplete" [displayWith]="getThirdPartyName.bind(this)">
+                                <mat-select *ngFor="let thirdParty of thirdParties.getThirdParty">
+                                    <mat-option (click)="selectedThirdParty(thirdParty.personId, thirdParty.fullName)" [ngValue]="thirdParty.personId">
+                                        {{ thirdParty.fullName }}
+                                        <small>CompanyId: </small><small>{{ thirdParty.personId }}</small>
+                                    </mat-option>
+                                </mat-select>
+                            </mat-autocomplete>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="row" *ngIf="selectedReport == 6">
+                    <div class="col-lg-2">
+                        <label for="startDate" class="col-form-label">Data</label>
+                    </div>
+                    <div class="col-lg-2">
+                        <mat-form-field style="width: 100%">
+                            <input matInput
+                                   id="startDate"
+                                   name="startDate"
+                                   [matDatepicker]="searchStartDatePicker"
+                                   [(ngModel)]="dataStart"
+                                   dataStart="ngModel">
+                            <mat-datepicker-toggle matSuffix [for]="searchStartDatePicker"></mat-datepicker-toggle>
+                            <mat-datepicker #searchStartDatePicker></mat-datepicker>
+                        </mat-form-field>
+                    </div>
+                </div>
+
+                <div class="row" *ngIf="selectedReport == 7">
+
+                    <div class="col-lg-2">
+                        <label for="balantaCurs" class="col-form-label"> Balanta</label>
+                    </div>
+                    <div class="col-lg-2">
+                        <select id="balantaCurs" name="balantaCurs" class="form-control" [(ngModel)]="cursValutarParams.balanceId">
+                            <option *ngFor="let item of balanceList" [ngValue]="item.id">{{item.balanceDate}}</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row mt-3" *ngIf="selectedReport == 8">
+                    <div class="col-lg-2">
+                        <label for="balantaDepozit" class="col-form-label"> Balanta</label>
+                    </div>
+                    <div class="col-lg-2">
+                        <select id="balantaDepozit" name="balantaDepozit" class="form-control" [(ngModel)]="depozitBancarParams.balanceId">
+                            <option *ngFor="let item of balanceList" [ngValue]="item.id">{{item.balanceDate}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div  *ngIf="selectedReport == 10">
+                    <div class="row mt-3">
+                        <div class="col-lg-2">
+                            <label for="dataStart" class="col-form-label">Data</label>
+                        </div>
+                        <div class="col-lg-2">
+                            <mat-form-field style="width: 100%">
+                                <input matInput
+                                       id="dataStart"
+                                       name="dataStart"
+                                       [matDatepicker]="searchDataStartPicker"
+                                       [(ngModel)]="dataStart">
+                                <mat-datepicker-toggle matSuffix [for]="searchDataStartPicker"></mat-datepicker-toggle>
+                                <mat-datepicker #searchDataStartPicker></mat-datepicker>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-lg-2">
+                            <label for="account" class="col-form-label">Cont</label>
+                        </div>
+                        <div class="col-lg-2">
+                            <input id="account" type="text" name="account" class="form-control" [(ngModel)]="detaliuSoldParams.account" />
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-lg-2">
+                            <label for="currencyId" class="col-form-label">Moneda</label>
+                        </div>
+                        <div class="col-lg-2">
+                            <select id="currencyId" name="currencyId" [(ngModel)]="detaliuSoldParams.currencyId" class="form-control">
+                                <option value="null">Toate</option>
+                                <option *ngFor="let item of currencyList" [ngValue]="item.id">{{item.name}}</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" *ngIf="selectedReport != 2 && selectedReport  != 9">
+                    <button (click)="verifyDatePeriod()" class="btn btn-info">Raport</button>
+                </div>
+            </div>
+            </div>
+    </section>
+</section>

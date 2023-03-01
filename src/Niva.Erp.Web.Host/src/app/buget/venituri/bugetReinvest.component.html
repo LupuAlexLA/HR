@@ -1,0 +1,221 @@
+﻿<div [@routerTransition]>
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row">
+                <h3 class="col-lg-8">
+                    <a class="btn btn-info" [routerLink]="['/app/buget/venituri/bugetVenitDetails']" [queryParams]="{formularBVCId: formularBVCId}" title="Inapoi"><i class="fas fa-arrow-left"></i></a>
+                    Sume reinvestite
+                </h3>
+                <h3 class="col-lg-4">
+                    Sumar incasari/reinvestiri
+                </h3>
+            </div>
+        </div>
+    </section>
+    <section class="content px-2">
+        <div class="container-fluid">
+            <div class="body">
+                <div class="row">
+                    <div class="col-lg-3">
+                        <label for="startDate" class="col-form-label">
+                            Data inceput
+                        </label>
+                        <mat-form-field>
+                            <input matInput
+                                   [matDatepicker]="startDatePicker"
+                                   id="startDate"
+                                   name="startDate"
+                                   [(ngModel)]="bugetReinvestStart.startDate"
+                                   #startDate="ngModel" />
+                            <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
+                            <mat-datepicker #startDatePicker></mat-datepicker>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-lg-3">
+                        <label for="endDate"
+                               class="col-form-label">
+                            Data sfarsit
+                        </label>
+                        <mat-form-field>
+                            <input matInput [matDatepicker]="endDatePicker" id="endDate" name="endDate" [(ngModel)]="bugetReinvestStart.endDate" #endDate="ngModel" />
+                            <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
+                            <mat-datepicker #endDatePicker></mat-datepicker>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-lg-1 align-self-start" style="position: relative">
+                        <button class="btn btn-info "
+                                (click)="search()"
+                                title="Cauta">
+                            <i class="fas fa-search"></i>
+                        </button>
+                        <button id="headerSave" name="headerSave" style="float: right" class="btn btn-info" (click)="saveReinvest()" title="Salveaza" *ngIf="isGranted('Buget.BVC.Venituri.Modificare')"><i class="fas fa-save"></i></button>
+                    </div>
+                    <div class="col-lg-1"></div>
+                    <div class="col-lg-4">
+                        <table class="table table-responsive">
+                            <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Moneda</th>
+                                    <th scope="col">Tip activitate</th>
+                                    <th scope="col">Incasare</th>
+                                    <th scope="col">Reinvestire</th>
+                                    <th scope="col">Plasamente Viitoare</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let item of sumarBugetReinvestit; let i = index;">
+                                    <td scope="row">{{ i + 1 }}</td>
+                                    <td>{{ item.currency }}</td>
+                                    <td>{{ item.activityType }}</td>
+                                    <td class="alignSum">{{ item.valoareIncasata | number: '1.2' }}</td>
+                                    <td class="alignSum">{{ item.valoareReinvestita | number: '1.2' }}</td>
+                                    <td class="alignSum">{{ item.valoarePlasament | number: '1.2' }}</td>
+                                </tr>
+                                <tr>
+                                    <td scope="row"><b>Total</b></td>
+                                    <td><b>RON</b></td>
+                                    <td></td>
+                                    <td class="alignSum">{{ sumarTotalValoareIncasataLei | number: '1.2' }}</td>
+                                    <td class="alignSum">{{ sumarTotalvaloareReinvestitaLei | number: '1.2' }}</td>
+                                    <td class="alignSum">{{ sumarTotalPlasamentLei | number: '1.2' }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="row" [busy]="isLoading">
+                    <!-- Table Incasari -->
+                    <div class="col-lg-8">
+                        <div class="panel-heading" style="position:relative">
+                            <div class="row mt-3">
+                                <h4 class="panel-title col-xs-12 ">
+                                    Incasari
+                                    &nbsp;&nbsp;&nbsp;
+                                    <button (click)="tabelReinv()" class="btn btn-info" title="Tabel Incasari">Tabel Incasari</button>
+                                </h4>
+                            </div>
+                        </div>
+                        <table class="table table-responsive">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Tip venit</th>
+                                    <th scope="col"> Plasament</th>
+                                    <th scope="col"> Tip activitate</th>
+                                    <th scope="col"> Moneda</th>
+                                    <th scope="col"> Tip plasament</th>
+                                    <th scope="col"> Valoare plasament</th>
+                                    <th scope="col"> Dobanda totala</th>
+                                    <th scope="col"> Valoare incasata</th>
+                                    <th scope="col"> Valoare incasata (RON)</th>
+                                    <th scope="col"> Data incasare</th>
+                                </tr>
+                            </thead>
+                            <tbody *ngFor="let incasare of bugetReinvestIncasari; let i = index">
+                                <tr>
+                                    <td>{{ incasare.venitTypeStr }}</td>
+                                    <td>{{ incasare.idPlasament }}</td>
+                                    <td>{{ incasare.activityType }}</td>
+                                    <td>{{ incasare.currency }}</td>
+                                    <td>{{ incasare.tipPlasamentStr }}</td>
+                                    <td class="alignSum">{{ incasare.valoarePlasament | number: '1.2' }}</td>
+                                    <td class="alignSum">{{ incasare.dobandaTotala | number: '1.2' }}</td>
+                                    <td class="alignSum">{{ incasare.valoareIncasata | number: '1.2' }}</td>
+                                    <td class="alignSum">{{ incasare.valoareIncasataRon | number: '1.2' }}</td>
+                                    <td>{{ incasare.dataIncasare | date: 'dd/MM/yyyy' }}</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="9">
+                                        <table>
+                                            <thead class="thead-light">
+                                                <tr>
+                                                    <th>
+                                                        <button (click)="addReinv(incasare.id,i)" class="btn btn-info" title="Adauga"><i class="fas fa-plus"></i></button>
+                                                    </th>
+                                                    <th>Data Reinvestire</th>
+                                                    <th>Suma incasata ({{ incasare.currency }})</th>
+                                                    <th>Moneda reinvestita</th>
+                                                    <th>Curs valutar</th>
+                                                    <th>Suma Reinvestita</th>
+                                                    <th>Procent Dobanda</th>
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody *ngFor="let reinv of incasare.bvC_VenitTitluCFReinv; let j = index">
+
+                                                <tr class="small-font" *ngIf="reinv.delete == false">
+                                                    <td></td>
+                                                    <td>
+                                                        <mat-form-field style="width: 100%;">
+                                                            <input matInput
+                                                                   id="reinvDate"
+                                                                   name="reinvDate"
+                                                                   [matDatepicker]="reinvDatePicker"
+                                                                   [(ngModel)]="reinv.dataReinvestire"
+                                                                   #operationDate="ngModel" />
+                                                            <mat-datepicker-toggle matSuffix [for]="reinvDatePicker"></mat-datepicker-toggle>
+                                                            <mat-datepicker #reinvDatePicker></mat-datepicker>
+                                                        </mat-form-field>
+                                                    </td>
+                                                    <td>{{ reinv.sumaIncasata | number: '1.2' }}</td>
+                                                    <td>
+                                                        <select id="currencyId" name="currencyId" class="form-control" [(ngModel)]="reinv.currencyId" #currencyId="ngModel" (ngModelChange)="changeSumReinvest(i, j)">
+                                                            <option *ngFor="let item of currenciesList?.getCurrency" [ngValue]="item.id">{{ item.currencyName }}</option>
+                                                        </select>
+                                                    </td>
+                                                    <td> <input id="cursValutar" name="cursValutar" class="form-control" [(ngModel)]="reinv.cursValutar" #cursValutar="ngModel" (change)="computeCurs(i,j)" /></td>
+                                                    <td>
+                                                        <input id="sumaReinvestita" name="sumaReinvestita" [(ngModel)]="reinv.sumaReinvestita" #sumaReinvestita="ngModel" class="form-control" />
+                                                    </td>
+                                                    <td>
+                                                        <input id="procDobanda" name="procDobanda" [(ngModel)]="reinv.procDobanda" #sumaReinvestita="ngModel" class="form-control" />
+                                                    </td>
+                                                    <td *ngIf="!reinv.mainValue">
+                                                        <button (click)="deleteReinv(i,j)" class="btn btn-danger" title="Sterge"><i class="fas fa-trash"></i></button>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <button id="save" name="save" style="float: right" class="btn btn-info" (click)="saveReinvest()" title="Salveaza" *ngIf="isGranted('Buget.BVC.Venituri.Modificare')"><i class="fas fa-save"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Table Plati-->
+                    <div class="col-lg-4">
+                        <div class="panel-heading" style="position:relative">
+                            <div class="row mt-3">
+                                <h4 class="panel-title col-xs-6 ">
+                                    Plati
+                                </h4>
+                            </div>
+                        </div>
+                        <table class="table table-responsive">
+                            <thead>
+                                <tr>
+                                    <th scope="col"> Data platii</th>
+                                    <th scope="col"> Descriere</th>
+                                    <th scope="col"> Valoare plata</th>
+                                    <th scope="col"> Valoare platita</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let plata of bugetReinvestPlati; let i = index">
+                                    <td>{{ plata.dataPlatii | date: 'dd/MM/yyyy' }}</td>
+                                    <td>{{ plata.descriere }}</td>
+                                    <td class="alignSum">{{ plata.valoarePlata | number: '1.2' }}</td>
+                                    <td class="alignSum">{{ plata.valoarePlatita | number: '1.2' }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

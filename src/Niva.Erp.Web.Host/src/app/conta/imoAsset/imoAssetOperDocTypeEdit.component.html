@@ -1,0 +1,81 @@
+﻿<div [@routerTransition]>
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <h3>Mijloace Fixe - Adaugare/modificare documente pentru operatii</h3>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="content px-2">
+        <div class="container-fluid">
+            <div class="body">
+                <form id="operDocType"
+                      name="operDocType"
+                      #operDocTypeForm="ngForm"
+                      (ngSubmit)="saveOperDocTypeFnc()"
+                      [busy]="isLoading">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <i class="fas fa-check-circle" aria-hidden="true" *ngIf="!operTypeId.invalid"></i>
+                                    <i class="fas fa-exclamation-circle" aria-hidden="true" *ngIf="operTypeId.invalid"></i>
+                                </span>
+                                <label for="operTypeId" class="col-form-label"> Operatie</label>
+                                <select id="operTypeId" name="operTypeId" [(ngModel)]="operDocType.operTypeId" #operTypeId="ngModel" class="form-control">
+                                    <option *ngFor="let res of operType?.getImoAssetOperType " [ngValue]="res.id">{{ res.name }}</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6">
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <i class="fas fa-check-circle" aria-hidden="true" *ngIf="!documentTypeId.invalid"></i>
+                                    <i class="fas fa-exclamation-circle" aria-hidden="true" *ngIf="documentTypeId.invalid"></i>
+                                </span>
+                                <label for="documentTypeId" class="col-form-label">Document</label>
+                                <select id="documentTypeId" name="documentTypeId"  [(ngModel)]="operDocType.documentTypeId" #documentTypeId="ngModel" class="form-control">
+                                    <option *ngFor="let res of documentType?.getDocumentType" [ngValue]="res.id">{{res.name}}</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mt-2 ">
+                        <label for="appOperation" class="form-label ml-4"> Operatie Disponibila</label>
+                        <div class="input-group ml-2">
+                            <span class="input-group-addon">
+                                <i class="fas fa-check-circle" aria-hidden="true" *ngIf="!operDocType.appOperation"></i>
+                                <i class="fas fa-exclamation-circle" aria-hidden="true" *ngIf="operDocType.appOperation"></i>
+                            </span>
+                            <div class="custom-control custom-checkbox ">
+                                <input id="appOperation" name="appOperation" type="checkbox" class="custom-control-input" [(ngModel)]="operDocType.appOperation" #appOperation="ngModel" />
+                                <label for="appOperation" class="custom-control-label mt-2"> Operatie disponibila in modulul Operatiuni</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mt-2">
+                        <div class="col-lg-5 col-lg-offset-3">
+                            <a [routerLink]="['/app/conta/imoAsset/imoAssetOperDocType']" class="btn btn-info" title="Inapoi"><i class="fas fa-arrow-left"></i></a>
+                        </div>
+                        <div class="col-lg-5 col-lg-offset-4">
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <i class="fas fa-check-circle" aria-hidden="true" *ngIf="operDocTypeForm.form.valid"></i>
+                                    <i class="fas fa-exclamation-circle" aria-hidden="true" *ngIf="!operDocTypeForm.form.valid"></i>
+                                </span>
+                                <button type="submit" class="btn btn-info" [disabled]="!operDocTypeForm.form.valid" title="Save"><i class="fas fa-save"></i>    </button>
+                            </div>
+
+
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+</div>

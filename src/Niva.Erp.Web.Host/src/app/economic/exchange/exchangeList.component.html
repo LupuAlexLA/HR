@@ -1,0 +1,99 @@
+﻿<div [@routerTransition]>
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <h3>Schimb valutar</h3>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="content px-2">
+        <div class="container-fluid">
+            <div class="body">
+                <div class="row">
+                    <div class="col-lg-2">
+                        <label for="startDate" class="form-label">Data start </label>
+                        <mat-form-field style="width: 100%;">
+                            <input matInput [matDatepicker]="startDatePicker" id="startDate"
+                                   name="startDate" [(ngModel)]="form.startDate" #startDate="ngModel" />
+                            <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
+                            <mat-datepicker #startDatePicker></mat-datepicker>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-lg-2">
+                        <label for="endDate" class="form-label">Data sfarsit </label>
+                        <mat-form-field style="width: 100%;">
+                            <input matInput [matDatepicker]="endDatePicker" id="endDate"
+                                   name="endDate" [(ngModel)]="form.endDate" #endDate="ngModel" />
+                            <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
+                            <mat-datepicker #endDatePicker></mat-datepicker>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-lg-2">
+                        <label for="operationTypeId" class="col-form-label"> Tip operatie</label>
+                        <select id="operationTypeId" name="operationTypeId" [(ngModel)]="form.operationTypeId" #operationTypeId="ngModel" class="form-control">
+                            <option [ngValue]="null">Selecteaza</option>
+                            <option *ngFor="let exchangeOperType of exchangeOperTypeList" [ngValue]="exchangeOperType.id">{{ exchangeOperType.name }}</option>
+                        </select>
+                    </div>
+                    <div class="col-lg-1">
+                        <label for="currencyId" class="col-form-label"> Moneda</label>
+                        <select id="currencyId" name="currencyId" class="form-control" [(ngModel)]="form.currencyId" #currencyId="ngModel">
+                            <option [ngValue]="null">Selecteaza</option>
+                            <option *ngFor="let currency of currencies" [ngValue]="currency.id">{{ currency.name }}</option>
+                        </select>
+                    </div>
+                    <div class="col-lg-2">
+                        <button id="searchExchange" name="searchExchange" title="Cautare schimburi valutare" class="btn btn-info" (click)="searchExchange()"><i class="fas fa-search"></i></button>
+                    </div>
+                </div>
+                <div class="row">
+                    <hr />
+                </div>
+                <div class="panel-heading" style="position:relative">
+                    <div class="row">
+                        <h4 class="panel-title col-xs-6 ">
+                            Schimb valutar - <span>{{ getExchangeCount() }}</span> &nbsp;
+                            <a [routerLink]="['/app/economic/exchange/exchangeEdit']" *ngIf="isGranted('Casierie.SchimbValutar.Modificare')" class="btn btn-info" title="Adauga"><i class="fas fa-plus"></i></a>
+                            <a href="{{appBaseUrl}}/assets/pdf/Conta - Casierie - Manual utilizare.pdf" title="Manual de utilizare" class="btn btn-info ml-2" target="_blank"><i class="fas fa-question"></i></a>
+                        </h4>
+                    </div>
+                </div>
+                <table class="table table-responsive">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Data operatiune</th>
+                            <th scope="col">Tip operatie</th>
+                            <th scope="col">Iban lei</th>
+                            <th scope="col">Iban valuta</th>
+                            <th scope="col">Moneda</th>
+                            <th scope="col">Suma</th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of form.exchangeList; let i = index">
+                            <td scope="row">{{ i + 1 }}</td>
+                            <td>{{ item.operationDate| date:'dd.MM.yyyy' }}</td>
+                            <td>{{ item.exchangeOperType }}</td>
+                            <td>{{ item.bankAccountLei }}</td>
+                            <td>{{ item.bankAccountValuta }}</td>
+                            <td>{{ item.currencyName }}</td>
+                            <td>{{ item.value| number:'1.2' }}</td>
+                            <td>
+                                <a [routerLink]="['/app/economic/exchange/exchangeEdit']"
+                                   [queryParams]="{exchangeId: item.id}" *ngIf="isGranted('Casierie.SchimbValutar.Modificare')" class="btn btn-info" title="Editare"><i class="fas fa-edit"></i></a>
+                            </td>
+                            <td>
+                                <button class="btn btn-danger" title="Sterge" *ngIf="isGranted('Casierie.SchimbValutar.Modificare')" (click)="delete(item.id)"><i class="fas fa-trash"></i></button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+</div>

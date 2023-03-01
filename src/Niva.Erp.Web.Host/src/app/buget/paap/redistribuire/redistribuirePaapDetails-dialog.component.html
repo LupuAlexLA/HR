@@ -1,0 +1,49 @@
+﻿<form class="form-horizontal"
+      autocomplete="off"
+      #redistribDetForm="ngForm">
+    <abp-modal-header [title]="'Detalii redistirbuire achizitie'"
+                      (onCloseClick)="bsModalRef.hide()"></abp-modal-header>
+    <div class="modal-body">
+        <div class="container">
+            <div>
+                <div class="row">
+                    <label for="paapPrimesteId" class="col-form-label"> Achizitie care primeste</label>
+                    <input id="denumire" name="denumire" [(ngModel)]="paapRedistrib.denumire" #denumire="ngModel" class="form-control" readonly/>
+                </div>
+                <div class="row">
+                    <label for="valoareInitiala" class="col-form-label">Valoare initiala</label>
+                    <input id="valoareInitiala" name="valoareInitiala" class="form-control" [(ngModel)]="paapRedistrib.valoareInitiala" #valoareInitiala="ngModel" readonly />
+                </div>
+                <div class="row">
+                    <label for="sumaPrimita" class="col-form-label"> Suma primita</label>
+                    <input id="sumaPrimita" name="sumaPrimita" class="form-control" [(ngModel)]="paapRedistrib.sumaPrimita" #sumaPrimita="ngModel" readonly />
+                </div>
+            </div>
+            <div>
+                <hr />
+                <h3>Lista achiitii redistribuite</h3>
+                <table class="table small-font table-responsive">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Denumire</th>
+                            <th>Suma redistribuita</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of paapRedistrib.paapRedistribuireDetaliiList; let i = index">
+                            <td>{{ i+1 }}</td>
+                            <td>{{ item.denumire }}</td>
+                            <td  class="alignSum">{{ item.sumaPierduta | number: '1.2' }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div></div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="bsModalRef.hide()">Close</button>
+    </div>
+</form>
+

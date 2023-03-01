@@ -1,0 +1,71 @@
+﻿<div [@routerTransition]>
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <h3>Calcul gestiune mijloace fixe</h3>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="content px-2">
+        <div class="container-fluid">
+            <div class="body">
+                <div class="row">
+                    <a [routerLink]="['/app/conta/imoAsset/imoGestList']" class="btn btn-info" ><i class="fas fa-arrow-left"></i></a>
+                </div>
+                <form id="compute" name="compute"></form>
+                <div class="row">
+                    <div class="col-lg-2">
+                        <label id="computeDate" class="col-form-label">Data Calcul</label>
+                        <mat-form-field style="width: 100%;">
+                            <input matInput [matDatepicker]="computeDatePicker" id="computeDate"
+                                   name="computeDate" [(ngModel)]="gestList.computeDate" #computeDate="ngModel" />
+                            <mat-datepicker-toggle matSuffix [for]="computeDatePicker"></mat-datepicker-toggle>
+                            <mat-datepicker #computeDatePicker></mat-datepicker>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-lg-1">
+                        <button (click)="searchGest()" class="btn btn-info"><i class="fas fa-search"></i></button>
+                    </div>
+                    <div class="col-lg-1">
+                        <button (click)="computeDateGest()" class="btn btn-info" *ngIf="gestList.showCompute"><i class="fas fa-laptop"></i></button>
+                    </div>
+                </div>
+                <div class="panel-heading" style="position: relative">
+                    <div class="row">
+                        <h4 class="panel-title col-xs-6">
+                            Operatii neprocesate
+                        </h4>
+                    </div>
+                </div>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Data Operatie</th>
+                            <th scope="col">Tip Operatie</th>
+                            <th scope="col">Nr Document</th>
+                            <th scope="col">Data Document</th>
+                            <th scope="col">Tip Document</th>
+                            <th scope="col">Magazie Iesire</th>
+                            <th scope="col">Magazie Intrare</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let oper of gestList.operationList; let i = index;">
+                            <td scope="row">{{i + 1}}</td>
+                            <td>{{oper.operationDateStr}}</td>
+                            <td>{{oper.operationType}}</td>
+                            <td>{{oper.documentNr}}</td>
+                            <td>{{oper.documentDateStr}}</td>
+                            <td>{{oper.documentType}}</td>
+                            <td>{{oper.storageOut}}</td>
+                            <td>{{oper.storageIn}}</td>
+                        </tr> 
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+</div>
