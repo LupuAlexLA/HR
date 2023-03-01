@@ -27,5 +27,8 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Connected Services\" />
+    <Folder Include="Managers\" />
+    <Folder Include="ModelObjects\" />
+    <Folder Include="Repositories\" />
   </ItemGroup>
 </Project>

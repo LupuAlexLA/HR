@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using Abp.MultiTenancy;
 using Niva.Erp.Authorization.Users;
-using Niva.Erp.Models.Conta;
+
 
 namespace Niva.Erp.MultiTenancy
 {
@@ -17,17 +17,7 @@ namespace Niva.Erp.MultiTenancy
         {
         }
 
-        [ForeignKey("LegalPerson")]
-        public virtual int? LegalPersonId { get; set; }
-        public virtual LegalPerson LegalPerson { get; set; }
 
-        //public virtual List<UserRole> UserRoles { get; set; }
-
-        [ForeignKey("LocalCurrency")]
-        public virtual int? LocalCurrencyId { get; set; }
-        public virtual Currency LocalCurrency { get; set; }
-
-        public virtual List<Person> Person { get; set; }
 
         //public virtual List<User> Users { get; set; }
 

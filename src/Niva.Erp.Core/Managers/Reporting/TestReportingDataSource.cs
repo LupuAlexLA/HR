@@ -7,7 +7,7 @@ using Abp.Dependency;
 using Abp.Domain.Repositories;
 using Abp.Domain.Services;
 using Abp.Domain.Uow;
-using Niva.Erp.Models.Conta;
+
 
 namespace Niva.Erp.Managers.Reporting
 {

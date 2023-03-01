@@ -59,11 +59,7 @@ namespace Niva.Erp.Web.Host.Startup
             services.AddScoped<IWebDocumentViewerReportResolver, WebDocumentViewerReportResolver>();
             services.AddScoped<PreviewReportCustomizationService, CustomPreviewReportCustomizationService>();
             services.AddScoped<DocumentOperationService, CustomDocumentOperationService>();
-            services.AddScoped<IAngajatiExternManager, AngajatiExternManager>();
-            services.AddScoped<IEmitentiExternManager, EmitentiExternManager>();
-            services.AddScoped<IActiveBugetBVCManager, ActiveBugetBVCManager>();
-            services.AddScoped<IPlasamentBNRManager, PlasamentBNRManager> ();
-            services.AddScoped<IPlasamentLichiditateManager, PlasamentLichiditateManager>();
+         
             //MVC
             services
             .AddControllersWithViews(

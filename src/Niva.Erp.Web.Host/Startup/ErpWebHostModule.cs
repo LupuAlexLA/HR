@@ -12,7 +12,6 @@ using DevExpress.XtraReports.Web.Extensions;
 using Abp.Configuration.Startup;
 using Abp.AspNetCore.Configuration;
 using Abp.Threading.BackgroundWorkers;
-using Niva.Erp.BackgroudWorkers.Bnr;
 using Niva.Erp.BackgroudWorkers;
 
 namespace Niva.Erp.Web.Host.Startup
@@ -49,8 +48,7 @@ namespace Niva.Erp.Web.Host.Startup
         {
             base.PostInitialize();
             var workManager = IocManager.Resolve<IBackgroundWorkerManager>();
-            workManager.Add(IocManager.Resolve<CursBnrBackgroundWorker>());
-            workManager.Add(IocManager.Resolve<PreluareFileDocBackgroundWorker>());
+          
         }
     }
 }
