@@ -15,6 +15,14 @@
     <EmbeddedResource Include="Localization\SourceFiles\*.xml" Exclude="bin\**;obj\**;**\*.xproj;packages\**;@(EmbeddedResource)" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Remove="ModelObjects\**" />
+    <Compile Remove="Repositories\**" />
+    <EmbeddedResource Remove="ModelObjects\**" />
+    <EmbeddedResource Remove="Repositories\**" />
+    <None Remove="ModelObjects\**" />
+    <None Remove="Repositories\**" />
+  </ItemGroup>
+  <ItemGroup>
     <PackageReference Include="Abp.AutoMapper" Version="5.10.1" />
     <PackageReference Include="Abp.ZeroCore.EntityFrameworkCore" Version="5.10.1" />
     <PackageReference Include="Castle.Windsor.MsDependencyInjection" Version="3.3.1" />
@@ -29,7 +37,5 @@
     <Folder Include="BackgroudWorkers\" />
     <Folder Include="Connected Services\" />
     <Folder Include="Managers\" />
-    <Folder Include="ModelObjects\" />
-    <Folder Include="Repositories\" />
   </ItemGroup>
 </Project>
