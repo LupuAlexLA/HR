@@ -31,7 +31,6 @@ import { CreateUserDialogComponent } from '@app/users/create-user/create-user-di
 import { EditUserDialogComponent } from '@app/users/edit-user/edit-user-dialog.component';
 import { ChangePasswordComponent } from './users/change-password/change-password.component';
 import { ResetPasswordDialogComponent } from './users/reset-password/reset-password.component';
-import { FiledocSearchComponent } from './shared/modal/filedoc-search/filedoc-search.component';
 // layout
 import { HeaderComponent } from './layout/header.component';
 import { HeaderLeftNavbarComponent } from './layout/header-left-navbar.component';
@@ -43,20 +42,11 @@ import { SidebarLogoComponent } from './layout/sidebar-logo.component';
 import { SidebarUserPanelComponent } from './layout/sidebar-user-panel.component';
 import { SidebarMenuComponent } from './layout/sidebar-menu.component';
 
-//Conta -> Nomenclatoare
- 
-import { PersonComponent } from './setup/person/person.component';
-import { PersonEditComponent } from './setup/person/personEdit.component';
-import { ThirdPartyAccComponent } from './setup/banks/thirdPartyAcc.component';
-import { ThirdPartyAccEditComponent } from './setup/banks/thirdPartyAccEdit.component';
-
 
 import { appDxWebWiewComponent } from './reporting/appDxWebWiew.component';
 //reporting
 
 import { DxReportViewerModule, DxReportDesignerModule } from 'devexpress-reporting-angular';
-
-import { ConfigReportingComponent } from './reporting/configReporting.component';
 import {
     DxDataGridModule,
     DxBulletModule,
@@ -99,16 +89,7 @@ import { MatDatepickerModule, MatGridListModule, MatPaginatorModule, MatProgress
         SidebarMenuComponent,
        
         //Reporting
-        appDxWebWiewComponent,
-        ConfigReportingComponent,
-        //Setup
-        PersonComponent,
-        PersonEditComponent,
-        ThirdPartyAccComponent,
-        ThirdPartyAccEditComponent,
-
-        //Modal dialogs
-        FiledocSearchComponent
+        appDxWebWiewComponent
     ],
     imports: [
         CommonModule,
@@ -149,8 +130,6 @@ import { MatDatepickerModule, MatGridListModule, MatPaginatorModule, MatProgress
         CreateUserDialogComponent,
         EditUserDialogComponent,
         ResetPasswordDialogComponent,
-        //shared modals
-        FiledocSearchComponent
     ]
 })
 export class AppModule { }

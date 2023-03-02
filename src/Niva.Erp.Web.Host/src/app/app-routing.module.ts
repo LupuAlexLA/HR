@@ -9,15 +9,7 @@ import { TenantsComponent } from './tenants/tenants.component';
 import { RolesComponent } from 'app/roles/roles.component';
 import { ChangePasswordComponent } from './users/change-password/change-password.component';
 
-
-import { PersonComponent } from './setup/person/person.component';
-import { ThirdPartyAccComponent } from './setup/banks/thirdPartyAcc.component';
-import { ThirdPartyAccEditComponent } from './setup/banks/thirdPartyAccEdit.component';
-import { PersonEditComponent } from './setup/person/personEdit.component';
-
-
 import { appDxWebWiewComponent } from './reporting/appDxWebWiew.component';
-import { ConfigReportingComponent } from './reporting/configReporting.component';
 
 
 @NgModule({
@@ -36,16 +28,7 @@ import { ConfigReportingComponent } from './reporting/configReporting.component'
 
                  
                     //Reporting
-                    { path: 'dXWebView/:reportName', component: appDxWebWiewComponent, canActivate: [AppRouteGuard]},
-                    { path: 'reporting/configReporting', component: ConfigReportingComponent, canActivate: [AppRouteGuard] },
-
-                   
-
-                    // Setup
-                    { path: 'setup/person/person', component: PersonComponent, canActivate: [AppRouteGuard] },
-                    { path: 'setup/person/personEdit', component: PersonEditComponent, canActivate: [AppRouteGuard] },
-                    { path: 'setup/banks/thirdPartyAcc', component: ThirdPartyAccComponent, canActivate: [AppRouteGuard] },
-                    { path: 'setup/banks/thirdPartyAccEdit', component: ThirdPartyAccEditComponent, canActivate: [AppRouteGuard] }
+                    { path: 'dXWebView/:reportName', component: appDxWebWiewComponent, canActivate: [AppRouteGuard]}
                 ]
             }
         ])
