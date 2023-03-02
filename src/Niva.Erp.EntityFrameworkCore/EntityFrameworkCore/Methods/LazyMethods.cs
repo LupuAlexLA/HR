@@ -10,11 +10,6 @@ namespace Niva.Erp.EntityFrameworkCore.Methods
 {
     public class LazyMethods
     {
-        public static string LinkGetPlasamenteBuget()
-        {
-            return "http://192.168.15.24:5000/api/external/getPlasamenteBuget/";
-        }
-
         public class ListForEnum
         {
             public string Id { get; set; }
@@ -75,24 +70,7 @@ namespace Niva.Erp.EntityFrameworkCore.Methods
             return ret;
         }
 
-        public static String GetSynthetic(string symbol)
-        {
-            var list = symbol.Split('.');
-            return list[0];
-        }
-
-        public static String GetAnalythic(string symbol)
-        {
-            var list = symbol.Split('.');
-            if (list.Count() == 1)
-                return null;
-            else
-            {
-                string vAnalythic = symbol.Substring(symbol.IndexOf('.') + 1);
-                return vAnalythic;
-            }
-        }
-
+        
         //cifre_to_litere
         public static string CifreToLitere(decimal numar)
         {

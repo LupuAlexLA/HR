@@ -14,4 +14,7 @@
     <ProjectReference Include="..\Niva.Erp.Core\Niva.Erp.Core.csproj" />
     <ProjectReference Include="..\Niva.Erp.EntityFrameworkCore\Niva.Erp.EntityFrameworkCore.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Common\" />
+  </ItemGroup>
 </Project>

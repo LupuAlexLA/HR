@@ -11,7 +11,6 @@ using DevExpress.XtraPrinting;
 using DevExpress.XtraReports.Web.WebDocumentViewer;
 using DevExpress.XtraReports.Web.WebDocumentViewer.DataContracts;
 using Niva.Erp.Managers.Reporting;
-using wsfiledoc;
 
 namespace DocumentOperationServiceSample.Services
 {

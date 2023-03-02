@@ -26,6 +26,7 @@
     <PackageReference Include="System.ServiceModel.Security" Version="4.7.*" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="BackgroudWorkers\" />
     <Folder Include="Connected Services\" />
     <Folder Include="Managers\" />
     <Folder Include="ModelObjects\" />
