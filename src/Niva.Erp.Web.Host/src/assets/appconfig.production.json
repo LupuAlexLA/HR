@@ -1,0 +1,18 @@
+{
+  "remoteServiceBaseUrl": "https://fgdb.nivasoft.ro",
+  "appBaseUrl": "https://fgdb.nivasoft.ro",
+  "localeMappings": [
+    {
+      "from": "pt-BR",
+      "to": "pt"
+    },
+    {
+      "from": "zh-CN",
+      "to": "zh"
+    },
+    {
+      "from": "he-IL",
+      "to": "he"
+    }
+  ]
+}
