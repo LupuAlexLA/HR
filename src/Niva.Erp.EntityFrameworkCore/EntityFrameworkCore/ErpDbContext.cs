@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Niva.Erp.Authorization.Roles;
 using Niva.Erp.Authorization.Users;
 using Niva.Erp.EntityFrameworkCore.DbFunctions;
+using Niva.Erp.Models;
 using Niva.Erp.MultiTenancy;
 
 namespace Niva.Erp.EntityFrameworkCore
@@ -12,6 +13,8 @@ namespace Niva.Erp.EntityFrameworkCore
     public class ErpDbContext : AbpZeroDbContext<Tenant, Role, User, ErpDbContext>
     {
         /* Define a DbSet for each entity of the application */
+
+        public DbSet<Masuratoare> Masuratori { get; set; }
 
         public ErpDbContext(DbContextOptions<ErpDbContext> options)
             : base(options)
