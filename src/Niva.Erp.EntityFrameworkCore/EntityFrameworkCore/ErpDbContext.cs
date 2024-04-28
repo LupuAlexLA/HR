@@ -16,6 +16,14 @@ namespace Niva.Erp.EntityFrameworkCore
 
         public DbSet<Masuratoare> Masuratori { get; set; }
 
+        public DbSet<MasuratoareInterpretare> MasuratoriInterpretari { get; set; }
+
+        public DbSet<Studiu> Studii { get; set; }
+
+        public DbSet<Tara> Tari { get; set; }
+
+        public DbSet<Judet> Judete { get; set; }
+
         public ErpDbContext(DbContextOptions<ErpDbContext> options)
             : base(options)
         {
